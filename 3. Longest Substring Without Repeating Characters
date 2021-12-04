@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int n = s.length();
+        int i = 0;
+        int j = 0;
+        int freq[256] = {0};
+        int ans = 0;
+        while(j < n) {
+            freq[s[j]]++;
+            while(freq[s[j]] > 1) {
+                ans = max(ans, j - i);
+                freq[s[i]]--;
+                i++;
+            }
+            j++;
+        }
+        ans = max(ans, j - i);
+        return ans;
+    }
+};
