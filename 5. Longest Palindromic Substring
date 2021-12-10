@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int maxlen(string &s, int i, int j) {
+        int len = 0;
+        while(i >= 0 && j < s.length() && s[i] == s[j]) {
+            i--;
+            j++;
+        }
+        return j - i - 1;
+    }
+    string longestPalindrome(string &s) {
+        int len = 0;
+        int i;
+        for(int mid = 0; mid < s.length(); mid++) {
+            int len1 = maxlen(s, mid, mid);
+            int len2 = maxlen(s, mid, mid + 1);
+            if(len1 > len) {
+                len = len1;
+                i = mid - (len - 1) / 2;
+            }
+            if(len2 > len) {
+                len = len2;
+                i = mid - (len - 1) / 2;
+            }
+        }
+        return s.substr(i, len);
+    }
+};
