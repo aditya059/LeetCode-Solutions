@@ -1,0 +1,32 @@
+class Solution {
+public:
+    string convert(string &s, int numRows) {
+        if(numRows == 1) return s;
+        int n = s.length();
+        vector<vector<char>> pattern(numRows, vector<char>(n, 0));
+        int r = 0;
+        int c = 0;
+        bool down = true;
+        string ans = "";
+        for(int i = 0; i < n; i++) {
+            pattern[r][c] = s[i];
+            if(r == numRows - 1)
+                down = false;
+            if(r == 0)
+                down = true;
+            if(down)
+                r++;
+            else {
+                c++;
+                r--;
+            }
+        }
+        for(int i = 0; i < numRows; i++) {
+            for(int j = 0; j < n; j++) {
+                if(pattern[i][j])
+                    ans += pattern[i][j];
+            }
+        }
+        return ans;
+    }
+};
