@@ -1,3 +1,4 @@
+// Iterative
 class Solution {
 public:
     vector<string> letterCombinations(string digits) {
@@ -21,6 +22,28 @@ public:
             ans.push_back(Queue.front());
             Queue.pop();
         }
+        return ans;
+    }
+};
+
+// Recursive
+class Solution {
+public:
+    void solve(string &digits, string Map[], int i, string temp, vector<string> &ans) {
+        if(i == digits.size()) {
+            ans.push_back(temp);
+            return;
+        }
+        string str = Map[digits[i] - '0'];
+        for(int j = 0; j < str.length(); j++) {
+            solve(digits, Map, i + 1, temp + str[j], ans);
+        }
+    }
+    vector<string> letterCombinations(string &digits) {
+        vector<string> ans;
+        if(digits.length() == 0) return ans;
+        string Map[] = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        solve(digits, Map, 0, "", ans);
         return ans;
     }
 };
