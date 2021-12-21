@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int myAtoi(string s) {
+        int i;
+        int ans = 0;
+        bool neg;
+        for(i = 0; i < s.length(); i++) {
+            if(s[i] != ' ')
+                break;
+        }
+        if(s[i] == '-') {
+            neg = true;
+            i++;
+        }
+        else if(s[i] == '+') {
+            neg = false;
+            i++;
+        }
+        for(; i < s.length(); i++) {
+            if(s[i] >= '0' && s[i] <= '9') {
+                if(!neg && (ans > INT_MAX / 10 || (ans == INT_MAX / 10 && s[i] >= '7'))) return INT_MAX;
+                if(neg && (ans > INT_MAX / 10 || (ans == INT_MAX / 10 && s[i] >= '8'))) return INT_MIN;
+                ans = ans * 10 + (s[i] - '0');
+            }
+            else
+                break;
+        }
+        return neg? -ans: ans;
+    }
+};
