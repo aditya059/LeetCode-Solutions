@@ -1,0 +1,12 @@
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> ans(2, -1);
+        auto iter = lower_bound(nums.begin(), nums.end(), target);
+        if(iter == nums.end() || *iter != target)
+            return ans;
+        ans[0] = iter - nums.begin();
+        ans[1] = upper_bound(nums.begin(), nums.end(), target) - nums.begin() - 1;
+        return ans;
+    }
+};
