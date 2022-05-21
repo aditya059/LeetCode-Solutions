@@ -1,0 +1,10 @@
+class Solution {
+public:
+    int convertTime(string current, string correct) {
+        int min1 = stoi(current.substr(0, 2)) * 60 + stoi(current.substr(3, 2));
+        int min2 = stoi(correct.substr(0, 2)) * 60 + stoi(correct.substr(3, 2));
+        int diff = min2 - min1;
+        int ans = (diff / 60) + ((diff % 60) / 15) + ((diff % 15) / 5) + (diff % 5);
+        return ans;
+    }
+};
