@@ -41,3 +41,25 @@ public:
         return NULL;
     }
 };
+
+OR
+
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode *p = headA, *q = headB;
+        while(headA || headB) {
+            if(!headA)
+                headA = q;
+            if(!headB)
+                headB = p;
+            if(headA == headB)
+                break;
+            headA = headA -> next;
+            headB = headB -> next;
+            if(headA == headB)
+                break;
+        }
+        return headA;
+    }
+};
