@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int titleToNumber(string columnTitle) {
+        if(columnTitle == "")
+            return 0;
+        return titleToNumber(columnTitle.substr(0, columnTitle.length() - 1)) * 26 + (columnTitle[columnTitle.length() - 1] - 'A' + 1);
+    }
+};
+
+OR
+
+class Solution {
+public:
+    int titleToNumber(string columnTitle) {
+        int ans = 0;
+        for(int i = 0; i < columnTitle.length(); i++) {
+            ans = ans * 26 + (columnTitle[i] - 'A' + 1);  
+        }
+        return ans;
+    }
+};
