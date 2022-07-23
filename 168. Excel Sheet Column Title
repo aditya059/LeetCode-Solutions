@@ -1,0 +1,12 @@
+class Solution {
+public:
+    string convertToTitle(int columnNumber) {
+        string ans = "";
+        for(int i = columnNumber; i > 0; i /= 26) {
+            i--;
+            ans += (char)('A' + i % 26);
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
