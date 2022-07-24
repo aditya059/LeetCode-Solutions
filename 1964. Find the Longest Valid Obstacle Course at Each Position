@@ -16,3 +16,37 @@ public:
         return ans;
     }
 };
+
+OR
+
+\\ Fenweek Tree
+class Solution {
+public:
+    int n = 10000005;
+    int BIT[10000005];
+    void update(int i, int x) {
+        while(i < n) {
+            BIT[i] = max(BIT[i], x);
+            i += i & -i;
+        }
+    }
+    
+    int query(int i) {
+        int ans = 0;
+        while(i > 0) {
+            ans = max(ans, BIT[i]);
+            i -= i & -i;
+        }
+        return ans;
+    }
+    
+    vector<int> longestObstacleCourseAtEachPosition(vector<int>& obstacles) {
+        vector<int> ans(obstacles.size());
+        for(int i = 0; i < obstacles.size(); i++) {
+            int lenLIS = query(obstacles[i]);
+            ans[i] = lenLIS + 1;
+            update(obstacles[i], ans[i]);
+        }
+        return ans;
+    }
+};
