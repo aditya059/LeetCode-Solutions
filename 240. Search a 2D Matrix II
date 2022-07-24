@@ -1,3 +1,4 @@
+// O(m log n)
 class Solution {
 public:
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
@@ -12,6 +13,7 @@ public:
 
 OR
 
+// O(m log n) optimised
 class Solution {
 public:
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
