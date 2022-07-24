@@ -11,16 +11,19 @@ public:
     }
     
     void update(int index, int val) {
-        int i = index + 1;
         int x = val - numbers[index];
         numbers[index] = val;
+        updateBIT(index + 1, x);
+    }
+    
+    void updateBIT(int i, int val) {
         while(i < BIT.size()) {
-            BIT[i] += x;
+            BIT[i] += val;
             i += i & -i;
         }
     }
     
-    int query(int i) {
+    int getSum(int i) {
         int sum = 0;
         while(i > 0) {
             sum += BIT[i];
@@ -30,7 +33,7 @@ public:
     }
     
     int sumRange(int left, int right) {
-        return query(right + 1) - query(left);
+        return getSum(right + 1) - getSum(left);
     }
 };
 
