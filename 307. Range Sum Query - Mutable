@@ -1,3 +1,4 @@
+// BIT: Preprocessing - O(nlogn), Update - O(log n), Query - O(log n), Space - O(n) 
 class NumArray {
 public:
     vector<int> BIT;
@@ -37,9 +38,49 @@ public:
     }
 };
 
-/**
- * Your NumArray object will be instantiated and called as such:
- * NumArray* obj = new NumArray(nums);
- * obj->update(index,val);
- * int param_2 = obj->sumRange(left,right);
- */
+OR
+
+// SQRT Decomposition: Preprocessing - O(n), Update - O(1), Query - O(sqrt(n)), Space - O(sqrt(n)) 
+class NumArray {
+public:
+    vector<int> numbers;
+    vector<int> blockSum;
+    int numOfBlocks;
+    int blockSize;
+    NumArray(vector<int>& nums) {
+        blockSize = sqrt(nums.size());
+        numOfBlocks = ceil(nums.size() * 1.0 / blockSize);
+        numbers.resize(nums.size());
+        blockSum.resize(numOfBlocks);
+        for(int i = 0; i < nums.size(); i++) {
+            numbers[i] = nums[i];
+            blockSum[i / blockSize] += nums[i];
+        }
+    }
+    
+    void update(int index, int val) {
+        blockSum[index / blockSize] += (val - numbers[index]);  
+        numbers[index] = val; 
+    }
+    
+    int sumRange(int left, int right) {
+        int sum = 0;
+        int start = left / blockSize;
+        int end = right / blockSize;
+        if(start == end) {
+            for(int i = left; i <= right; i++) 
+                sum += numbers[i];
+            return sum;
+        }
+        for(int i = (start + 1) * blockSize - 1; i >= left; i--) {
+            sum += numbers[i];
+        }
+        for(int i = start + 1; i < end; i++) {
+            sum += blockSum[i];
+        }
+        for(int i = end * blockSize; i <= right; i++) {
+            sum += numbers[i];
+        }
+        return sum;
+    }
+};
