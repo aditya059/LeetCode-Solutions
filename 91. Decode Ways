@@ -46,3 +46,22 @@ public:
         return compute(s, 0, DP, calc);
     }
 };
+
+OR
+
+class Solution {
+public:
+    int numDecodings(string s) {
+        int DP = 0, DP1 = 1, DP2 = 0;
+        for(int i = s.length() - 1; i >= 0; i--) {
+            if(s[i] != '0')
+                DP += DP1;
+            if(i < s.length() - 1 && (s[i] == '1' || s[i] == '2' && s[i + 1] <= '6'))
+                DP += DP2;
+            DP2 = DP1;
+            DP1 = DP;
+            DP = 0;
+        }
+        return DP1;
+    }
+};
