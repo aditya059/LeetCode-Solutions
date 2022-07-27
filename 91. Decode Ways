@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int compute(string s, map<string, int> &DP) {
+        if(!s.length()) {
+            return 1;
+        }
+        if(DP.find(s) != DP.end())
+            return DP[s];
+        for(int i = 1; i <= 26; i++) {
+            if(i < 10 && i == s[0] - '0')
+                DP[s] += compute(s.substr(1), DP);
+            if(i / 10 != 0 && i / 10 == s[0] - '0' && i % 10 == s[1] - '0')
+                DP[s] += compute(s.substr(2), DP);
+        }
+        return DP[s];
+    }
+    int numDecodings(string s) {
+        map<string, int> DP;
+        compute(s, DP);
+        return DP[s];
+    }
+};
