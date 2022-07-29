@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<string> findAndReplacePattern(vector<string>& words, string pattern) {
+        vector<string> ans;
+        for(int i = 0; i < words.size(); i++) {
+            map<char, char> Map1;
+            map<char, char> Map2;
+            bool flag = true;
+            for(int j = 0; j < pattern.length(); j++) {
+                if(Map1.find(pattern[j]) == Map1.end()) {
+                    if(Map2.find(words[i][j]) != Map2.end() && Map2[words[i][j]] != pattern[j]) {
+                        flag = false;
+                        break;
+                    }
+                    Map1[pattern[j]] = words[i][j];
+                    Map2[words[i][j]] = pattern[j];
+                }
+                else if(Map1[pattern[j]] != words[i][j]) {
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag)
+                ans.push_back(words[i]);
+        }
+        return ans;
+    }
+};
