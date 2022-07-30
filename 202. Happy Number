@@ -1,0 +1,19 @@
+class Solution {
+public:
+    bool compute(int n, map<int, bool> &Map) {
+        if(n == 1)
+            return true;
+        Map[n] = true;
+        int temp = 0;
+        for(int i = n; i > 0; i /= 10) {
+            temp += (i % 10) * (i % 10);
+        }
+        if(Map.find(temp) != Map.end()) 
+            return false;
+        return compute(temp, Map);
+    }
+    bool isHappy(int n) {
+        map<int, bool> Map;
+        return compute(n, Map);
+    }
+};
