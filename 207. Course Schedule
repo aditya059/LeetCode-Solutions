@@ -1,0 +1,32 @@
+class Solution {
+public:
+    void dfs(int u, bool &ans, vector<char>& color, vector<int> adjList[]) {
+        if(!ans || color[u] == 'G') {
+            ans = false;
+            return;
+        }
+        color[u] = 'G';
+        for(int v: adjList[u]) {
+            if(color[v] == 'W')
+                dfs(v, ans, color, adjList);
+            if(color[v] == 'G') {
+                ans = false;
+                return;
+            }
+        }
+        color[u] = 'B';
+    }
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> adjList[numCourses];
+        for(int i = 0; i < prerequisites.size(); i++) {
+            adjList[prerequisites[i][1]].push_back(prerequisites[i][0]);
+        }
+        bool ans = true;
+        vector<char> color(numCourses, 'W');
+        for(int i = 0; i < numCourses; i++) {
+            if(color[i] == 'W')
+                dfs(i, ans, color, adjList);
+        }
+        return ans;
+    }
+};
