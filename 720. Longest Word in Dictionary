@@ -1,0 +1,58 @@
+class Solution {
+public:
+
+    typedef struct TrieNode {
+        TrieNode *children[26];
+        bool endHere = false;
+    } TrieNode;
+    
+    void insert(TrieNode *root, string word) {
+        TrieNode *ptr = root;
+        for(int i = 0; i < word.length(); i++) {
+            char ch = word[i];
+            if(!ptr -> children[ch - 'a']) {
+                TrieNode *temp = new TrieNode();
+                ptr -> children[ch - 'a'] = temp;
+            }
+            ptr = ptr -> children[ch - 'a'];
+        }
+        ptr -> endHere = true;
+    }
+    
+    void dfs(TrieNode *root, string &ans, string word) {
+        if(root -> endHere) {
+            if(word.length() > ans.length())
+                ans = word;
+        } 
+        else 
+            return;
+        
+        bool flag = true;
+        for(int i = 0; i < 26; i++) {
+            if(root -> children[i] != NULL) {
+                flag = false;
+                break;
+            }
+           
+        }
+        if(flag) {
+            return;
+        }
+        for(int i = 0; i < 26; i++) {
+            if(root -> children[i])
+                dfs(root -> children[i], ans, word + (char)('a' + i));
+        }
+    }
+    
+    string longestWord(vector<string>& words) {
+        TrieNode *root = new TrieNode();
+        root -> endHere = true;
+        for(int i = 0; i < words.size(); i++)
+            insert(root, words[i]);
+
+        string ans = "";
+        string word = "";
+        dfs(root, ans, word);
+        return ans;
+    }
+};
