@@ -42,3 +42,23 @@ public:
         return ans;
     }
 };
+
+OR
+
+class Solution {
+public:    
+    string longestWord(vector<string>& words) {
+        set<string> Set;
+        Set.insert("");
+        string ans = "";
+        sort(words.begin(), words.end());
+        for(int i = 0; i < words.size(); i++) {
+            if(Set.find(words[i].substr(0, words[i].length() - 1)) != Set.end()) {
+                if(words[i].length() > ans.length())
+                    ans = words[i];
+                Set.insert(words[i]);
+            }
+        }
+        return ans;
+    }
+};
