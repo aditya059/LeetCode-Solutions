@@ -1,0 +1,34 @@
+class Solution {
+public:
+    void dfs(int u, bool &isCyclic, vector<char>& color, vector<int> adjList[], vector<int> &ans) {
+        color[u] = 'G';
+        for(int v: adjList[u]) {
+            if(color[v] == 'G') {
+                isCyclic = true;
+                return;
+            }
+            else if(color[v] == 'W')
+                dfs(v, isCyclic, color, adjList, ans);
+        }
+        ans.push_back(u);
+        color[u] = 'B';
+    }
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> ans;
+        bool isCyclic = false;
+        vector<int> adjList[numCourses];
+        for(int i = 0; i < prerequisites.size(); i++) {
+            adjList[prerequisites[i][1]].push_back(prerequisites[i][0]);
+        }
+        vector<char> color(numCourses, 'W');
+        for(int i = 0; i < numCourses; i++) {
+            if(color[i] == 'W')
+                dfs(i, isCyclic, color, adjList, ans);
+        }
+        if(isCyclic) {
+            ans.clear();
+        } 
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
