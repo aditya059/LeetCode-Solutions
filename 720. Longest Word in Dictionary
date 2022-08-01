@@ -20,24 +20,10 @@ public:
     }
     
     void dfs(TrieNode *root, string &ans, string word) {
-        if(root -> endHere) {
-            if(word.length() > ans.length())
-                ans = word;
-        } 
-        else 
+        if(!root -> endHere) 
             return;
-        
-        bool flag = true;
-        for(int i = 0; i < 26; i++) {
-            if(root -> children[i] != NULL) {
-                flag = false;
-                break;
-            }
-           
-        }
-        if(flag) {
-            return;
-        }
+        if(word.length() > ans.length())
+            ans = word;
         for(int i = 0; i < 26; i++) {
             if(root -> children[i])
                 dfs(root -> children[i], ans, word + (char)('a' + i));
