@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<string> summaryRanges(vector<int>& nums) {
+        vector<string> ans;
+        if(nums.empty()) return ans;
+        int low = nums[0];
+        int high = nums[0];
+        for(int i = 1; i < nums.size(); i++) {
+            if(nums[i] == high + 1)
+                high = nums[i];
+            else {
+                if(low == high)
+                    ans.push_back(to_string(low));
+                else 
+                    ans.push_back(to_string(low) + "->" + to_string(high));
+                low = high = nums[i];
+            }
+        }
+        if(low == high)
+            ans.push_back(to_string(low));
+        else 
+            ans.push_back(to_string(low) + "->" + to_string(high));
+        return ans;
+    }
+};
