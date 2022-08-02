@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool wordPattern(string pattern, string s) {
+        s += ' ';
+        map<string, char> Map1;
+        map<char, string> Map2;
+        string word = "";
+        int j = 0;
+        for(int i = 0; i < s.length(); i++) {
+            char ch = s[i];
+            if(ch != ' ')
+                word += ch;
+            else {
+                if(Map1.find(word) == Map1.end()) {
+                    if(Map2.find(pattern[j]) != Map2.end() && Map2[pattern[j]] != word)
+                        return false;
+                    Map1[word] = pattern[j];
+                    Map2[pattern[j]] = word;
+                }
+                else {
+                    if(Map1[word] != pattern[j])
+                        return false;
+                }
+                j++;
+                word = "";
+            }
+        }
+        if(j == pattern.length())
+            return true;
+        else
+            return false;
+    }
+};
