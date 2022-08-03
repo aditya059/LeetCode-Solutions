@@ -23,3 +23,28 @@ public:
  * MyCalendar* obj = new MyCalendar();
  * bool param_1 = obj->book(start,end);
  */
+
+OR
+
+class MyCalendar {
+public:
+    set<pair<int, int>> interval;
+    MyCalendar() {
+        
+    }
+    
+    bool book(int start, int end) {
+        auto iter = interval.lower_bound({start, end});
+        if(iter != interval.end() && end > iter -> first) return false;
+        if(iter != interval.begin() && start < (--iter) -> second) return false;
+        interval.insert({start, end});
+
+        return true;
+    }
+};
+
+/**
+ * Your MyCalendar object will be instantiated and called as such:
+ * MyCalendar* obj = new MyCalendar();
+ * bool param_1 = obj->book(start,end);
+ */
