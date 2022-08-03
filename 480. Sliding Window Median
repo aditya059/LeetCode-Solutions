@@ -1,0 +1,65 @@
+class Solution {
+public:
+    multiset<int> Set1;
+    multiset<int> Set2;
+    map<int, multiset<int>::iterator> Map;
+    
+    void removeNum(int num) {
+        auto iter1 = Set1.find(num);
+        if(iter1 != Set1.end()) {
+            Set1.erase(iter1);
+        }
+        else {
+            auto iter2 = Set2.find(num);
+            Set2.erase(iter2);
+        }
+        int len1 = Set1.size();
+        int len2 = Set2.size();
+        if(len1 - len2  > 1) {
+            Set2.insert(*Set1.rbegin());
+            Set1.erase(--Set1.end());
+        }
+        if(len2 - len1 > 0) {
+            Set1.insert(*Set2.begin());
+            Set2.erase(Set2.begin());
+        }
+    }
+    
+    void addNum(int num) {
+        if(Set1.empty() || num <= *Set1.rbegin())
+            Set1.insert(num);
+        else
+            Set2.insert(num);
+        int len1 = Set1.size();
+        int len2 = Set2.size();
+        if(len1 - len2  > 1) {
+            Set2.insert(*Set1.rbegin());
+            Set1.erase(--Set1.end());
+        }
+        if(len2 - len1 > 0) {
+            Set1.insert(*Set2.begin());
+            Set2.erase(Set2.begin());
+        }
+    }
+
+    double findMedian() {
+        int len = Set1.size() + Set2.size();
+        if(len % 2 == 1) 
+            return *Set1.rbegin();
+        else
+            return ((long)*Set1.rbegin() + (long)*Set2.begin()) / 2.0;
+    }
+    vector<double> medianSlidingWindow(vector<int>& nums, int k) {
+        vector<double> ans;
+        for(int i = 0; i < k; i++) {
+            addNum(nums[i]);
+        }
+        ans.push_back(findMedian());
+        for(int i = k; i < nums.size(); i++) {
+            addNum(nums[i]);
+            removeNum(nums[i - k]);
+            ans.push_back(findMedian());
+        }
+        return ans;
+    }
+};
