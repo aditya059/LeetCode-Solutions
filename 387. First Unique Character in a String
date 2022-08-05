@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int firstUniqChar(string s) {
+        int index[26];
+        fill(index, index + 26, s.length());
+        for(int i = 0; i < s.length(); i++) {
+            if(index[s[i] - 'a'] == s.length())
+                index[s[i] - 'a'] = i; 
+            else
+                index[s[i] - 'a'] = s.length() + 1;
+        }
+        int ans = s.length();
+        for(int i = 0; i < 26; i++) {
+            ans = min(ans, index[i]);
+        }
+        return ans >= s.length()? -1: ans;
+    }
+};
