@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int longestPalindrome(string s) {
+        int freq[128] = {0};
+        for(int i = 0; i < s.length(); i++) {
+            freq[s[i]]++;
+        }
+        int ans = 0, ans1 = 0;
+        for(int i = 0; i < 128; i++) {
+            if(freq[i] % 2 == 1)
+                ans1 = 1;
+            ans += freq[i] / 2;
+        }
+        return ans * 2 + ans1;
+    }
+};
