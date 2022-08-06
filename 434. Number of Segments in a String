@@ -5,7 +5,7 @@ public:
         string wd = "";
         for(int i = 0; i < s.length(); i++) {
             if(s[i] != ' ') {
-                wd += s[i];
+                wd = s[i];
             }
             else{
                 if(wd != "")
