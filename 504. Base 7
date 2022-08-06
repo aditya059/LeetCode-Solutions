@@ -1,0 +1,11 @@
+class Solution {
+public:
+    string convertToBase7(int num) {
+        if(!num) return "0";
+        string ans = "";
+        for(int i = abs(num); i > 0; i /= 7) {
+            ans = to_string(i % 7) + ans;
+        }
+        return num < 0? "-" + ans: ans;
+    }
+};
