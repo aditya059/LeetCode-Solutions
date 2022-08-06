@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<string> findRelativeRanks(vector<int>& score) {
+        map<int, int> Map;
+        vector<string> ans(score.size());
+        for(int i = 0; i < score.size(); i++) {
+            Map[score[i]] = i;
+        }
+        int n = score.size();
+        string temp;
+        for(auto iter: Map) {
+            temp = to_string(n);
+            if(n == 1) temp = "Gold Medal";
+            else if(n == 2) temp = "Silver Medal";
+            else if(n == 3) temp = "Bronze Medal";
+            ans[iter.second] = temp;
+            n--;
+        }
+        return ans;
+    }
+};
