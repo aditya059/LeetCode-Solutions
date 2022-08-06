@@ -1,0 +1,15 @@
+class Solution {
+public:
+    string toHex(int num) {
+        if(!num) return "0";
+        string ans = "";
+        for(unsigned int i = num; i > 0; i /= 16) {
+            int d = i % 16;
+            if(d < 10)
+                ans = to_string(d) + ans;
+            else
+                ans = (char)(d + 87) + ans;
+        }
+        return ans;
+    }
+};
