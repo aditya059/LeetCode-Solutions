@@ -1,0 +1,21 @@
+class Solution {
+public:
+    string frequencySort(string s) {
+        map<int, int> freq;
+        for(int i = 0; i < s.length(); i++)
+            freq[s[i]]++;
+        multimap<int, char, greater<int>> temp;
+        for(auto iter: freq) {
+            temp.insert({iter.second, iter.first});
+        }
+        string ans = "";
+        for(auto iter = temp.begin(); iter != temp.end(); iter++) {
+            string t = "";
+            char ch = iter -> second;
+            while(freq[ch]--)
+                t += ch;
+            ans += t;
+        }
+        return ans;
+    }
+};
