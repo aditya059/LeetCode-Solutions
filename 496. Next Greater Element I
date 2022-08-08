@@ -1,0 +1,18 @@
+class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> ans(nums1.size());
+        map<int, int> Map;
+        stack<int> Stack;
+        for(int i = nums2.size() - 1; i >= 0; i--) {
+            while(!Stack.empty() && nums2[i] >= Stack.top())
+                Stack.pop();
+            Map[nums2[i]] = Stack.size()? Stack.top(): -1;
+            Stack.push(nums2[i]);
+        }
+        for(int i = 0; i < nums1.size(); i++) {
+            ans[i] = Map[nums1[i]];
+        }
+        return ans;
+    }
+};
