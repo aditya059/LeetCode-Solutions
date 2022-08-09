@@ -1,0 +1,20 @@
+class Solution {
+public:
+    string capitalizeTitle(string title) {
+        string ans = "";
+        string word = "";
+        for(int i = 0; i < title.length(); i++) {
+            if(title[i] != ' ')
+                word += tolower(title[i]);
+            else {
+                if(word.length() > 2)
+                    word[0] -= 32;
+                ans += word + " ";
+                word = "";
+            }
+        }
+        if(word.length() > 2)
+            word[0] -= 32;
+        return ans + word;
+    }
+};
