@@ -1,0 +1,25 @@
+class Solution {
+public:
+    bool belongToRow(string &word, string &row) {
+        for(int i = 0; i < word.size(); i++) {
+            if(!binary_search(row.begin(), row.end(), tolower(word[i])))
+                return false;
+        }
+        return true;
+    }
+    vector<string> findWords(vector<string>& words) {
+        vector<string> row(3);
+        row[0] = "eiopqrtuwy";
+        row[1] = "adfghjkls";
+        row[2] = "bcmnvxz";
+        vector<string> ans;
+        for(int i = 0; i < words.size(); i++) {
+            bool flag1 = belongToRow(words[i], row[0]);
+            bool flag2 = belongToRow(words[i], row[1]);
+            bool flag3 = belongToRow(words[i], row[2]);
+            if(flag1 || flag2 || flag3)
+                ans.push_back(words[i]);
+        }
+        return ans;
+    }
+};
