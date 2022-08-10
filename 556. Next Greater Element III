@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int nextGreaterElement(int n) {
+        string s = to_string(n);
+        int len = s.length();
+        int i, j;
+        for(i = len - 2; i >= 0; i--) {
+            if(s[i] < s[i + 1])
+                break;
+        }
+        if(i < 0) return -1;
+        for(j = len - 1; j > i; j--) {
+            if(s[j] > s[i]) {
+                swap(s[i], s[j]);
+                break;
+            }
+        }
+        reverse(s.begin() + i + 1, s.end());
+        long ans = stol(s);
+        return ans <= INT_MAX? ans: -1;
+    }
+};
