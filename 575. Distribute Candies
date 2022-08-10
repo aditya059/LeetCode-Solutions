@@ -1,0 +1,9 @@
+class Solution {
+public:
+    int distributeCandies(vector<int>& candyType) {
+        set<int> Set;
+        for(auto it: candyType)
+            Set.insert(it);
+        return candyType.size() / 2 >= Set.size()? Set.size(): candyType.size() / 2;
+    }
+};
