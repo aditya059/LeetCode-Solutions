@@ -21,3 +21,33 @@ public:
         return ans;
     }
 };
+
+OR
+
+class Solution {
+public:
+    vector<string> findRestaurant(vector<string>& list1, vector<string>& list2) {
+        map<string, int> Map;
+        for(int i = 0; i < list1.size(); i++)
+            Map[list1[i]] = i;
+        vector<string> ans;
+        int minCount = INT_MAX, count;
+        for(int i = 0; i < list2.size(); i++) {
+            if(Map.find(list2[i]) == Map.end())
+                continue;
+            else {
+                Map[list2[i]] += i;
+                count = Map[list2[i]];
+                if(count == minCount) {
+                    ans.push_back(list2[i]);
+                }
+                else if(count < minCount) {
+                    ans.clear();
+                    ans.push_back(list2[i]);
+                    minCount = min(minCount, Map[list2[i]]);
+                }  
+            }
+        }
+        return ans;
+    }
+};
