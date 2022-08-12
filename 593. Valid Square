@@ -1,0 +1,20 @@
+class Solution {
+public:
+    double distanceSquare(vector<int> &p1, vector<int> &p2) {
+        return (p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1]) * (p1[1] - p2[1]);
+    }
+    bool validSquare(vector<int>& p1, vector<int>& p2, vector<int>& p3, vector<int>& p4) {
+        double dist[6];
+        dist[0] = distanceSquare(p1, p2);
+        dist[1] = distanceSquare(p1, p3);
+        dist[2] = distanceSquare(p1, p4);
+        dist[3] = distanceSquare(p2, p3);
+        dist[4] = distanceSquare(p2, p4);
+        dist[5] = distanceSquare(p3, p4);
+        sort(dist, dist + 6);
+        if(dist[5] == 0) return false;
+        if(dist[0] == dist[1] && dist[1] == dist[2] && dist[2] == dist[3] && dist[4] == dist[5] && dist[0] + dist[0] == dist[5])
+            return true;
+        return false;
+    }
+};
