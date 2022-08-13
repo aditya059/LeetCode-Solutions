@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        vector<int> ans;
+        unordered_map<string, int> freq;
+        for(int i = 0; i < words.size(); i++) {
+            freq[words[i]]++;
+        }
+        int len = s.length();
+        int wordLen = words[0].length();
+        int numOfWords = words.size();
+        int n = len - wordLen * numOfWords;
+        int streamLen = wordLen * numOfWords;
+        for(int i = 0; i <= n; i++) {
+            unordered_map<string, int> seen;
+            int j;
+            for(j = i; j < i + streamLen; j += wordLen) {
+                string temp = s.substr(j, wordLen);
+                if(freq.find(temp) != freq.end()) {
+                    seen[temp]++;
+                    if(seen[temp] > freq[temp]) {
+                        break;
+                    }
+                }
+                else
+                    break;
+            }
+            if(j == i + streamLen) ans.push_back(i);
+        }
+        return ans;
+    }
+};
