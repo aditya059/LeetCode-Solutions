@@ -30,3 +30,57 @@ public:
         return ans;
     }
 };
+
+OR
+
+// Efficient
+class Solution {
+public:
+    void slidingWindow(int left, vector<int> &ans, string &s, vector<string>& words, unordered_map<string, int> &freq) {
+        int len = s.length();
+        int streamLen = words[0].length() * words.size();
+        int n = len - words[0].length();
+        bool excessWord = false;
+        int wordUsed = 0;
+        unordered_map<string, int> seen;
+        for(int right = left; right <= s.length(); right += words[0].length()) {
+            string currWord = s.substr(right, words[0].length());
+            if(freq.find(currWord) == freq.end()) {
+                left = right + words[0].length();
+                seen.clear();
+                excessWord = false;
+                wordUsed = 0;
+            }
+            else {
+                while(left + streamLen == right || excessWord) {
+                    string leftmostword = s.substr(left, words[0].length());
+                    left = left + words[0].length(); 
+                    seen[leftmostword]--;
+                    if(seen[leftmostword] >= freq[leftmostword])
+                        excessWord = false;
+                    else
+                        wordUsed--;
+                }
+                seen[currWord]++;
+                if(seen[currWord] > freq[currWord])
+                    excessWord = true;
+                else
+                    wordUsed++;
+
+                if(wordUsed == words.size() && !excessWord)
+                    ans.push_back(left);
+            }
+        }
+    }
+    vector<int> findSubstring(string s, vector<string>& words) {
+        vector<int> ans;
+        unordered_map<string, int> freq;
+        for(int i = 0; i < words.size(); i++) {
+            freq[words[i]]++;
+        }
+        for(int i = 0; i < words[0].length(); i++) {
+            slidingWindow(i, ans, s, words, freq);
+        }
+        return ans;
+    }
+};
