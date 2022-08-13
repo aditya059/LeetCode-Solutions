@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int sum(vector<vector<int>>& img, int i, int j) {
+        int count = 1;
+        int sum = img[i][j];
+        if(i >= 1 && j >= 1) sum += img[i - 1][j - 1], count++;
+        if(i >= 1) sum += img[i - 1][j], count++;
+        if(i >= 1 && j < img[0].size() - 1) sum += img[i - 1][j + 1], count++;
+        if(j < img[0].size() - 1) sum += img[i][j + 1], count++;
+        if(i < img.size() - 1 && j < img[0].size() - 1) sum += img[i + 1][j + 1], count++;
+        if(i < img.size() - 1) sum += img[i + 1][j], count++;
+        if(i < img.size() - 1 && j >= 1) sum += img[i + 1][j - 1], count++;
+        if(j >= 1) sum += img[i][j - 1], count++;
+        return sum / count;
+    }
+    vector<vector<int>> imageSmoother(vector<vector<int>>& img) {
+        vector<vector<int>> ans(img.size(), vector<int>(img[0].size()));
+        for(int i = 0; i < img.size(); i++) {
+            for(int j = 0; j < img[0].size(); j++) {
+                ans[i][j] = sum(img, i, j);
+            }
+        }
+        return ans;
+    }
+};
