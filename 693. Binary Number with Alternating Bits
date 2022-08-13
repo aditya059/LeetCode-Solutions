@@ -1,0 +1,9 @@
+class Solution {
+public:
+    bool hasAlternatingBits(int n) {
+        if(n <= 2) return true;
+        int unit = n & 1;
+        int ten = (n / 2) & 1;
+        return (unit != ten) && hasAlternatingBits(n >> 1); 
+    }
+};
