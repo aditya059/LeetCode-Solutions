@@ -1,0 +1,87 @@
+class Solution {
+public:
+    bool check(string &a, string &b) {
+        int c = 0;
+        for(int i = 0; i < a.length(); i++) {
+            if(a[i] != b[i])
+                c++;
+            if(c == 2)
+            return false;
+        }
+        return true;
+    }
+    
+    void calc(vector<vector<string>> &ans, vector<int> &currPath, int start, int end, int curr, vector<vector<int>> &prev, vector<string>& wordList) {
+        if(curr == start) {
+            vector<string> temp;
+            for(int i = currPath.size() - 1; i >= 0; i--) {
+                temp.push_back(wordList[currPath[i]]);
+            }
+            temp.push_back(wordList[end]);
+            ans.push_back(temp);
+            return;
+        }
+        for(int i: prev[curr]) {
+            currPath.push_back(i);
+            calc(ans, currPath, start, end, i, prev, wordList);
+            currPath.pop_back();
+        }
+    }
+    
+    vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
+        vector<vector<string>> ans;
+        map<int, vector<int>> adj;
+        int beginIndex = -1;
+        int endIndex = -1;
+        for(int i = 0; i < wordList.size(); i++) {
+            if(wordList[i] == endWord) {
+                endIndex = i;
+            }
+            else if(wordList[i] == beginWord) {
+                beginIndex = i;
+            }
+        }
+        if(endIndex == -1) return {};
+        if(beginIndex == -1) {
+            wordList.push_back(beginWord);
+            beginIndex = wordList.size() - 1;
+        }
+        for(int i = 0; i < wordList.size(); i++) {
+            for(int j = i + 1; j < wordList.size(); j++) {
+                if(check(wordList[i], wordList[j])) {
+                    adj[i].push_back(j);
+                    adj[j].push_back(i);
+                }
+            }
+        }
+        vector<vector<int>> prev(wordList.size());
+        vector<int> visitOrder(wordList.size(), 0);
+        queue<int> Queue;
+        Queue.push(beginIndex);
+        int level = 0;
+        while(!Queue.empty()) {
+            int n = Queue.size();
+            for(int i = 0; i < n; i++) {
+                int curr = Queue.front();
+                Queue.pop();
+                for(int next: adj[curr]) {
+                    if(!visitOrder[next]) {
+                        visitOrder[next] = level + 1;
+                        Queue.push(next);
+                        prev[next].push_back(curr);
+                    }
+                    else {
+                        if(visitOrder[next] == level + 1)
+                            prev[next].push_back(curr);
+                    }
+                }
+            }
+            level++;
+        }
+        
+        vector<int> currPath;
+        calc(ans, currPath, beginIndex, endIndex, endIndex, prev, wordList);
+        
+        return ans;
+    }
+};
