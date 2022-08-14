@@ -37,3 +37,55 @@ public:
         return {numComp, maxSize};
     }
 };
+
+OR
+
+class Solution {
+public:
+    int convert(string word) {
+        int ans = 0;
+        for(int i = 0; i < word.length(); i++) {
+            ans += 1 << (word[i] - 'a');
+        }
+        return ans;
+    }
+    void dfs(int curr, unordered_map<int, bool> &visited, int &compSize, unordered_map<int, int> &Map) {
+        if(visited[curr])
+            return;
+        visited[curr] = true;
+        compSize += Map[curr];
+        for(int i = 0; i < 26; i++) {
+            int nextPossible = curr ^ (1 << i);
+            if(Map.find(nextPossible) != Map.end() && !visited[nextPossible]) {
+                dfs(nextPossible, visited, compSize, Map);
+            }
+            for(int j = i + 1; j < 26; j++) {
+                nextPossible = curr ^ (1 << i) ^ (1 << j);
+                bool flag = (((curr >> i) & 1) != ((curr >> j) & 1));
+                if(flag && Map.find(nextPossible) != Map.end() && !visited[nextPossible]) {
+                    dfs(nextPossible, visited, compSize, Map);
+                }
+            }
+        }
+    }
+    vector<int> groupStrings(vector<string>& words) {
+        unordered_map<int, int> Map;
+        unordered_map<int, bool> visited;
+        for(int i = 0; i < words.size(); i++) {
+            int num = convert(words[i]);
+            Map[num]++;
+            visited[num] = false;
+        }
+        int maxSize = 0;
+        int numComp = 0;
+        for(auto iter: Map) {
+            if(!visited[iter.first]) {
+                int compSize = 0;
+                dfs(iter.first, visited, compSize, Map);
+                numComp++;
+                maxSize = max(maxSize, compSize);
+            }
+        }
+        return {numComp, maxSize};
+    }
+};
