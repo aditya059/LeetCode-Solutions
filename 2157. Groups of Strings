@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int convert(string word) {
+        int ans = 0;
+        for(int i = 0; i < word.length(); i++) {
+            ans += 1 << (word[i] - 'a');
+        }
+        return ans;
+    }
+    int dfs(int curr, map<int, int> &Map) {
+        int ans = 0;
+        if(Map.find(curr) != Map.end()) {
+            ans += Map[curr];
+            Map.erase(curr);
+            for(int i = 0; i < 26; i++) {
+                ans += dfs(curr ^ (1 << i), Map);
+                for(int j = i + 1; j < 26; j++) {
+                    if(((curr >> i) & 1) != ((curr >> j) & 1))
+                        ans += dfs(curr ^ (1 << i) ^ (1 << j), Map);
+                }
+            }
+        }
+        return ans;
+    }
+    vector<int> groupStrings(vector<string>& words) {
+        map<int, int> Map;
+        for(int i = 0; i < words.size(); i++) {
+            Map[convert(words[i])]++;
+        }
+        int maxSize = 0;
+        int numComp = 0;
+        while(!Map.empty()) {
+            int compSize = dfs(Map.begin() -> first, Map);
+            numComp += compSize > 0;
+            maxSize = max(maxSize, compSize);
+        }
+        return {numComp, maxSize};
+    }
+};
