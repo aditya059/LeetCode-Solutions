@@ -1,0 +1,23 @@
+class Solution {
+public:
+    void solve(vector<string> &ans, string &s, int i, string temp, int numOfBlock) {
+        if(i >= s.length()) return;
+        if(numOfBlock == 3) {
+            string p = s.substr(i);
+            if(p.length() == 1 || (p[0] != '0' && stol(p) <= 255)) {
+                ans.push_back(temp + p);
+            }
+            return;
+        }
+        for(int j = 1; j <= 3; j++) {
+            string block = s.substr(i, j);
+            if(j == 1 || (block[0] != '0' && stol(block) <= 255))
+                solve(ans, s, i + j, temp + block + ".", numOfBlock + 1);
+        }
+    }
+    vector<string> restoreIpAddresses(string s) {
+        vector<string> ans;
+        solve(ans, s, 0, "", 0);
+        return ans;
+    }
+};
