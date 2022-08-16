@@ -1,0 +1,48 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
+
+    Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val, Node* _left, Node* _right, Node* _next)
+        : val(_val), left(_left), right(_right), next(_next) {}
+};
+*/
+
+class Solution {
+public:
+    Node* connect(Node* root) {
+        Node* leftMostNode = root;
+        while(leftMostNode) {
+            Node* curr = leftMostNode;
+            while(curr) {
+                if(curr -> left) {
+                    if(curr -> right) 
+                        curr -> left -> next = curr -> right;
+                    else {
+                        Node *Next = curr -> next;
+                        while (Next && !Next -> left && !Next -> right)
+                            Next = Next -> next;
+                        curr -> left -> next = !Next? NULL: Next -> left? Next -> left: Next -> right? Next -> right: NULL;
+                    }
+                }
+                if(curr -> right) {
+                    Node *Next = curr -> next;
+                    while (Next && !Next -> left && !Next -> right)
+                        Next = Next -> next;
+                    curr -> right -> next = !Next? NULL: Next -> left? Next -> left: Next -> right? Next -> right: NULL;
+                }
+                curr = curr -> next;
+            }
+            leftMostNode = leftMostNode -> left? leftMostNode -> left: leftMostNode -> right? leftMostNode -> right: leftMostNode -> next;
+        }
+        return root;
+    }
+};
