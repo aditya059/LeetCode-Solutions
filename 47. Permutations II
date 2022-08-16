@@ -26,3 +26,27 @@ public:
         return ans;
     }
 };
+
+OR
+
+class Solution {
+public:
+    void solve(vector<vector<int>> &ans, vector<int> nums, int index) {
+        if(index == nums.size() - 1) {
+            ans.push_back(nums);
+            return;
+        }
+        for(int i = index; i < nums.size(); i++) {
+            if(i != index && nums[i] == nums[index])
+                continue;
+            swap(nums[i], nums[index]);
+            solve(ans, nums, index + 1);
+        }
+    }
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<vector<int>> ans;
+        solve(ans, nums, 0);
+        return ans;
+    }
+};
