@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int findShortestSubArray(vector<int>& nums) {
+        map<int, int> firstoccur;
+        map<int, int> count;
+        int maxCount = 0;
+        int ans = INT_MAX;
+        for(int i = 0; i < nums.size(); i++) {
+            count[nums[i]]++;
+            if(firstoccur.find(nums[i]) == firstoccur.end())
+                firstoccur[nums[i]] = i;
+            if(count[nums[i]] > maxCount) {
+                ans = i - firstoccur[nums[i]] + 1;
+                maxCount = count[nums[i]];
+            }
+            if(count[nums[i]] == maxCount) {
+                ans = min(ans, i - firstoccur[nums[i]] + 1);
+            }
+        }
+        return ans;
+    }
+};
