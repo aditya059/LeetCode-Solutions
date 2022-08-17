@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        vector<long> ans;
+        set<long> Set;
+        Set.insert(1);
+        while(ans.size() < n) {
+            int temp = *Set.begin();
+            ans.push_back(temp);
+            Set.erase(Set.begin());
+            Set.insert(2L * temp);
+            Set.insert(3L * temp);
+            Set.insert(5L * temp);
+        }
+        return ans[n - 1];
+    }
+};
+
+OR
+
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        vector<int> DP(n);
+        DP[0] = 1;
+        int two = 0, three = 0, five = 0;
+        for(int i = 1; i < n; i++) {
+            DP[i] = min(2 * DP[two], min(3 * DP[three], 5 * DP[five]));
+            if(DP[i] == 2 * DP[two]) two++;
+            if(DP[i] == 3 * DP[three]) three++;
+            if(DP[i] == 5 * DP[five]) five++;
+        }
+        return DP[n - 1];
+    }
+};
