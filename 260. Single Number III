@@ -1,0 +1,18 @@
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        unsigned int xorred = 0;
+        int xor0 = 0, xor1 = 0;
+        for(int i = 0; i < nums.size(); i++) {
+            xorred ^= nums[i];
+        }
+        int mask = xorred & -xorred;
+        for(int i = 0; i < nums.size(); i++) {
+            if(nums[i] & mask)
+                xor1 ^= nums[i];
+            else
+                xor0 ^= nums[i];
+        }
+        return {xor0, xor1};
+    }
+};
