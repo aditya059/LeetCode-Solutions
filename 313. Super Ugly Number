@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int nthSuperUglyNumber(int n, vector<int>& primes) {
+        long DP[n];
+        DP[0] = 1;
+        int index[100] = {0};
+        for(int i = 1; i < n; i++) {
+            long nextElement = INT_MAX;
+            for(int j = 0; j < primes.size(); j++) {
+               nextElement = min(nextElement, DP[index[j]] * primes[j]);
+            }
+            DP[i] = nextElement;
+            for(int j = 0; j < primes.size(); j++) {
+                if(primes[j] * DP[index[j]] == DP[i])
+                    index[j]++;
+            }
+        }
+        return DP[n - 1];
+    }
+};
