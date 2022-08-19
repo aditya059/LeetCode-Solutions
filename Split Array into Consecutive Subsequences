@@ -1,0 +1,29 @@
+class Solution {
+public:
+    bool isPossible(vector<int>& nums) {
+        unordered_map<int, int> remain;
+        unordered_map<int, int> sequence;
+        for(int num: nums)
+            remain[num]++;
+        for(int num: nums) {
+            if(remain[num]) {
+                if(!sequence[num - 1]) {
+                    if(remain[num + 1] && remain[num + 2]) {
+                        remain[num]--;
+                        remain[num + 1]--;
+                        remain[num + 2]--;
+                        sequence[num + 2]++;
+                    }
+                    else
+                        return false;
+                }
+                else {
+                    sequence[num - 1]--;
+                    sequence[num]++;
+                    remain[num]--;
+                }
+            }
+        }
+        return true;
+    }
+};
