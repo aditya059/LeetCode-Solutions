@@ -1,0 +1,32 @@
+class Solution {
+public:
+    string shortestCompletingWord(string licensePlate, vector<string>& words) {
+        int freq[26] = {0};
+        int freq1[26] = {0};
+        string ans;
+        int minSize = INT_MAX;
+        for(int i = 0; i < licensePlate.size(); i++) {
+            char ch = licensePlate[i];
+            if(ch >= 'a' && ch <= 'z')
+                freq[ch - 'a']++;
+            if(ch >= 'A' && ch <= 'Z')
+                freq[ch - 'A']++;
+        }
+        for(int i = 0; i < words.size(); i++) {
+            fill(freq1, freq1 + 26, 0);
+            for(int j = 0; j < words[i].length(); j++) {
+                freq1[words[i][j] - 'a']++;
+            }
+            int k;
+            for(k = 0; k < 26; k++) {
+                if(freq1[k] < freq[k])
+                    break;
+            }
+            if(k == 26 && words[i].size() < minSize) {
+                ans = words[i];
+                minSize = words[i].size();
+            }
+        }
+        return ans;
+    }
+};
