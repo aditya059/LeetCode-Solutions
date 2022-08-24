@@ -1,0 +1,17 @@
+class Solution {
+public:
+    bool isToeplitzMatrix(vector<vector<int>>& matrix) {
+        unordered_map<int, int> Map;
+        for(int i = 0; i < matrix.size(); i++) {
+            for(int j = 0; j < matrix[0].size(); j++) {
+                int key = matrix.size() - i + j;
+                if(Map.find(key) == Map.end())
+                    Map[key] = matrix[i][j];
+                else if(Map[key] != matrix[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+};
