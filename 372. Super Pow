@@ -1,0 +1,32 @@
+class Solution {
+public:
+    void divide(vector<int>& b, int &j) {
+        int remainder = 0;
+        for(int i = j; i < b.size(); i++) {
+            int num = (remainder * 10 + b[i]);
+            remainder = num % 2;
+            b[i] = num / 2;
+        }
+        while(b[j] == 0) j++;
+    }
+    int solve(int &a, vector<int>& b, int &j) {
+        if(j == b.size() - 1) {
+            if(b.back() == 0) return 1;
+            if(b.back() == 1) return a;
+        }
+        bool isEven = (b.back() % 2 == 0);
+        divide(b, j);
+        int y = solve(a, b, j);
+        if(isEven) {
+            return (y * y) % 1337;
+        }
+        else {
+            return (((y * y) % 1337) * a) % 1337;
+        }
+    }
+    int superPow(int a, vector<int>& b) {
+        a = a % 1337;
+        int j = 0;
+        return solve(a, b, j);
+    }
+};
