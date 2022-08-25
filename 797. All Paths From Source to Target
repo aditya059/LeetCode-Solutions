@@ -1,0 +1,25 @@
+class Solution {
+public:
+    void dfs(int curr, vector<vector<int>> &graph, vector<vector<int>> &ans, vector<int> &path, vector<bool> &visited) {
+        path.push_back(curr);
+        visited[curr] = true;
+        if(curr == graph.size() - 1) {
+            ans.push_back(path);
+            return;
+        }
+        for(int next: graph[curr]) {
+            if(!visited[next]) {
+                dfs(next, graph, ans, path, visited);
+                path.pop_back();
+                visited[next] = false;
+            }  
+        }
+    }
+    vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
+        vector<vector<int>> ans;
+        vector<int> path;
+        vector<bool> visited(graph.size(), false);
+        dfs(0, graph, ans, path, visited);
+        return ans;
+    }
+};
