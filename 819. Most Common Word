@@ -1,0 +1,30 @@
+class Solution {
+public:
+    string mostCommonWord(string paragraph, vector<string>& banned) {
+        string wd = "";
+        map<string, int> Map;
+        for(int i = 0; i < paragraph.size(); i++) {
+            char ch = paragraph[i];
+            if((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'))
+                wd += tolower(ch);
+            else {
+                Map[wd]++;
+                wd = "";
+            }
+        }
+        if(wd != "") Map[wd]++;
+        for(int i = 0; i < banned.size(); i++) {
+            Map.erase(banned[i]);
+        }
+        Map.erase("");
+        int maxCount = 0;
+        string ans = "";
+        for(auto iter: Map) {
+            if(iter.second > maxCount) {
+                ans = iter.first;
+                maxCount = iter.second;
+            }
+        }
+        return ans;
+    }
+};
