@@ -23,3 +23,31 @@ public:
         return ans;
     }
 };
+
+OR
+
+class Solution {
+public:
+    void solve(vector<string> &ans, string &s, int i) {
+        if(i == s.length()) {
+            ans.push_back(s);
+            return;
+        }
+        if(s[i] >= '0' && s[i] <= '9')
+            solve(ans, s, i + 1);
+        else {
+            if(s[i] >= 'A' && s[i] <= 'Z') 
+                s[i] += 32;
+            solve(ans, s, i + 1);
+            s[i] -= 32;
+            solve(ans, s, i + 1);
+        }
+    }
+    vector<string> letterCasePermutation(string s) {
+        vector<string> ans;
+        string temp;
+        int i = 0;
+        solve(ans, s, i);
+        return ans;
+    }
+};
