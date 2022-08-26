@@ -1,15 +1,15 @@
 class Solution {
 public:
     vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
-        multiset<pair<int, vector<int>>> Set;
+        set<pair<int, int>> Set;
         for(int i = 0; i < points.size(); i++) {
             int sqDist = points[i][0] * points[i][0] + points[i][1] * points[i][1];
-            Set.insert({sqDist, points[i]});
+            Set.insert({sqDist, i});
             if(Set.size() > k) Set.erase(--Set.end()); 
         }
         vector<vector<int>> ans;
         for(int i = 0; i < k; i++) {
-            ans.push_back(Set.begin() -> second);
+            ans.push_back(points[Set.begin() -> second]);
             Set.erase(Set.begin());
         }
         return ans;
