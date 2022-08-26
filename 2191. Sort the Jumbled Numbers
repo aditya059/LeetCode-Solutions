@@ -1,0 +1,33 @@
+class Solution {
+public:
+    typedef struct node {
+        int data;
+        int index;
+    } Node;
+    static bool comp(const Node &f, const Node &s) {
+        if(f.data < s.data)
+            return true;
+        return false;
+    }
+    int map(int n, vector<int> &mapping) {
+        if(n == 0) return mapping[0];
+        for(int i = 1; n >= i; i *= 10) {
+            int digit = (n / i) % 10;
+            n = n - (digit * i) + (mapping[digit] * i); 
+        }
+        return n;
+    }
+    vector<int> sortJumbled(vector<int>& mapping, vector<int>& nums) {
+        vector<Node> newNums(nums.size());
+        for(int i = 0; i < nums.size(); i++) {
+            newNums[i].data = map(nums[i], mapping);
+            newNums[i].index = i;
+        }
+        sort(newNums.begin(), newNums.end(), comp);
+        vector<int> ans(nums.size());
+        for(int i = 0; i < nums.size(); i++) {
+            ans[i] = nums[newNums[i].index];
+        }
+        return ans;
+    }
+};
