@@ -1,0 +1,28 @@
+class Solution {
+public:
+    void dfs(int curr, vector<char> &color, vector<vector<int>>& graph, vector<bool> &notSafe) {
+        color[curr] = 'G';
+        for(int next: graph[curr]) {
+            if(color[next] == 'W')
+                dfs(next, color, graph, notSafe);
+            if(color[next] == 'G')
+                notSafe[next] = true;
+            notSafe[curr] = notSafe[curr] or notSafe[next];
+        } 
+        color[curr] = 'B';
+    }
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        vector<char> color(graph.size(), 'W');
+        vector<bool> notSafe(graph.size(), false);
+        vector<int> ans;
+        for(int i = 0; i < graph.size(); i++) {
+            if(color[i] == 'W')
+                dfs(i, color, graph, notSafe);
+        }
+        for(int i = 0; i < graph.size(); i++) {
+            if(!notSafe[i])
+                ans.push_back(i);
+        }
+        return ans;
+    }
+};
