@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<string> subdomainVisits(vector<string>& cpdomains) {
+        map<string, int> Map;
+        for(string s: cpdomains) {
+            int index = s.find(' ');
+            int num = stoi(s.substr(0, index));
+            string p1 = s.substr(index + 1);
+            index = p1.find('.');
+            string p2 = p1.substr(index + 1);
+            index = p2.find('.');
+            Map[p1] += num;
+            Map[p2] += num;
+            if(index != string::npos) {
+                string p3 = p2.substr(index + 1);
+                Map[p3] += num;
+            }
+        }
+        vector<string> ans;
+        for(auto iter: Map) {
+            ans.push_back(to_string(iter.second) + " " + iter.first);
+        }
+        return ans;
+    }
+};
