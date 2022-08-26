@@ -1,0 +1,24 @@
+class Solution {
+public:
+    string largestWordCount(vector<string>& messages, vector<string>& senders) {
+        int maxLen = 0;
+        string ans;
+        unordered_map<string, int> Map;
+        for(int i = 0; i < senders.size(); i++) {
+            int count = 1;
+            for(int j = 0; j < messages[i].length(); j++) {
+                if(messages[i][j] == ' ')
+                    count++;
+            }
+            Map[senders[i]] += count;
+            if(Map[senders[i]] > maxLen) {
+                ans = senders[i];
+                maxLen = Map[senders[i]];
+            }
+            else if(Map[senders[i]] == maxLen && senders[i] > ans) {
+                ans = senders[i];
+            }
+        }
+        return ans;
+    }
+};
