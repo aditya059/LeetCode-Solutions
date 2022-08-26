@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<int> countDigits(int n) {
+        vector<int> ans(10, 0);
+        for(int i = n; i > 0; i /= 10) {
+            ans[i % 10]++;
+        }
+        return ans;
+    }
+    bool equal(vector<int> &freq1, vector<int> &freq2) {
+        for(int i = 0; i < 10; i++) {
+            if(freq1[i] != freq2[i])
+                return false;
+        }
+        return true;
+    }
+    bool reorderedPowerOf2(int n) {
+        vector<int> numFreq = countDigits(n);
+        for(int i = 0; i < 30; i++) {
+            vector<int> twoFreq = countDigits(1 << i);
+            if(equal(numFreq, twoFreq)) 
+                return true;
+        }
+        return false;
+    }
+};
