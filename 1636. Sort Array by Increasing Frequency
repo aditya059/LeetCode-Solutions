@@ -1,0 +1,28 @@
+class Solution {
+public:
+    typedef struct {
+        int data;
+        int count;
+    } Node;
+    static bool comp(const Node &f, const Node &s) {
+        if(f.count < s.count) return true;
+        if(f.count == s.count && f.data > s.data) return true;
+        return false;
+    } 
+    vector<int> frequencySort(vector<int>& nums) {
+        map<int, int> Map;
+        for(int i = 0; i < nums.size(); i++) {
+            Map[nums[i]]++;
+        }
+        vector<Node> arr(nums.size());
+        for(int i = 0; i < nums.size(); i++) {
+            arr[i].data = nums[i];
+            arr[i].count = Map[nums[i]];
+        }
+        sort(arr.begin(), arr.end(), comp);
+        for(int i = 0; i < nums.size(); i++) {
+            nums[i] = arr[i].data;
+        }
+        return nums;
+    }
+};
