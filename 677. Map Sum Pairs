@@ -31,3 +31,35 @@ public:
  * obj->insert(key,val);
  * int param_2 = obj->sum(prefix);
  */
+
+OR
+
+class MapSum {
+public:
+    unordered_map<string, int> Map;
+    unordered_map<string, int> score;
+    MapSum() {
+        
+    }
+    
+    void insert(string key, int val) {
+        string prefix = "";
+        int diff = val - Map[key];
+        for(int i = 0; i < key.size(); i++) {
+            prefix += key[i];
+            score[prefix] += diff;
+        }
+        Map[key] = val;
+    }
+    
+    int sum(string prefix) {
+        return score[prefix];
+    }
+};
+
+/**
+ * Your MapSum object will be instantiated and called as such:
+ * MapSum* obj = new MapSum();
+ * obj->insert(key,val);
+ * int param_2 = obj->sum(prefix);
+ */
