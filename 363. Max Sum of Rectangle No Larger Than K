@@ -1,0 +1,65 @@
+class Solution {
+public:
+    int maxSumSubmatrix(vector<vector<int>>& matrix, int k) {
+        int numRow = matrix.size();
+        int numCol = matrix[0].size();
+        int ans = INT_MIN;
+        for(int left = 0; left < numCol; left++) {
+            vector<int> colSum(numRow, 0);
+            for(int right = left; right < numCol; right++) {
+                for(int i = 0; i < numRow; i++) {
+                    colSum[i] += matrix[i][right];
+                }
+                set<int> Set;
+                Set.insert(0);
+                int currSum = 0;
+                for(int i = 0; i < numRow; i++) {
+                    currSum += colSum[i];
+                    auto iter = Set.lower_bound(currSum - k);
+                    if(iter != Set.end()) 
+                        ans = max(ans, currSum - *iter);
+                    Set.insert(currSum);
+                }
+            }
+        }
+        return ans;
+    }
+};
+
+OR
+// Optimised Solution
+class Solution {
+public:
+    int maxSumSubmatrix(vector<vector<int>>& matrix, int k) {
+        int numRow = matrix.size();
+        int numCol = matrix[0].size();
+        int ans = INT_MIN;
+        for(int left = 0; left < numCol; left++) {
+            vector<int> colSum(numRow, 0);
+            for(int right = left; right < numCol; right++) {
+                int maxEndingHere = 0, maxSeenSoFar = INT_MIN;    // Adding Kadane
+                for(int i = 0; i < numRow; i++) {
+                    colSum[i] += matrix[i][right];
+                    maxEndingHere += colSum[i];
+                    maxSeenSoFar = max(maxEndingHere, maxSeenSoFar);
+                    maxEndingHere = max(maxEndingHere, 0);
+                }
+                if(maxSeenSoFar <= k) {
+                    ans = max(ans, maxSeenSoFar);
+                    continue;
+                }
+                set<int> Set;
+                Set.insert(0);
+                int currSum = 0;
+                for(int i = 0; i < numRow; i++) {
+                    currSum += colSum[i];
+                    auto iter = Set.lower_bound(currSum - k);
+                    if(iter != Set.end()) 
+                        ans = max(ans, currSum - *iter);
+                    Set.insert(currSum);
+                }
+            }
+        }
+        return ans;
+    }
+};
