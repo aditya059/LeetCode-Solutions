@@ -1,0 +1,26 @@
+class Solution {
+public:
+    void count(string &s, unordered_map<string, int> &Map) {
+        string wd = "";
+        for(int i = 0; i < s.length(); i++) {
+            if(s[i] != ' ')
+                wd += s[i];
+            else {
+                Map[wd]++;
+                wd = "";
+            }
+        }
+        Map[wd]++;
+    }
+    vector<string> uncommonFromSentences(string s1, string s2) {
+        unordered_map<string, int> Map;
+        count(s1, Map);
+        count(s2, Map);
+        vector<string> ans;
+        for(auto iter: Map) {
+            if(iter.second == 1)
+                ans.push_back(iter.first);
+        }
+        return ans;
+    }
+};
