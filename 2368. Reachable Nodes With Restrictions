@@ -1,0 +1,26 @@
+class Solution {
+public:
+    void dfs(int curr, vector<int> adjList[], vector<bool> &visited, int &count) {
+        if(visited[curr]) return;
+        count++;
+        visited[curr] = true;
+        for(int next: adjList[curr]) {
+            if(!visited[next])
+                dfs(next, adjList, visited, count);
+        }
+    }
+    int reachableNodes(int n, vector<vector<int>>& edges, vector<int>& restricted) {
+        vector<int> adjList[n];
+        vector<bool> visited(n);
+        for(vector<int> iter: edges) {
+            adjList[iter[0]].push_back(iter[1]);
+            adjList[iter[1]].push_back(iter[0]);
+        }
+        for(int iter: restricted) {
+            visited[iter] = true;
+        }
+        int count = 0;
+        dfs(0, adjList, visited, count);
+        return count;
+    }
+};
