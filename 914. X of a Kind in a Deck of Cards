@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int gcd(int m, int n) {
+        if(m < n) return gcd(n, m);
+        if(m % n == 0)
+            return n;
+        return gcd(n, m % n);
+    }
+    bool hasGroupsSizeX(vector<int>& deck) {
+        map<int, int> Map;
+        for(int iter: deck) {
+            Map[iter]++;
+        }
+        int count = Map.begin() -> second;
+        for(auto iter: Map) {
+            count = gcd(count, iter.second);
+        }
+        if(count >= 2)
+            return true;
+        return false;
+    }
+};
