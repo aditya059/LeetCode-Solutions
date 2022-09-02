@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+        vector<pair<int, int>> adjList[n + 1];
+        for(vector<int> edge: times) {
+            adjList[edge[0]].push_back({edge[1], edge[2]});
+        }
+        int ans = INT_MIN;
+        vector<int> distance(n + 1, INT_MAX);
+        distance[k] = 0;
+        set<pair<int, int>> Set;
+        Set.insert({0, k});
+        while(!Set.empty()) {
+            pair<int, int> temp = *Set.begin();
+            Set.erase(Set.begin());
+            int u = temp.second;
+            for(pair<int, int> edge: adjList[u]) {
+                int v = edge.first;
+                int w = edge.second;
+                if(distance[u] + w < distance[v]) {
+                    Set.erase({distance[v], v});
+                    distance[v] = distance[u] + w;
+                    Set.insert({distance[u] + w, v});
+                }
+            }
+        }
+        
+        for(int i = 1; i <= n; i++) {
+            ans = max(ans, distance[i]);
+        }
+        return ans == INT_MAX? -1: ans;
+    }
+};
