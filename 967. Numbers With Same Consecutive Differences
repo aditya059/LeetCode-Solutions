@@ -1,0 +1,23 @@
+class Solution {
+public:
+    void backtrack(vector<int> &ans, int num, int n, int &k) {
+        if(n == 0) {
+            ans.push_back(num);
+            return;
+        }
+        int digit = num % 10;
+        if(digit + k < 10)
+            backtrack(ans, num * 10 + digit + k, n - 1, k);
+        if(k!= 0 && digit - k >= 0)
+            backtrack(ans, num * 10 + digit - k, n - 1, k);
+    }
+    vector<int> numsSameConsecDiff(int n, int k) {
+        vector<int> ans;
+        int num;
+        for(int i = 1; i < 10; i++) {
+            num = i;
+            backtrack(ans, num, n - 1, k);
+        }
+        return ans;
+    }
+};
