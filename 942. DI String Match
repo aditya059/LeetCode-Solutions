@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<int> diStringMatch(string s) {
+        s += 'I';
+        vector<int> ans(s.size());
+        for(int i = 0; i < s.size(); i++) {
+            ans[i] = i;
+        }
+        for(int i = 0; i < s.size(); i++) {
+            if(s[i] == 'D') {
+                for(int j = i + 1; j < s.size(); j++) {
+                    if(s[j] == 'I') {
+                        reverse(ans.begin() + i, ans.begin() + j + 1);
+                        i = j + 1;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+};
