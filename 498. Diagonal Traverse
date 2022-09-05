@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<int> findDiagonalOrder(vector<vector<int>>& mat) {
+        int m = mat.size();
+        int n = mat[0].size();
+        int len = m + n - 1;
+        vector<int> ans(m * n);
+        int index = 0, p;
+        for(int k = 0; k < len; k++) {
+            int i = min(k, m - 1);
+            int j = k - i;
+            int c = 0;
+            if(k % 2 == 1)
+                p = index;
+            while(i >= 0 && i < m && j >= 0 && j < n) {
+                ans[index++] = mat[i][j];
+                i--;
+                j++;
+                c++;
+            }
+            if(k % 2 == 1)
+                reverse(ans.begin() + p, ans.begin() + p + c);
+        }
+        return ans;
+    }
+};
