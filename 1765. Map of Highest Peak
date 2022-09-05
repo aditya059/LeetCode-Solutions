@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<vector<int>> highestPeak(vector<vector<int>>& isWater) {
+        vector<vector<int>> ans(isWater.size(), vector<int>(isWater[0].size(), -1));
+        queue<pair<int, int>> Queue;
+        for(int i = 0; i < isWater.size(); i++) {
+            for(int j = 0; j < isWater[0].size(); j++) {
+                if(isWater[i][j]) {
+                    Queue.push({i, j});
+                    ans[i][j] = 0;
+                }
+            }
+        }
+        int val = 0;
+        pair<int, int> dirs[4] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        while(!Queue.empty()) {
+            int n = Queue.size();
+            val++;
+            for(int i = 0; i < n; i++) {
+                pair<int, int> curr = Queue.front();
+                Queue.pop();
+                for(pair<int, int> dir: dirs) {
+                    int x = curr.first + dir.first;
+                    int y = curr.second + dir.second;
+                    if(x >= 0 && x < isWater.size() && y >= 0 && y < isWater[0].size() && ans[x][y] == -1) {
+                        Queue.push({x, y});
+                        ans[x][y] = val;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+};
