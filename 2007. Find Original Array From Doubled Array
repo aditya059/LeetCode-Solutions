@@ -25,3 +25,27 @@ public:
         return ans;
     }
 };
+
+
+OR
+
+class Solution {
+public:
+    vector<int> findOriginalArray(vector<int>& changed) {
+        map<int, int> Map;
+        vector<int> ans;
+        for(int num: changed) 
+            Map[num]++;
+        sort(changed.begin(), changed.end());
+        if(Map[0] % 2 == 1) return {};
+        for(int num: changed) {
+            for(int i = 0; i < Map[num]; i++) {
+                Map[num]--;
+                Map[2 * num]--;
+                if(Map[2 * num] < 0) return {};
+                ans.push_back(num);
+            }
+        }
+        return ans;
+    }
+};
