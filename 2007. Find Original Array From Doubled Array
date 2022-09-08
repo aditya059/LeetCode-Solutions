@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<int> findOriginalArray(vector<int>& changed) {
+        map<int, int> Map;
+        vector<int> ans;
+        for(int num: changed) 
+            Map[num]++;
+        sort(changed.begin(), changed.end());
+        if(Map[0] % 2 == 1) return {};
+        for(int num: changed) {
+            if(Map[num] == 0) 
+                continue;
+            if(Map.find(2 * num) == Map.end())
+                return {};
+            if(num != 0)
+                Map[2 * num] -= Map[num];
+            else
+                Map[num] /= 2;
+            while(Map[num] > 0) {
+                Map[num]--;
+                ans.push_back(num);
+            }
+            if(Map[2 * num] < 0) return {};
+        }
+        return ans;
+    }
+};
