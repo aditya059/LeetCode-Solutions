@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int countWords(vector<string>& words1, vector<string>& words2) {
+        map<string, int> Map;
+        int ans = 0;
+        for(string wd: words1)
+            Map[wd]++;
+        for(string wd: words2) {
+            if(Map[wd] <= 1)
+                Map[wd]--;
+        }
+        for(auto iter: Map) {
+            if(!iter.second)
+                ans++;
+        }
+        return ans;
+    }
+};
