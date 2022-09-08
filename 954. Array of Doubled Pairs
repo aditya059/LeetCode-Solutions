@@ -1,0 +1,19 @@
+class Solution {
+public:
+    bool canReorderDoubled(vector<int>& arr) {
+        map<int, int> Map;
+        for(int num: arr) 
+            Map[num]++;
+        sort(arr.begin(), arr.end(), [&](int &f, int &s) {return abs(f) < abs(s);});
+        for(int num: arr) {
+            if(Map[num] == 0) 
+                continue;
+            if(Map.find(2 * num) == Map.end())
+                return false;
+            Map[2 * num] -= Map[num];
+            Map[num] = 0;
+            if(Map[2 * num] < 0) return false;
+        }
+        return true;
+    }
+};
