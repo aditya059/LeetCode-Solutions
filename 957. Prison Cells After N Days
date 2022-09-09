@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> prisonAfterNDays(vector<int>& cells, int n) {
+        map<vector<int>, int> visited;
+        map<int, vector<int>> value;
+        visited[cells] = 0;
+        value[0] = cells;
+        int i, start;
+        for(i = 1; i <= n; i++) {
+            vector<int> next(8, 0);
+            for(int j = 1; j < 7; j++) {
+                if((cells[j - 1] == 0 && cells[j + 1] == 0) || (cells[j - 1] == 1 && cells[j + 1]))
+                    next[j] = 1;
+            }
+            if(visited.find(next) != visited.end()) {
+                start = visited[next];
+                break;
+            }
+            value[i] = next;
+            cells = next;
+            visited[next] = i;
+        }
+        return value[start + (n - start) % (i - start)];
+    }
+};
