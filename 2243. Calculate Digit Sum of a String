@@ -1,0 +1,18 @@
+class Solution {
+public:
+    string digitSum(string s, int k) {
+        while(s.length() > k) {
+            string total = "";
+            for(int i = 0; i < s.length(); i += k) {
+                int blockval = 0;
+                for(int j = 0; j < k; j++) {
+                    if(i + j >= s.length()) break;
+                    blockval += (s[i + j] - '0');
+                }
+                total += to_string(blockval);
+            }
+            s = total;
+        }
+        return s;
+    }
+};
