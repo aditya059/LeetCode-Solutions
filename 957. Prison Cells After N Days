@@ -23,3 +23,25 @@ public:
         return value[start + (n - start) % (i - start)];
     }
 };
+
+OR
+
+class Solution {
+public:
+    vector<int> prisonAfterNDays(vector<int>& cells, int n) {
+        map<vector<int>, int> visited;
+        while(n > 0) {
+            visited[cells] = n--;
+            vector<int> next(8, 0);
+            for(int j = 1; j < 7; j++) {
+                if(cells[j - 1] == cells[j + 1])
+                    next[j] = 1;
+            }
+            if(visited.find(next) != visited.end()) {
+                n %= visited[next] - n;
+            }
+            cells = next;
+        }
+        return cells;
+    }
+};
