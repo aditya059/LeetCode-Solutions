@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool check(string &a, string &b, map<char, int> &val) {
+        int i = 0;
+        while(i < a.length() && i < b.length()) {
+            if(val[a[i]] < val[b[i]]) return true;
+            if(val[a[i]] > val[b[i]]) return false;
+            i++;
+        }
+        return i == a.length();
+    }
+    bool isAlienSorted(vector<string>& words, string order) {
+        map<char, int> val;
+        for(int i = 0; i < 26; i++) {
+            val[order[i]] = i;
+        }
+        for(int i = 1; i < words.size(); i++) {
+            if(!check(words[i - 1], words[i], val))
+                return false;
+        }
+        return true;
+    }
+};
