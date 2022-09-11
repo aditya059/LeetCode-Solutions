@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int mostFrequentEven(vector<int>& nums) {
+        unordered_map<int, int> count;
+        int ans = INT_MAX;
+        for(int i = 0; i < nums.size(); i++) {
+            if(nums[i] % 2 == 0) {
+                count[nums[i]]++;
+                if(count[nums[i]] > count[ans]) 
+                    ans = nums[i];
+                else if(count[nums[i]] == count[ans])
+                    ans = min(nums[i], ans);
+            }
+        }
+        return ans == INT_MAX? -1: ans;
+    }
+};
