@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int numUniqueEmails(vector<string>& emails) {
+        map<string, int> Map;
+        for(int i = 0; i < emails.size(); i++) {
+            int indexAt = emails[i].find('@'); 
+            string local = emails[i].substr(0, indexAt);
+            string domain = emails[i].substr(indexAt + 1);
+            int indexPlus = local.find('+');
+            string email = "";
+            for(int j = 0; j < local.length(); j++) {
+                if(local[j] == '+')
+                    break;
+                if(local[j] != '.')
+                    email += local[j];
+            }   
+            email += '@' + domain;
+            Map[email]++;
+        }
+        return Map.size();
+    }
+};
