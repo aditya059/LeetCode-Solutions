@@ -23,3 +23,27 @@ public:
  * RecentCounter* obj = new RecentCounter();
  * int param_1 = obj->ping(t);
  */
+
+OR
+
+class RecentCounter {
+public:
+    queue<int> time;
+    RecentCounter() {
+
+    }
+    
+    int ping(int t) {
+        time.push(t);
+        while(t - time.front() > 3000) {    
+            time.pop();
+        }
+        return time.size();
+    }
+};
+
+/**
+ * Your RecentCounter object will be instantiated and called as such:
+ * RecentCounter* obj = new RecentCounter();
+ * int param_1 = obj->ping(t);
+ */
