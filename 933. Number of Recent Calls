@@ -1,0 +1,25 @@
+class RecentCounter {
+public:
+    vector<int> time;
+    int i;
+    int j;
+    RecentCounter() {
+        i = -1;
+        j = 0;
+    }
+    
+    int ping(int t) {
+        time.push_back(t);
+        i++;
+        while(j < i && time[i] - time[j] > 3000) {    
+            j++;
+        }
+        return i - j + 1;
+    }
+};
+
+/**
+ * Your RecentCounter object will be instantiated and called as such:
+ * RecentCounter* obj = new RecentCounter();
+ * int param_1 = obj->ping(t);
+ */
