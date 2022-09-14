@@ -11,18 +11,19 @@
  */
 class Solution {
 public:
-    void solve(TreeNode* root, int &ans, vector<int> count) {
+    void solve(TreeNode* root, int &ans, vector<int> &count) {
         if(!root) 
             return;
         count[root -> val]++;
         if(!root -> left && !root -> right) {
             int mod2one = 0;
-            for(int i = 0; i < 10; i++) {
+            for(int i = 1; i < 10; i++) {
                 if(count[i] % 2 == 1)
                     mod2one++;
             }
             if(mod2one < 2) 
                 ans++;
+            count[root -> val]--;
             return;
         }
         solve(root -> left, ans, count);
