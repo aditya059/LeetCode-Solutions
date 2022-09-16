@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int solve(vector<vector<int>> &memo, vector<int>& nums, vector<int>& multipliers, int i, int left) {
+        if(i == multipliers.size()) return 0;
+        if(memo[i][left] != INT_MIN) return memo[i][left];
+        int l = multipliers[i] * nums[left] + solve(memo, nums, multipliers, i + 1, left + 1);
+        int r = multipliers[i] * nums[left + nums.size() - 1 - i] + solve(memo, nums, multipliers, i + 1, left);
+        memo[i][left] = max(l, r);
+        return memo[i][left];
+    }
+    int maximumScore(vector<int>& nums, vector<int>& multipliers) {
+        vector<vector<int>> memo(multipliers.size() + 1, vector<int>(multipliers.size() + 1, INT_MIN));
+        return solve(memo, nums, multipliers, 0, 0);
+    }
+};
