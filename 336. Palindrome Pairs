@@ -1,0 +1,58 @@
+
+class Solution {
+public:
+    class TrieNode {
+        public:
+        TrieNode *child[26] = {};
+        int index;
+        vector<int> palinPrefix;
+        TrieNode() {
+            index = -1;
+        }
+    };
+    bool isPalindrome(string &s, int i, int j) {
+        while(i < j) {
+            if(s[i++] != s[j--]) return false;
+        }
+        return true;
+    }
+    void add(TrieNode *root, string &word, int index) {
+        TrieNode *curr = root;
+        for(int i = word.length() - 1; i >= 0; i--) {
+            if(isPalindrome(word, 0, i))
+                curr -> palinPrefix.push_back(index);
+            if(!curr -> child[word[i] - 'a'])
+                curr -> child[word[i] - 'a'] = new TrieNode();
+            curr = curr -> child[word[i] - 'a'];
+        }
+        curr -> palinPrefix.push_back(index);
+        curr -> index = index;
+    }
+    void search(TrieNode *root, string &word, int index, vector<vector<int>> &ans) {
+        TrieNode *curr = root;
+        for(int i = 0; i < word.length(); i++) {
+            int ch = word[i] - 'a';
+            if (curr -> index >= 0 && curr -> index != index && isPalindrome(word, i, word.length() - 1)) {
+                ans.push_back({index, curr -> index});
+            }
+            if(!curr -> child[ch])
+                return;
+            curr = curr -> child[ch];
+        }
+        for(int i: curr -> palinPrefix) {
+            if(i != index)
+                ans.push_back({index, i});
+        }
+    }
+    vector<vector<int>> palindromePairs(vector<string>& words) {
+        vector<vector<int>> ans;
+        TrieNode *root = new TrieNode();
+        for(int i = 0; i < words.size(); i++) {
+            add(root, words[i], i);
+        }
+        for(int i = 0; i < words.size(); i++) {
+            search(root, words[i], i, ans);
+        }
+        return ans;
+    }
+};
