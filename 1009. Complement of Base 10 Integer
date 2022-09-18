@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int bitwiseComplement(int n) {
+        if(n == 0) return 1;
+        int ans = 0, c = 1;
+        for(int i = n; i > 0; i /= 2) {
+            int d = i % 2;
+            if(!d)
+                ans += c;
+            c *= 2;
+        }
+        return ans;
+    }
+};
