@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<vector<string>> findDuplicate(vector<string>& paths) {
+        map<string, vector<string>> Map;
+        vector<vector<string>> ans;
+        for(string path: paths) {
+            path += " ";
+            int index1 = path.find(' ');
+            string dirName = path.substr(0, index1);
+            while(index1 < path.length() - 1) {
+                int index2 = path.find(' ', index1 + 1);
+                string files = path.substr(index1 + 1, index2 - index1 - 1);
+                index1 = index2;
+                index2 = files.find('(');
+                string fileName = files.substr(0, index2);
+                string content = files.substr(index2);
+                Map[content].push_back(dirName + "/" + fileName);
+            }
+        }
+        for(auto iter: Map) {
+            if(iter.second.size() > 1)
+                ans.push_back(iter.second);
+        }
+        return ans;
+    }
+};
