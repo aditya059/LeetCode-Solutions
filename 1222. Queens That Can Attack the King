@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<vector<int>> queensAttacktheKing(vector<vector<int>>& queens, vector<int>& king) {
+        vector<vector<int>> ans;
+        bool chessboard[8][8] = {0};
+        for(int i = 0; i < queens.size(); i++)
+            chessboard[queens[i][0]][queens[i][1]] = true;
+        pair<int, int> dirs[8] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+        for(pair<int, int> dir: dirs) {
+            int x = king[0];
+            int y = king[1];
+            while(true) {
+                x += dir.first;
+                y += dir.second;
+                if(x < 0 || y < 0 || x >= 8 || y >= 8)
+                    break;
+                if(chessboard[x][y] == true) {
+                    ans.push_back({x, y});
+                    break;
+                }              
+            }
+        }
+        return ans;
+    }
+};
