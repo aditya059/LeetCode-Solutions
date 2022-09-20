@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int lastStoneWeight(vector<int>& stones) {
+        multiset<int, greater<int>> Set;
+        for(int i = 0; i < stones.size(); i++)
+            Set.insert(stones[i]);
+        while(Set.size() > 1) {
+            int y = *Set.begin();
+            Set.erase(Set.begin());
+            int x = *Set.begin();
+            Set.erase(Set.begin());
+            if(y > x) Set.insert(y - x);
+        }
+        return Set.size() == 1? *Set.begin(): 0;
+    }
+};
