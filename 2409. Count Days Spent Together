@@ -1,0 +1,26 @@
+class Solution {
+public:
+    
+    int convert(string &time, int days[]) {
+        int m = stoi(time.substr(0, 2));
+        int d = stoi(time.substr(3, 2));
+        int total = 0;
+        for(int i = 0; i < m - 1; i++) {
+            total += days[i];
+        }
+        return total + d;
+    }
+    int countDaysTogether(string arriveAlice, string leaveAlice, string arriveBob, string leaveBob) {
+        int days[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        int aliceStart = convert(arriveAlice, days);
+        int aliceEnd = convert(leaveAlice, days);
+        int bobStart = convert(arriveBob, days);
+        int bobEnd = convert(leaveBob, days);
+        int ans = 0;
+        for(int i = aliceStart; i <= aliceEnd; i++) {
+            if(i >= bobStart && i <= bobEnd)
+                ans++;
+        }
+        return ans;
+    }
+};
