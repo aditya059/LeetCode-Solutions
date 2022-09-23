@@ -12,3 +12,20 @@ public:
         return (int)ans;
     }
 };
+
+OR
+
+class Solution {
+public:
+    int len(int n) {
+        return 1 + log2(n);
+    }
+    int concatenatedBinary(int n) {
+        const int MOD = 1e9 + 7;
+        long ans = 0;
+        for(int i = 1; i <= n; i++) {
+           ans = (((ans << len(i)) % MOD) + i) % MOD; 
+        }
+        return ans;
+    }
+};
