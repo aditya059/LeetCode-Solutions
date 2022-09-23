@@ -1,0 +1,15 @@
+class Solution {
+public:
+    long long zeroFilledSubarray(vector<int>& nums) {
+        long long ans = !nums[0];
+        int count = !nums[0];
+        for(int i = 1; i < nums.size(); i++) {
+            if(!nums[i] && !nums[i - 1]) 
+                count++;
+            else
+                count = !nums[i];
+            ans += count;
+        }
+        return ans;
+    }
+};
