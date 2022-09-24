@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int valueOf(string s) {
+        int val = 0;
+        for(int i = 0; i < s.length(); i++) {
+            val = val * 2 + (s[i] - '0');
+        }
+        return val;
+    }
+    bool hasAllCodes(string s, int k) {
+        unordered_map<int, int> Map;
+        for(int i = 0; i + k <= s.length(); i++) {
+            Map[valueOf(s.substr(i, k))] = 1;
+        }
+        return Map.size() == (1 << k);
+    }
+};
