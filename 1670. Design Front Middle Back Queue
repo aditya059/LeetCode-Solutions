@@ -1,0 +1,84 @@
+class FrontMiddleBackQueue {
+private:
+    deque<int> queue1;
+    deque<int> queue2;
+    void Q2toQ1() {
+        if(queue1.size() >= queue2.size() - 1) return;
+        queue1.push_back(queue2.front());
+        queue2.pop_front();
+    }
+    void Q1toQ2() {
+        if(queue1.size() <= queue2.size()) return;
+        queue2.push_front(queue1.back());
+        queue1.pop_back();
+    }
+public:
+    
+    FrontMiddleBackQueue() {
+        
+    }
+    
+    void pushFront(int val) {
+        queue1.push_front(val);
+        Q1toQ2();
+    }
+    
+    void pushMiddle(int val) {
+        queue1.push_back(val);
+        Q1toQ2();
+    }
+    
+    void pushBack(int val) {
+        queue2.push_back(val);
+        Q2toQ1();
+    }
+    
+    int popFront() {
+        if(queue1.empty() && queue2.empty()) return -1;
+        int x;
+        if(queue1.empty()) {
+            x = queue2.front();
+            queue2.pop_front();
+        }
+        else {
+            x = queue1.front();
+            queue1.pop_front();
+            Q2toQ1();
+        }
+        return x;
+    }
+    
+    int popMiddle() {
+        if(queue1.empty() && queue2.empty()) return -1;
+        int x;
+        if(queue2.size() > queue1.size()) {
+            x = queue2.front();
+            queue2.pop_front();
+        }
+        else {
+            x = queue1.back();
+            queue1.pop_back();
+        }
+        return x;
+    }
+    
+    int popBack() {
+        if(queue1.empty() && queue2.empty()) return -1;
+        int x = queue2.back();
+        queue2.pop_back();
+        Q1toQ2();
+        return x;
+    }
+
+};
+
+/**
+ * Your FrontMiddleBackQueue object will be instantiated and called as such:
+ * FrontMiddleBackQueue* obj = new FrontMiddleBackQueue();
+ * obj->pushFront(val);
+ * obj->pushMiddle(val);
+ * obj->pushBack(val);
+ * int param_4 = obj->popFront();
+ * int param_5 = obj->popMiddle();
+ * int param_6 = obj->popBack();
+ */
