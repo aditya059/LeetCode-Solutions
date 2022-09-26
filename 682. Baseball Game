@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int calPoints(vector<string>& ops) {
+        vector<int> Stack;
+        for(int i = 0; i < ops.size(); i++) {
+            if(ops[i] == "+") {
+                Stack.push_back(Stack[Stack.size() - 1] + Stack[Stack.size() - 2]);
+            }
+            else if(ops[i] == "D") {
+                Stack.push_back(2 * Stack[Stack.size() - 1]);
+            }
+            else if(ops[i] == "C") {
+                Stack.pop_back();
+            }
+            else {
+                int a = stoi(ops[i]);
+                Stack.push_back(a);
+            }
+        }
+        int ans = 0;
+        for(int i = 0; i < Stack.size(); i++) {
+            ans += Stack[i];
+        }
+        return ans;
+    }
+};
