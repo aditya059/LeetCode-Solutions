@@ -1,0 +1,37 @@
+class Solution {
+public:
+    string pushDominoes(string dominoes) {
+        int n = dominoes.size();
+        vector<int> left(n, 0);
+        vector<int> right(n, 0);
+        int index = 0;
+        char prevChar = ' ';
+        for(int i = 0; i < n; i++) {
+            if(dominoes[i] == 'L' || dominoes[i] == 'R') {
+                index = i;
+                prevChar = dominoes[i];
+            }
+            if(prevChar == 'R')
+                right[i] = i - index;
+        }
+        prevChar = ' ';
+        for(int i = n - 1; i >= 0; i--) {
+            if(dominoes[i] == 'L' || dominoes[i] == 'R') {
+                index = i;
+                prevChar = dominoes[i];
+            }
+            if(prevChar == 'L')
+                left[i] = index - i;
+        }
+        for(int i = 0; i < n; i++) {
+            if(left[i] == right[i]) continue;
+            else if(right[i] == 0 && left[i] != 0)
+                dominoes[i] = 'L';
+            else if(right[i] != 0 && left[i] == 0)
+                dominoes[i] = 'R';
+            else
+                dominoes[i] = left[i] < right[i]? 'L': 'R';
+        }
+        return dominoes;
+    }
+};
