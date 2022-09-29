@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int numEquivDominoPairs(vector<vector<int>>& dominoes) {
+        int ans = 0;
+        int DP[10][10] = {0};
+        for(vector<int> iter: dominoes) {
+            ans += DP[iter[0]][iter[1]];
+            DP[iter[0]][iter[1]]++;
+            if(iter[0] != iter[1])
+                DP[iter[1]][iter[0]]++;
+        }
+        return ans;
+    }
+};
