@@ -35,3 +35,34 @@ public:
         return ans;
     }
 };
+
+OR
+
+class Solution {
+public:
+    vector<vector<int>> getSkyline(vector<vector<int>>& buildings) {
+        vector<vector<int>> ans;
+        vector<pair<int, int>> coordinate;
+        for(vector<int> building: buildings) {
+            coordinate.push_back({building[0], -building[2]});
+            coordinate.push_back({building[1], building[2]});
+        }
+        sort(coordinate.begin(), coordinate.end());
+        multiset<int> PQ;
+        PQ.insert(0);
+        int currHeight = 0;
+        for(pair<int, int> temp: coordinate) {
+            if(temp.second < 0) {
+                PQ.insert(-temp.second); 
+            } 
+            else {
+                PQ.erase(PQ.find(temp.second));
+            }
+            if(currHeight != *PQ.rbegin()) { 
+                currHeight = *PQ.rbegin(); 
+                ans.push_back({temp.first, currHeight});
+            }
+        }
+        return ans;
+    }
+};
