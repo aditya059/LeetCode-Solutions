@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int numRollsToTarget(int n, int k, int target) {
+        const int MOD = 1e9 + 7;
+        vector<vector<int>> DP(n + 1, vector<int>(target + 1, 0));
+        DP[0][0] = 1;
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= target; j++) {
+                for(int l = 1; l <= k; l++) {
+                    if(j - l >= 0)
+                        DP[i][j] = (DP[i][j] % MOD + DP[i - 1][j - l] % MOD) % MOD;
+                }
+            }
+        }
+        return DP[n][target] % MOD;
+    }
+};
