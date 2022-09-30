@@ -1,0 +1,37 @@
+class Solution {
+public:
+    typedef struct node {
+        int x;
+        int h;
+    } Node;
+    static bool comp(Node &f, Node &s) {
+        if(f.x < s.x) return true;
+        if(f.x == s.x && f.h < s.h) return true;
+        return false;
+    } 
+    vector<vector<int>> getSkyline(vector<vector<int>>& buildings) {
+        vector<vector<int>> ans;
+        vector<Node> coordinate;
+        for(vector<int> building: buildings) {
+            coordinate.push_back({building[0], -building[2]});
+            coordinate.push_back({building[1], building[2]});
+        }
+        sort(coordinate.begin(), coordinate.end(), comp);
+        multiset<int> PQ;
+        PQ.insert(0);
+        int currHeight = 0;
+        for(Node temp: coordinate) {
+            if(temp.h < 0) {
+                PQ.insert(-temp.h); 
+            } 
+            else {
+                PQ.erase(PQ.find(temp.h));
+            }
+            if(currHeight != *PQ.rbegin()) { 
+                currHeight = *PQ.rbegin(); 
+                ans.push_back({temp.x, currHeight});
+            }
+        }
+        return ans;
+    }
+};
