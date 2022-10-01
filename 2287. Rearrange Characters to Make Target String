@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int rearrangeCharacters(string s, string target) {
+        int sfreq[26] = {0};
+        for(char ch: s) {
+            sfreq[ch - 'a']++;
+        }
+        int targetfreq[26] = {0};
+        for(char ch: target) {
+            targetfreq[ch - 'a']++;
+        }
+        int ans = INT_MAX;
+        for(int i = 0; i < 26; i++) {
+            if(targetfreq[i])
+                ans = min(ans, sfreq[i] / targetfreq[i]);
+        }
+        return ans;
+    }
+};
