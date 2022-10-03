@@ -1,11 +1,13 @@
 class Solution {
 public:
     bool isPossibleDivide(vector<int>& nums, int k) {
-        map<int, int> freq;
-        for(int iter: nums) freq[iter]++;
-        vector<pair<int, int>> temp(freq.size()); 
-        for(auto iter: freq) {
-            temp.push_back({iter.first, iter.second});
+        sort(nums.begin(), nums.end());
+        vector<pair<int, int>> temp; 
+        for(int num: nums) {
+            if(temp.empty() || temp.back().first != num)
+                temp.push_back({num, 1});
+            else
+                temp.back().second++;
         }
         for(auto i = 0; i + k <= temp.size(); i++) {
             if(!temp[i].second) continue;
