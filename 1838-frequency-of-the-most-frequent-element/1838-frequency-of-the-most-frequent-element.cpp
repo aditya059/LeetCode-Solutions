@@ -12,8 +12,8 @@ public:
                 sum -= nums[start];
                 start++;
             }
-            ans = max(ans, end - start + 1);
             end++;
+            ans = max(ans, end - start);
         }
         return ans;
     }
