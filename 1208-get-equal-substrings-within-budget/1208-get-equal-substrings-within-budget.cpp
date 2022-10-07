@@ -11,8 +11,8 @@ public:
                 cost -= abs(s[start] - t[start]);
                 start++;
             }
-            ans = max(ans, end - start + 1);
             end++;
+            ans = max(ans, end - start);
         }
         return ans;
     }
