@@ -1,14 +1,19 @@
 class Solution {
 public:
-
+    map<string, string> Map1;
+    map<string, string> Map2;
+    int count = 0;
     // Encodes a URL to a shortened URL.
     string encode(string longUrl) {
-        return longUrl;
+        Map1[longUrl] = "http://tinyurl.com/" + to_string(count);
+        Map2["http://tinyurl.com/" + to_string(count)] = longUrl;
+        count++;
+        return Map1[longUrl];
     }
 
     // Decodes a shortened URL to its original URL.
     string decode(string shortUrl) {
-        return shortUrl;
+        return Map2[shortUrl];
     }
 };
 
