@@ -5,10 +5,11 @@ public:
     int count = 0;
     // Encodes a URL to a shortened URL.
     string encode(string longUrl) {
-        Map1[longUrl] = "http://tinyurl.com/" + to_string(count);
-        Map2["http://tinyurl.com/" + to_string(count)] = longUrl;
+        string ans = "http://tinyurl.com/" + to_string(count); 
+        Map1[longUrl] = ans;
+        Map2[ans] = longUrl;
         count++;
-        return Map1[longUrl];
+        return ans;
     }
 
     // Decodes a shortened URL to its original URL.
