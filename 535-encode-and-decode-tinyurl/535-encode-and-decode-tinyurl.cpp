@@ -1,7 +1,7 @@
 class Solution {
 public:
-    map<string, string> Map1;
-    map<string, string> Map2;
+    unordered_map<string, string> Map1;
+    unordered_map<string, string> Map2;
     int count = 0;
     // Encodes a URL to a shortened URL.
     string encode(string longUrl) {
