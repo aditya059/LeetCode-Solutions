@@ -23,10 +23,7 @@ public:
                 if(!grid[i][j]) {
                     bool isIsland = true;
                     dfs(i, j, grid, visited, isIsland);
-                    if(isIsland) {
-                        cout << i << " " << j << endl;
-                        ans++;
-                    }
+                    if(isIsland) ans++;
                 }
             }
         }
