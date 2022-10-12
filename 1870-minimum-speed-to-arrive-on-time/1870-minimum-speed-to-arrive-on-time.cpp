@@ -10,7 +10,7 @@ public:
     
     int minSpeedOnTime(vector<int>& dist, double hour) {
         int low = 1;
-        int high = 1e9;
+        int high = 1e7;
         int ans = INT_MAX;
         while(low <= high) {
             int mid = low + (high - low) / 2;
