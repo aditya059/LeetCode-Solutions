@@ -1,11 +1,11 @@
 class Solution {
 public:
-    bool solve(vector<int> &nums, int threshold, int val) {
+    int solve(vector<int> &nums, int &val) {
         int sum = 0;
         for(int num: nums) {
             sum += ceil(1.0 * num / val);
         }
-        return sum <= threshold;
+        return sum;
     }
     int smallestDivisor(vector<int>& nums, int threshold) {
         sort(nums.begin(), nums.end());
@@ -14,7 +14,7 @@ public:
         int ans = high;
         while(low <= high) {
             int mid = low + (high - low) / 2;
-            if(!solve(nums, threshold, mid))
+            if(solve(nums, mid) > threshold)
                 low = mid + 1;
             else {
                 ans = min(ans, mid);
