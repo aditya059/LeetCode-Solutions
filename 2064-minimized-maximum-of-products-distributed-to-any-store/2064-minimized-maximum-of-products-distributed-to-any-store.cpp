@@ -9,7 +9,7 @@ public:
     }
     int minimizedMaximum(int n, vector<int>& quantities) {
         int low = 1;
-        int high = INT_MAX;
+        int high = 1e5;
         int ans = high;
         while(low <= high) {
             int mid = low + (high - low) / 2;
