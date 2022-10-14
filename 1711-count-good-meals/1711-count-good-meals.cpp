@@ -8,9 +8,7 @@ public:
         unordered_map<int, int> Map;
         for(int num: deliciousness) {
             for(int j = 1; j <= num + num; j *= 2) {
-                if(Map.find(j - num) != Map.end()) {
-                    ans = (ans + Map[j - num]) % MOD;
-                }
+                ans = (ans + Map[j - num]) % MOD;
             }
             Map[num]++;
         }
