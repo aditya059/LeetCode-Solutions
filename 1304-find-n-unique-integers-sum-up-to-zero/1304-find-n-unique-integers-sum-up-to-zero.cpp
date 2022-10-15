@@ -2,7 +2,8 @@ class Solution {
 public:
     vector<int> sumZero(int n) {
         vector<int> ans;
-        for(int i = 1; i <= n / 2; i++) {
+        int sz = n >> 1;
+        for(int i = 1; i <= sz; i++) {
             ans.push_back(-i);
             ans.push_back(i);
         }
