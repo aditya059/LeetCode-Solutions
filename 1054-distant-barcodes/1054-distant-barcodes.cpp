@@ -1,7 +1,7 @@
 class Solution {
 public:
     vector<int> rearrangeBarcodes(vector<int>& barcodes) {
-        map<int, int> freq; 
+        unordered_map<int, int> freq; 
         multimap<int, int, greater<int>> Map;
         for(int i = 0; i < barcodes.size(); i++) {
             freq[barcodes[i]]++;
