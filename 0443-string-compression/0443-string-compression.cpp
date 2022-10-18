@@ -11,8 +11,7 @@ public:
                 chars[index] = chars[i - 1];
                 index++;
                 if(count > 1) {
-                    string val = to_string(count);
-                    for(char ch: val) {
+                    for(char ch: to_string(count)) {
                         chars[index++] = ch;
                     }
                 }
