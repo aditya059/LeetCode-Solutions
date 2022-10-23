@@ -21,8 +21,9 @@ public:
         int i = 0;
         string ans = "";
         while(num > 0) {
-            if(num % 1000)
-            ans = to_word(num % 1000) + thousands[i] + " " + ans;  
+            int d = num % 1000;
+            if(d)
+                ans = to_word(d) + thousands[i] + " " + ans;  
             num /= 1000;
             i++;
         }
