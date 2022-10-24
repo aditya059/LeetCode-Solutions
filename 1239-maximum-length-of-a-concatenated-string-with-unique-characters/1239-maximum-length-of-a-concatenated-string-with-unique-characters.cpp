@@ -12,7 +12,7 @@ public:
         }
         solve(mask, i + 1, ans, temp);
         if(temp & mask[i]) return;
-            solve(mask, i + 1, ans, temp | mask[i]);
+        solve(mask, i + 1, ans, temp | mask[i]);
     }
     int maxLength(vector<string>& arr) {
         vector<int> mask(arr.size()); 
