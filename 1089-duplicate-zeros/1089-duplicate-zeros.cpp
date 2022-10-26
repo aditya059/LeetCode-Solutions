@@ -5,23 +5,12 @@ public:
         for(int num: arr) {
             if(!num) count++;
         }
-        int i = arr.size() - 1;
-        int j = i + count;
-        while(j >= 0) {
-            if(arr[i]) {
-                if(j < arr.size())
-                    arr[j] = arr[i];
-                j--;
-                i--;
-            }
-            else {
-                if(j < arr.size())
-                    arr[j] = 0;
-                if(j - 1 < arr.size())
-                    arr[j - 1] = 0;
-                j -= 2;
-                i--;
-            }
+        int j = arr.size() + count;
+        for(int i = arr.size() - 1; i >= 0; i--) {
+            if(--j < arr.size())
+                arr[j] = arr[i];
+            if(arr[i] == 0 && --j < arr.size())
+                arr[j] = 0;
         }
     }
 };
