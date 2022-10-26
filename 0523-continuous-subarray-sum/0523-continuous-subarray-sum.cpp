@@ -7,10 +7,11 @@ public:
         Map[0] = -1;
         for(int i = 0; i < nums.size(); i++) {
             currSum = (currSum + nums[i]) % k;
-            if(Map.find(currSum) != Map.end() && i - Map[currSum] >= 2) {
-                return true;
+            if(Map.find(currSum) != Map.end()) {
+                if(i - Map[currSum] >= 2)
+                    return true;
             }
-            if(Map.find(currSum) == Map.end())
+            else
                 Map[currSum] = i;
         }
         return false;
