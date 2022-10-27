@@ -9,11 +9,11 @@ public:
                 target /= 2;
             }
             else {
-                if(maxDoubles == 0)
-                return ans + target - 1;
                 ans++;
                 target--;
             }
+            if(maxDoubles == 0)
+                return ans + target - 1;
         }
         return ans;
     }
