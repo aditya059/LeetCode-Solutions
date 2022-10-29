@@ -1,5 +1,22 @@
 class Solution {
 public:
+    int earliestFullBloom(vector<int>& plantTime, vector<int>& growTime) {
+        int n = plantTime.size();
+        vector<int> indices(n);
+        iota(indices.begin(), indices.end(), 0);
+        sort(indices.begin(), indices.end(), [&](int i, int j) {return growTime[i] > growTime[j];});
+        int ans = 0, currTime = 0;
+        for(int index: indices) {
+            currTime += plantTime[index];
+            ans = max(ans, currTime + growTime[index]);
+        }
+        return ans;
+    }
+};
+
+/*
+class Solution {
+public:
     static bool comp(pair<int, int> &A, pair<int, int> &B) {
         return A.first > B.first;
     }
@@ -19,3 +36,4 @@ public:
         return ans;
     }
 };
+*/
