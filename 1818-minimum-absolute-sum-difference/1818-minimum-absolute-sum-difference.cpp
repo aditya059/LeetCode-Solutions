@@ -4,10 +4,9 @@ public:
         const int MOD = 1e9 + 7;
         int n = nums1.size();
         long totalDiff = 0;
-        set<int> Set;
+        set<int> Set(nums1.begin(), nums1.end());
         for(int i = 0; i < n; i++) {
             totalDiff += abs(nums1[i] - nums2[i]);
-            Set.insert(nums1[i]);
         }
         long ans = totalDiff;
         for(int i = 0; i < n; i++) {
