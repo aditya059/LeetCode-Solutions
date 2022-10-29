@@ -13,7 +13,7 @@ public:
             if(iter != Set.end()) 
                 mn = max(mn, diff - abs(nums2[i] - *iter));
             if(iter != Set.begin())
-                mn = max(mn, diff - abs(nums2[i] - *prev(iter)));
+                mn = max(mn, diff - abs(nums2[i] - *(--iter)));
         }
         return (totalDiff - mn) % MOD;
     }
