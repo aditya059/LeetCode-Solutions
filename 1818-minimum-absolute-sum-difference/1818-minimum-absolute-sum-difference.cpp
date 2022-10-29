@@ -5,19 +5,16 @@ public:
         int n = nums1.size();
         long totalDiff = 0;
         set<int> Set(nums1.begin(), nums1.end());
+        int mn = INT_MIN;
         for(int i = 0; i < n; i++) {
-            totalDiff += abs(nums1[i] - nums2[i]);
-        }
-        long ans = totalDiff;
-        for(int i = 0; i < n; i++) {
+            int diff = abs(nums1[i] - nums2[i]);
+            totalDiff += diff;
             auto iter = Set.upper_bound(nums2[i]);
-            int mn = INT_MAX;
             if(iter != Set.end()) 
-                mn = min(mn, abs(nums2[i] - *iter));
+                mn = max(mn, diff - abs(nums2[i] - *iter));
             if(iter != Set.begin())
-                mn = min(mn, abs(nums2[i] - *prev(iter)));
-            ans = min(ans, totalDiff - abs(nums1[i] - nums2[i]) + mn);
+                mn = max(mn, diff - abs(nums2[i] - *prev(iter)));
         }
-        return ans % MOD;
+        return (totalDiff - mn) % MOD;
     }
 };
