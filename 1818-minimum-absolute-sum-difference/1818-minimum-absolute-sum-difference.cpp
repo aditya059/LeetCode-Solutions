@@ -16,7 +16,7 @@ public:
             if(iter != Set.end()) 
                 mn = min(mn, abs(nums2[i] - *iter));
             if(iter != Set.begin())
-                mn = min(mn, abs(nums2[i] - (*(--iter))));
+                mn = min(mn, abs(nums2[i] - *prev(iter)));
             ans = min(ans, totalDiff - abs(nums1[i] - nums2[i]) + mn);
         }
         return ans % MOD;
