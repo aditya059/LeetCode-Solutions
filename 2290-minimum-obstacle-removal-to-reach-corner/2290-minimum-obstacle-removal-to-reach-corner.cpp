@@ -1,3 +1,4 @@
+// Dijkstra's - O(m * n * log (m * n))
 class Solution {
 public:
     int minimumObstacles(vector<vector<int>>& grid) {
