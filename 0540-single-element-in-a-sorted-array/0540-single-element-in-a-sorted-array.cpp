@@ -4,7 +4,7 @@ public:
         if(nums.size() == 1) return nums[0];
         int l = 0;
         int h = nums.size() - 1;
-        while(l <= h) {
+        while(l < h) {
             int m = l + (h - l) / 2;
             if(m == 0 || nums[m] != nums[m - 1] && nums[m] != nums[m + 1]) return nums[m];
             if((m - l + 1) % 2) {
@@ -16,6 +16,6 @@ public:
                 else l = m + 1;
             }
         }
-        return nums[l + 1];
+        return nums[l];
     }
 };
