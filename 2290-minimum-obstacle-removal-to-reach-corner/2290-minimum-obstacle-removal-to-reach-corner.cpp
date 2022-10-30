@@ -21,11 +21,11 @@ public:
                 if(vx < 0 || vy < 0 || vx >= m || vy >= n) 
                     continue;
                 
-                int cost = grid[vx][vy];
+                int cost = dist[ux][uy] + grid[vx][vy];
                 
-                if(dist[ux][uy] + cost < dist[vx][vy]) {
-                    //PQ.erase({dist[vx][vy], vx, vy});
-                    dist[vx][vy] = dist[ux][uy] + cost;
+                if(cost < dist[vx][vy]) {
+                    PQ.erase({dist[vx][vy], vx, vy});
+                    dist[vx][vy] = cost;
                     PQ.insert({dist[vx][vy], vx, vy});
                 }
 
