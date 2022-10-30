@@ -26,10 +26,11 @@ public:
                     if(x < 0 || y < 0 || x >= m || y >= n) 
                         continue;
                     
-                    if(curr[2] - grid[x][y] > visited[x][y])
+                    int temp = curr[2] - grid[x][y];
+                    if(temp > visited[x][y])
                     {
-                        visited[x][y] = curr[2] - grid[x][y];
-                        Queue.push({x, y, curr[2] - grid[x][y]});
+                        visited[x][y] = temp;
+                        Queue.push({x, y, temp});
                     }
                 }
             }
