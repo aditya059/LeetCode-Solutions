@@ -24,7 +24,9 @@ public:
                 int cost = dist[ux][uy] + grid[vx][vy];
                 
                 if(cost < dist[vx][vy]) {
-                    PQ.erase({dist[vx][vy], {vx, vy}});
+                    auto iter = PQ.find({dist[vx][vy], {vx, vy}});
+                    if(iter != PQ.end())
+                        PQ.erase(iter);
                     dist[vx][vy] = cost;
                     PQ.insert({dist[vx][vy], {vx, vy}});
                 }
