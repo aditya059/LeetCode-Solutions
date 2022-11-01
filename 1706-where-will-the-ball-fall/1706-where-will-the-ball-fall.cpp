@@ -3,7 +3,6 @@ public:
     vector<int> findBall(vector<vector<int>>& grid) {
         int m = grid.size();
         int n = grid[0].size();
-        vector<int> ans(n);
         vector<vector<int>> DP(m + 1, vector<int>(n));
         iota(DP[m].begin(), DP[m].end(), 0);
         for(int row = m - 1; row >= 0; row--) {
