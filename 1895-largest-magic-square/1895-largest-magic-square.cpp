@@ -14,7 +14,7 @@ public:
         
         for(int i = 1; i <= m; i++) {
             for(int j = 1; j <= n; j++) {
-                for(int k = min(m - i, n - j); k >= 0; k--) {
+                for(int k = min(m - i, n - j); k >= ans; k--) {
                     int sum = rowSum[i][j + k] - rowSum[i][j - 1], ldiag = 0, rdiag = 0; 
                     bool flag = true;
                     for(int l = 0; l <= k; l++) {
