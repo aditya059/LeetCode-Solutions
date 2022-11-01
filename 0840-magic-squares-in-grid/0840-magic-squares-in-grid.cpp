@@ -1,19 +1,21 @@
 class Solution {
 public:
-    bool solve(vector<vector<int>> &grid, int r, int c) {
-        int count[16] = {0};
+    bool solve(vector<vector<int>> &grid, int row, int col) {
+        int count[10] = {0};
         int rowSum[3] = {0};
         int colSum[3] = {0};
         int ld = 0, rd = 0;
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
-                if(grid[r + i][c + j] >= 10 || grid[r + i][c + j] < 1 || count[grid[r + i][c + j]])
+                int r = row + i;
+                int c = col + j;
+                if(grid[r][c] >= 10 || grid[r][c] < 1 || count[grid[r][c]])
                     return false;
-                count[grid[r + i][c + j]]++;
-                rowSum[i] += grid[r + i][c + j];
-                colSum[j] += grid[r + i][c + j];
-                if(i == j) ld += grid[r + i][c + j];
-                if(i + j == 2) rd += grid[r + i][c + j];
+                count[grid[r][c]]++;
+                rowSum[i] += grid[r][c];
+                colSum[j] += grid[r][c];
+                if(i == j) ld += grid[r][c];
+                if(i + j == 2) rd += grid[r][c];
             }
         }
         return rowSum[0] == 15 && rowSum[1] == 15 && rowSum[2] == 15 && colSum[0] == 15 && colSum[1] == 15 && colSum[2] == 15 && ld == 15 && rd == 15;
