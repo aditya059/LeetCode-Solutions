@@ -7,7 +7,7 @@ public:
         int ld = 0, rd = 0;
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
-                if(count[grid[r + i][c + j]] || grid[r + i][c + j] >= 10 || grid[r + i][c + j] < 1)
+                if(grid[r + i][c + j] >= 10 || grid[r + i][c + j] < 1 || count[grid[r + i][c + j]])
                     return false;
                 count[grid[r + i][c + j]]++;
                 rowSum[i] += grid[r + i][c + j];
