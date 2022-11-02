@@ -1,7 +1,6 @@
 class Solution {
 public:
     int minMutation(string start, string end, vector<string>& bank) {
-        char allowedChar[4] = {'A', 'C', 'G', 'T'};
         sort(bank.begin(), bank.end());
         vector<bool> visited(bank.size());
         queue<string> Queue;
@@ -16,7 +15,7 @@ public:
                 if(curr == end) return ans;
                 for(int j = 0; j < 8; j++) {
                     string next = curr;
-                    for(char ch: allowedChar) {
+                    for(char ch: "ACGT") {
                         next[j] = ch;
                         if(binary_search(bank.begin(), bank.end(), next)) {
                             int index = lower_bound(bank.begin(), bank.end(), next) - bank.begin();
