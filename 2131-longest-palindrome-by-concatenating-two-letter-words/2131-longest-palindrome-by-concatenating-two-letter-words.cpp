@@ -2,22 +2,17 @@ class Solution {
 public:
     int longestPalindrome(vector<string>& words) {
         int ans = 0;
-        unordered_map<string, int> Map;
+        int Map[26][26] = {0};
         for(string word: words) {
-            string temp = word;
-            swap(temp[0], temp[1]);
-            
-            if(Map[temp] != 0) {
+            if(Map[word[1] - 'a'][word[0] - 'a'] != 0) {
                 ans += 4;
-                Map[temp]--;
+                Map[word[1] - 'a'][word[0] - 'a']--;
+                Map[word[0] - 'a'][word[1] - 'a']--;
             }
-            else
-                Map[word]++;
+            Map[word[0] - 'a'][word[1] - 'a']++;
         }
-        for(auto iter: Map) {
-            if(iter.second != 0 && iter.first[0] == iter.first[1]) {
-                return ans + 2;
-            }
+        for(int i = 0; i < 26; i++) {
+            if(Map[i][i]) return ans + 2;
         }
         return ans;
     }
