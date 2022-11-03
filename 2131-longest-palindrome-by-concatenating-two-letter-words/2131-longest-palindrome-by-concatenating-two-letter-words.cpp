@@ -4,10 +4,9 @@ public:
         int ans = 0;
         unordered_map<string, int> Map;
         for(string word: words) {
+            string temp = word;
+            swap(temp[0], temp[1]);
             
-            string temp = "";
-            temp += word[1];
-            temp += word[0];
             if(Map[temp] != 0) {
                 ans += 4;
                 Map[temp]--;
