@@ -10,9 +10,9 @@ public:
             if(Map[temp] != 0) {
                 ans += 4;
                 Map[temp]--;
-                Map[word]--;
             }
-            Map[word]++;
+            else
+                Map[word]++;
         }
         for(auto iter: Map) {
             if(iter.second != 0 && iter.first[0] == iter.first[1]) {
