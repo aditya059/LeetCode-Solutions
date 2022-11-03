@@ -4,8 +4,8 @@ public:
         int ans = 0;
         int Map[26][26] = {0};
         for(string word: words) {
-            short i = word[0] - 'a';
-            short j = word[1] - 'a';
+            int8_t i = word[0] - 'a';
+            int8_t j = word[1] - 'a';
             if(Map[j][i] != 0) {
                 ans += 4;
                 Map[j][i]--;
