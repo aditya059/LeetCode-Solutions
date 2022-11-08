@@ -1,14 +1,13 @@
 class Solution {
 public:
     string makeGood(string s) {
-        string Stack = s;
         int k = 0;
-        for(char ch: s) {
-            if(k == 0) Stack[k++] = ch;
-            else if(abs(ch - Stack[k - 1]) == 32) k--;
+        for(int i = 0; i < s.length(); i++) {
+            if(k == 0) s[k++] = s[i];
+            else if(abs(s[i] - s[k - 1]) == 32) k--;
             else 
-                Stack[k++] = ch;
+                s[k++] = s[i];
         }
-        return Stack.substr(0, k);
+        return s.substr(0, k);
     }
 };
