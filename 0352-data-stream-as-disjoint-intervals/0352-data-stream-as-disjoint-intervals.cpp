@@ -1,5 +1,34 @@
 class SummaryRanges {
 private:
+    map<int, int> intervals;
+public:
+    SummaryRanges() {
+        
+    }
+    
+    void addNum(int value) {
+        int left = value, right = value;
+        auto iter = intervals.upper_bound(left);
+        if(iter != intervals.begin() && prev(iter) -> second + 1 >= left) iter--;
+        while(iter != intervals.end() && right + 1 >= iter -> first) {
+            left = min(left, iter -> first);
+            right = max(right, iter -> second);
+            iter = intervals.erase(iter);
+        }
+        intervals[left] = right;
+    }
+    
+    vector<vector<int>> getIntervals() {
+        vector<vector<int>> ans;
+        for(auto iter: intervals) 
+            ans.push_back({iter.first, iter.second});
+        return ans;
+    }
+};
+
+/*
+class SummaryRanges {
+private:
     struct comp {
         bool operator()(const vector<int> &A, const vector<int> &B) const {return A[0] < B[0];}
     };
@@ -26,7 +55,7 @@ public:
         return ans;
     }
 };
-/*
+
 class SummaryRanges {
 private:
     map<int, vector<int>> Map;
