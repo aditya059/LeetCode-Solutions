@@ -10,7 +10,6 @@ public:
         if(Map.find(value) != Map.end()) return;
         auto iter = Map.lower_bound(value);
         if(iter != Map.begin() && iter != Map.end() && prev(iter) -> second[1] + 1 == value && iter -> first - 1 == value) {
-            // Merge 2 intervals
             prev(iter) -> second[1] = iter -> second[1];
             Map.erase(iter);
         }
