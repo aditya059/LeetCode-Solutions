@@ -1,5 +1,34 @@
 class SummaryRanges {
 private:
+    struct comp {
+        bool operator()(const vector<int> &A, const vector<int> &B) const {return A[0] < B[0];}
+    };
+    set<vector<int>, comp> Set;
+public:
+    SummaryRanges() {
+        
+    }
+    
+    void addNum(int value) {
+        auto iter = Set.lower_bound({value, value});
+        int start = value, end = value;
+        if(iter != Set.begin() && (*prev(iter))[1] + 1 >= value) iter--;
+        while(iter != Set.end() && end + 1 >= (*iter)[0]) {
+            start = min(start, (*iter)[0]);
+            end = max(end, (*iter)[1]);
+            iter = Set.erase(iter);
+        }
+        Set.insert(iter, {start, end});
+    }
+    
+    vector<vector<int>> getIntervals() {
+        vector<vector<int>> ans(Set.begin(), Set.end());
+        return ans;
+    }
+};
+/*
+class SummaryRanges {
+private:
     map<int, vector<int>> Map;
 public:
     SummaryRanges() {
@@ -32,7 +61,7 @@ public:
         return ans;
     }
 };
-/*
+
 class SummaryRanges {
 private:
     struct comp {
