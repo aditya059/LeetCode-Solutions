@@ -1,5 +1,32 @@
 class CountIntervals {
     private:
+    map<int, int> intervals;
+    int ans;
+public:
+    CountIntervals() {
+        ans = 0;
+    }
+    
+    void add(int left, int right) {
+        auto iter = intervals.upper_bound(left);
+        if(iter != intervals.begin() && prev(iter) -> second >= left) iter--;
+        while(iter != intervals.end() && right >= iter -> first) {
+            ans -= iter -> second - iter -> first + 1;
+            left = min(left, iter -> first);
+            right = max(right, iter -> second);
+            iter = intervals.erase(iter);
+        }
+        ans += right - left + 1;
+        intervals[left] = right;
+    }
+    
+    int count() {
+        return ans;
+    }
+};
+/*
+class CountIntervals {
+    private:
     struct comp {
         bool operator()(const vector<int> &A, const vector<int> &B) const {return A[0] < B[0];}
     };
@@ -27,6 +54,7 @@ public:
         return ans;
     }
 };
+*/
 
 /**
  * Your CountIntervals object will be instantiated and called as such:
