@@ -1,5 +1,41 @@
 class SummaryRanges {
 private:
+    map<int, vector<int>> Map;
+public:
+    SummaryRanges() {
+        
+    }
+    
+    void addNum(int value) {
+        if(Map.find(value) != Map.end()) return;
+        auto iter = Map.lower_bound(value);
+        if(iter != Map.begin() && iter != Map.end() && prev(iter) -> second[1] + 1 == value && iter -> first - 1 == value) {
+            // Merge 2 intervals
+            prev(iter) -> second[1] = iter -> second[1];
+            Map.erase(iter);
+        }
+        else if(iter != Map.begin() && prev(iter) -> second[1] + 1 >= value) {
+            prev(iter) -> second[1] = max(value, prev(iter) -> second[1]);
+        }
+        else if(iter != Map.end() && iter -> first == value + 1) {
+            Map[value] = {value, iter -> second[1]};
+            Map.erase(iter);
+        }
+        else {
+            Map[value] = {value, value};
+        }
+    }
+    
+    vector<vector<int>> getIntervals() {
+        vector<vector<int>> ans;
+        for(auto iter: Map) 
+            ans.push_back(iter.second);
+        return ans;
+    }
+};
+/*
+class SummaryRanges {
+private:
     struct comp {
         bool operator()(const vector<int> &A, const vector<int> &B) const {return A[0] < B[0];}
     };
@@ -41,6 +77,7 @@ public:
         return ans;
     }
 };
+*/
 
 /**
  * Your SummaryRanges object will be instantiated and called as such:
