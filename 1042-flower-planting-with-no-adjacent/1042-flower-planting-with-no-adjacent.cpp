@@ -1,5 +1,30 @@
 class Solution {
 public:
+    vector<int> gardenNoAdj(int n, vector<vector<int>>& paths) {
+        vector<int> ans(n);
+        vector<int> adjList[n];
+        for(vector<int> edge: paths) {
+            adjList[edge[1] - 1].push_back(edge[0] - 1);
+            adjList[edge[0] - 1].push_back(edge[1] - 1);
+        }
+        for(int i = 0; i < n; i++) {
+            int val = 0;
+            for(int j: adjList[i]) 
+                val |= 1 << ans[j];
+            for(int k = 1; k <= 4; k++) {
+                if((val & (1 << k)) == 0) {
+                    ans[i] = k;
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+};
+
+/*
+class Solution {
+public:
     void dfs(int curr, vector<int> adjList[], vector<bool> &visited, vector<int> &ans) {
         if(visited[curr]) return;
         visited[curr] = true;
@@ -32,7 +57,6 @@ public:
     }
 };
 
-/*
 class Solution {
 public:
     void dfs(int curr, vector<int> adjList[], vector<bool> &visited, vector<int> &ans) {
