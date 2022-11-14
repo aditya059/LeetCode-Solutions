@@ -1,6 +1,6 @@
 class Solution {
 public:
-    void dfs(int curr, vector<int> adjList[], vector<bool> &visited, long long &len) {
+    void dfs(int curr, vector<int> adjList[], vector<bool> &visited, int &len) {
         if(visited[curr]) return;
         visited[curr] = true;
         len++;
@@ -18,9 +18,9 @@ public:
         }
         for(int i = 0; i < n; i++) {
             if(!visited[i]) {
-                long long len = 0;
+                int len = 0;
                 dfs(i, adjList, visited, len);
-                ans += len * (n - len);
+                ans += len * 1L * (n - len);
             }
         }
         return ans / 2;
