@@ -18,8 +18,7 @@ public:
     int countNodes(TreeNode* root) {
         int treeHeight = height(root);
         if(treeHeight < 0) return 0;
-        int rightHeight = height(root -> right);
-        if(rightHeight == treeHeight - 1) 
+        if(height(root -> right) == treeHeight - 1) 
             return (1 << treeHeight) + countNodes(root -> right);
         return (1 << (treeHeight - 1)) + countNodes(root -> left);
     }
