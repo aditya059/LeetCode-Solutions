@@ -14,6 +14,7 @@ public:
         int ans = 0;
         for(int i = 0; i < n; i++) {
             for(int j = i + 1; j < n; j++) {
+                if(ans > degree[index[i]] + degree[index[j]]) break;
                 ans = max(ans, degree[index[i]] + degree[index[j]] - Map[index[i]][index[j]]);
             }
         }
