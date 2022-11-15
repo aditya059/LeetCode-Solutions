@@ -23,10 +23,10 @@ public:
                 TreeNode* curr = Queue.front();
                 Queue.pop();
                 if(even) {
-                    if(curr -> val % 2 == 0 || (i > 0 && curr -> val <= maximum)) return false;
+                    if(curr -> val % 2 == 0 || curr -> val <= maximum) return false;
                 }
                 else {
-                    if(curr -> val % 2 == 1 || (i > 0 && curr -> val >= minimum)) return false;
+                    if(curr -> val % 2 == 1 || curr -> val >= minimum) return false;
                 }
                 maximum = max(maximum, curr -> val);
                 minimum = min(minimum, curr -> val);
