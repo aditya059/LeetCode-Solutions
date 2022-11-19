@@ -20,7 +20,7 @@ public:
             ans[index++] = trees[i];
         }
         ans.resize(index);
-        sort(ans.begin(), ans.end());
+        sort(ans.begin(), ans.end(), [&](vector<int> A, vector<int> B) {return A[0] < B[0] || (A[0] == B[0] && A[1] < B[1]);});
         int k = 0;
         for(int i = 1; i < index; i++) {
             if(ans[i][0] == ans[k][0] && ans[i][1] == ans[k][1]) continue;
