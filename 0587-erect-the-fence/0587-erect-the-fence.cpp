@@ -23,7 +23,7 @@ public:
             ans[index++] = trees[i];
         }
         ans.resize(index);
-        sort(ans.begin(), ans.end(), comp);
+        sort(ans.begin(), ans.end());
         int k = 0;
         for(int i = 1; i < index; i++) {
             if(ans[i][0] == ans[k][0] && ans[i][1] == ans[k][1]) continue;
