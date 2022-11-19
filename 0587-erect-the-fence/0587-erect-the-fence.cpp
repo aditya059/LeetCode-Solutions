@@ -14,7 +14,7 @@ public:
                 index--;
             ans[index++] = trees[i];
         }
-        for(int i = trees.size() - 1; i >= 0; i--) {
+        for(int i = trees.size() - 2; i >= 0; i--) {
             while(index >= 2 && cross_product(ans[index - 2], ans[index - 1], trees[i]) < 0)
                 index--;
             ans[index++] = trees[i];
