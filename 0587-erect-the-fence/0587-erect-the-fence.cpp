@@ -12,12 +12,12 @@ public:
         sort(trees.begin(), trees.end(), comp);
         vector<vector<int>> ans(n << 1);
         int index = 0;
-        for(int i = 0; i < trees.size(); i++) {
+        for(int i = 0; i < n; i++) {
             while(index >= 2 && cross_product(ans[index - 2], ans[index - 1], trees[i]) < 0)
                 index--;
             ans[index++] = trees[i];
         }
-        for(int i = trees.size() - 2; i >= 0; i--) {
+        for(int i = n - 1; i >= 0; i--) {
             while(index >= 2 && cross_product(ans[index - 2], ans[index - 1], trees[i]) < 0)
                 index--;
             ans[index++] = trees[i];
