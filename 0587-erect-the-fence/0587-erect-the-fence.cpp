@@ -1,12 +1,15 @@
 class Solution {
 public:
+    static bool comp(vector<int> &A, vector<int> &B) {
+        return A[0] < B[0] || (A[0] == B[0] && A[1] < B[1]);
+    }
     int cross_product(vector<int> &O, vector<int> &A, vector<int> &B) {
         return (A[0] - O[0]) * (B[1] - O[1]) - (A[1] - O[1]) * (B[0] - O[0]);
     }
     
     vector<vector<int>> outerTrees(vector<vector<int>>& trees) {
         int n = trees.size();
-        sort(trees.begin(), trees.end(), [&](vector<int> A, vector<int> B) {return A[0] < B[0] || (A[0] == B[0] && A[1] < B[1]);});
+        sort(trees.begin(), trees.end(), comp);
         vector<vector<int>> ans(n << 1);
         int index = 0;
         for(int i = 0; i < trees.size(); i++) {
@@ -20,7 +23,7 @@ public:
             ans[index++] = trees[i];
         }
         ans.resize(index);
-        sort(ans.begin(), ans.end(), [&](vector<int> A, vector<int> B) {return A[0] < B[0] || (A[0] == B[0] && A[1] < B[1]);});
+        sort(ans.begin(), ans.end(), comp);
         int k = 0;
         for(int i = 1; i < index; i++) {
             if(ans[i][0] == ans[k][0] && ans[i][1] == ans[k][1]) continue;
