@@ -23,7 +23,7 @@ public:
                 currNum = 0;
             }
         }
-        if(currNum) ans += currNum * sign;
+        ans += currNum * sign;
         return ans;
     }
 };
