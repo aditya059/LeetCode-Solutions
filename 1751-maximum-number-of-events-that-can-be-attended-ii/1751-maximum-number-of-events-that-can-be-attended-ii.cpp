@@ -1,4 +1,4 @@
-class Solution {
+/*class Solution {
 public:
     int binary_search(vector<vector<int>> &intervals, int l, int h, int target) {
         int ans = h + 1;
@@ -30,8 +30,8 @@ public:
         return DP[(k - 1) % 2][0];
     }
 };
+*/
 
-/*
 class Solution {
 public:
     int binary_search(vector<vector<int>> &intervals, int l, int h, int target) {
@@ -50,16 +50,15 @@ public:
     int maxValue(vector<vector<int>>& events, int k) {
         int n = events.size();
         sort(events.begin(), events.end());
-        vector<vector<int>> DP(2, vector<int>(n + 1, 0));
+        vector<vector<int>> DP(2, vector<int>(n + 1));
         for(int i = n - 1; i >= 0; i--)
             DP[0][i] = max(DP[0][i + 1], events[i][2]);
         for(int j = 1; j < k; j++) {
             for(int i = n - 1; i >= 0; i--) {
                 int index = binary_search(events, i + 1, n - 1, events[i][1] + 1);
-                DP[j][i] = max(DP[j][i + 1], events[i][2] + DP[j - 1][index]);
+                DP[j % 2][i] = max(DP[j % 2][i + 1], events[i][2] + DP[(j - 1) % 2][index]);
             }
         }
-        return DP[k - 1][0];
+        return DP[(k - 1) % 2][0];
     }
 };
-*/
