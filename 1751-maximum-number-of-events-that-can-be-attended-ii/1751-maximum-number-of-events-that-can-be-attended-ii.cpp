@@ -16,7 +16,7 @@ public:
     int maxValue(vector<vector<int>>& events, int k) {
         int n = events.size();
         sort(events.begin(), events.end());
-        vector<vector<int>> DP(2, vector<int>(n + 1));
+        vector<vector<int>> DP(2, vector<int>(n + 1, 0));
         vector<int> index(n);
         for(int i = n - 1; i >= 0; i--) {
             DP[0][i] = max(DP[0][i + 1], events[i][2]);
