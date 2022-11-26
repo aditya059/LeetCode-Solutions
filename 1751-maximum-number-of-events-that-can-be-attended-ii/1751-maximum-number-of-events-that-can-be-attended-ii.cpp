@@ -22,9 +22,9 @@ public:
             DP[0][i] = max(DP[0][i + 1], events[i][2]);
             index[i] = binary_search(events, i + 1, n - 1, events[i][1] + 1);
         }
-        for(int j = 1; j < k; j++) {
-            for(int i = n - 1; i >= 0; i--) {
-                DP[j][i] = max(DP[j][i + 1], events[i][2] + DP[j - 1][index[i]]);
+        for(int i = 1; i < k; i++) {
+            for(int j = n - 1; j >= 0; j--) {
+                DP[i][j] = max(DP[i][j + 1], events[j][2] + DP[i - 1][index[j]]);
             }
         }
         return DP[k - 1][0];
