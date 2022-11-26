@@ -1,49 +1,41 @@
 class Solution {
-public:
-    typedef struct job {
-        int start, end, profit;
-        job(int start, int end, int profit) {
-            this -> start = start;
-            this -> end = end;
-            this -> profit = profit;
-        }
-    } job;
-    static bool comp(const job &A, const job &B) {
-        return A.end < B.end;
+private:
+    typedef struct Interval {
+        int start;
+        int end;
+        int profit;
+    } Interval;
+    static bool comp(Interval &A, Interval &B) {
+        return A.start < B.start;
     }
-    int binary_search(vector<job> &Jobs, int n, int item) {
-        int low = 0;
-        int high = n;
-        int ans = -1;
-        while(low <= high) {
-            int mid = low + (high - low) / 2;
-            if(item >= Jobs[mid].end) {
-                ans = mid;
-                low = mid + 1;
-            }
-            else {
-                high = mid - 1;
+public:
+    int binary_search(vector<Interval> &intervals, int l, int h, int target) {
+        int ans = h + 1;
+        while(l <= h) {
+            int m = l + (h - l) / 2;
+            if(target > intervals[m].start) {
+                l = m + 1;
+            } else {
+                ans = min(ans, m);
+                h = m - 1;
             }
         }
         return ans;
     }
-    
     int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
         int n = startTime.size();
-        vector<job> Jobs; 
+        vector<Interval> intervals(n);
         for(int i = 0; i < n; i++) {
-            Jobs.push_back(job(startTime[i], endTime[i], profit[i]));
+            intervals[i].start = startTime[i];
+            intervals[i].end = endTime[i];
+            intervals[i].profit = profit[i];
         }
-        sort(Jobs.begin(), Jobs.end(), comp);
-        vector<int> DP(n);
-        DP[0] = Jobs[0].profit;
-        for(int i = 1; i < n; i++) {
-            int include = Jobs[i].profit;
-            int index = binary_search(Jobs, i - 1, Jobs[i].start);
-            if(index != -1)
-            include += DP[index];
-            DP[i] = max(DP[i - 1], include);
+        sort(intervals.begin(), intervals.end(), comp);
+        vector<int> DP(n + 1, 0);
+        for(int i = n - 1; i >= 0; i--) {
+            int index = binary_search(intervals, i + 1, n - 1, intervals[i].end);
+            DP[i] = max(DP[i + 1], intervals[i].profit + DP[index]);
         }
-        return DP[n - 1];
+        return DP[0];
     }
 };
