@@ -2,7 +2,7 @@ class Solution {
 public:
     int maxTwoEvents(vector<vector<int>>& events) {
         int n = events.size();
-        int ans = INT_MIN;
+        int ans = 0;
         int maxValue = 0;
         sort(events.begin(), events.end());
         multiset<pair<int, int>> PQ;
