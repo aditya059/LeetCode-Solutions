@@ -1,5 +1,34 @@
 class Solution {
 public:
+    bool isSubsequence(string &s, string &word) {
+        int i = 0; 
+        int j = 0;
+        while(i < s.length() && j < word.length()) {
+            if(s[i] == word[j]) {
+                i++;
+                j++;
+            } else {
+                i++;
+            }
+        }
+        return j == word.length();
+    }
+    string findLongestWord(string s, vector<string>& dictionary) {
+        string ans = "";
+        for(string word: dictionary) {
+            if(isSubsequence(s, word)) {
+                if(word.length() > ans.length())
+                    ans = word;
+                if(word.length() == ans.length())
+                    ans = ans < word? ans: word;
+            }
+        }
+        return ans;
+    }
+};
+/*
+class Solution {
+public:
     static bool comp(string &A, string &B) {
         return A.length() > B.length() || A.length() == B.length() && A < B;
     }
@@ -27,3 +56,4 @@ public:
         return "";
     }
 };
+*/
