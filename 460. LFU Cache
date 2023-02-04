@@ -1,0 +1,58 @@
+class LFUCache {
+    int capacity;
+    int currSize;
+    int minFreq;
+    unordered_map<int, pair<int, int>> keyToValCount;
+    unordered_map<int, list<int>> freqToKeyList;
+    unordered_map<int, list<int>::iterator> keyToIter;
+
+    void update(int key) {
+        int freq = keyToValCount[key].second;
+        keyToValCount[key].second++;
+        freqToKeyList[freq].erase(keyToIter[key]);
+        freqToKeyList[freq + 1].push_back(key);
+        keyToIter[key] = --freqToKeyList[freq + 1].end();
+        if(freqToKeyList[minFreq].empty()) minFreq++;
+    }
+
+public:
+    LFUCache(int capacity) {
+        this -> capacity = capacity;
+        currSize = 0;
+        minFreq = 0;
+    }
+    
+    int get(int key) {
+        if(keyToValCount.find(key) == keyToValCount.end()) return -1;
+        update(key);
+        return keyToValCount[key].first;
+    }
+    
+    void put(int key, int value) {
+        if(!capacity) return;
+        if(keyToValCount.find(key) != keyToValCount.end()) {
+            keyToValCount[key].first = value;
+            update(key);
+        } else {
+            if(currSize == capacity) {
+                int lruKey = freqToKeyList[minFreq].front();
+                freqToKeyList[minFreq].pop_front();
+                keyToIter.erase(lruKey);
+                keyToValCount.erase(lruKey);
+            } else {
+                currSize++;
+            }
+            minFreq = 1;
+            freqToKeyList[minFreq].push_back(key);
+            keyToValCount[key] = {value, minFreq};
+            keyToIter[key] = --freqToKeyList[minFreq].end();
+        }
+    }
+};
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache* obj = new LFUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
