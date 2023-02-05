@@ -1,0 +1,44 @@
+// C++ 
+class Solution {
+    bool isVowel(char ch) {
+        return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+    }
+public:
+    vector<int> vowelStrings(vector<string>& words, vector<vector<int>>& queries) {
+        int n = words.size();
+        vector<int> count(n + 1);
+        count[0] = 0;
+        for(int i = 0; i < n; i++) {
+            count[i + 1] = count[i];
+            if(isVowel(words[i][0]) && isVowel(words[i][words[i].length() - 1]))
+                count[i + 1]++;
+        }
+        vector<int> ans;
+        for(vector<int> query: queries) {
+            ans.push_back(count[query[1] + 1] - count[query[0]]);
+        }   
+        return ans;
+    }
+};
+
+
+// Golang
+func isVowel(ch byte) bool {
+    return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u'
+}
+
+func vowelStrings(words []string, queries [][]int) []int {
+    var n int = len(words)
+    count := make([]int, n + 1)
+    for i := 0; i < n; i++ {
+        count[i + 1] = count[i]
+        if isVowel(words[i][0]) && isVowel(words[i][len(words[i]) - 1]) {
+            count[i + 1]++
+        }
+    }
+    ans := []int{}
+    for _, query := range queries {
+        ans = append(ans, count[query[1] + 1] - count[query[0]])
+    }   
+    return ans
+}
