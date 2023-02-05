@@ -1,0 +1,60 @@
+// C++
+class Solution {
+public:
+    int longestSquareStreak(vector<int>& nums) {
+        map<int, int> Map;
+        for(int num: nums) {
+            Map[num] = 1;
+        }
+        int ans = 1;
+        for(auto &[num, _]: Map) {
+            int sqrtNum = sqrt(num);
+            if(sqrtNum * sqrtNum == num)
+                Map[num] = Map[sqrtNum] + 1;
+            ans = max(ans, Map[num]);
+        }
+        return ans == 1? -1: ans;
+    }
+};
+
+OR
+
+class Solution {
+public:
+    int longestSquareStreak(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        map<int, int> Map;
+        int ans = 1;
+        for(int num: nums) {
+            int sqrtNum = sqrt(num);
+            if(sqrtNum * sqrtNum == num) {
+                Map[num] = Map[sqrtNum] + 1;
+                ans = max(ans, Map[num]);
+            } else {
+                Map[num] = 1;
+            }
+        }
+        return ans == 1? -1: ans;
+    }
+};
+
+
+// Golang
+func longestSquareStreak(nums []int) int {
+    sort.Ints(nums)
+    var ans int = 1
+    Map := make(map[int]int)
+    for _, num := range nums {
+        sqrtNum := int(math.Sqrt(float64(num)))
+        if sqrtNum * sqrtNum == num {
+            Map[num] = Map[sqrtNum] + 1
+            if Map[num] > ans {
+                ans = Map[num]
+            }
+        } else {
+            Map[num] = 1
+        }
+    }
+    if ans == 1 {return -1}
+    return ans
+}
