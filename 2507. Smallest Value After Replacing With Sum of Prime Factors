@@ -1,0 +1,62 @@
+// C++
+class Solution {
+    bool isPrime(int n) {
+        if(n == 1) return false;
+        for(int i = 2; i <= sqrt(n); i++) {
+            if(n % i == 0)
+                return false;
+        }
+        return true;
+    }
+public:
+    int smallestValue(int n) {
+        map<int, bool> seen;
+        while(!seen[n] && !isPrime(n)) {
+            seen[n] = true;
+            int sum = 0;
+            for(int i = 2; i <= sqrt(n); i++) {
+                if(!isPrime(i)) continue;
+                while(n % i == 0) {
+                    sum += i;
+                    n /= i;
+                }
+            }
+            sum += n > 1? n: 0;
+            n = sum;
+        }
+        return n;
+    }
+};
+
+
+// Golang
+func isPrime(n int) bool {
+    if n == 1 {return false}
+    var sqrtN int = int(math.Sqrt(float64(n)))
+    for i := 2; i <= sqrtN; i++ {
+        if n % i == 0 {
+            return false
+        }
+    }
+    return true
+}
+func smallestValue(n int) int {
+    seen := make(map[int]bool)
+    for !seen[n] && !isPrime(n) {
+        seen[n] = true
+        var sum int = 0
+        var sqrtN int = int(math.Sqrt(float64(n)))
+        for i := 2; i <= sqrtN; i++ {
+            if !isPrime(i) {continue}
+            for n % i == 0 {
+                sum += i
+                n /= i
+            }
+        }
+        if n > 1 {
+            sum += n
+        }
+        n = sum
+    }
+    return n
+}
