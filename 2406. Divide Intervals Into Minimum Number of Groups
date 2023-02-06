@@ -1,0 +1,34 @@
+// C++
+class Solution {
+public:
+    int minGroups(vector<vector<int>>& intervals) {
+        int A[1000005] = {0};
+        for(vector<int> interval: intervals) {
+            A[interval[0]]++;
+            A[interval[1] + 1]--;
+        }
+        int ans = A[0];
+        for(int i = 1; i <= 1000000; i++) {
+            A[i] += A[i - 1];
+            ans = max(ans, A[i]);
+        }
+        return ans;
+    }
+};
+
+// Golang
+func minGroups(intervals [][]int) int {
+    A := make([]int, 1000005)
+    for _, interval := range intervals {
+        A[interval[0]]++
+        A[interval[1] + 1]--
+    }
+    var ans int = A[0]
+    for i := 1; i <= 1000000; i++ {
+        A[i] += A[i - 1]
+        if A[i] > ans {
+            ans = A[i]
+        }
+    }
+    return ans
+}
