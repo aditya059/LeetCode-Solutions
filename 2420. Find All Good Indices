@@ -1,0 +1,49 @@
+// C++
+class Solution {
+public:
+    vector<int> goodIndices(vector<int>& nums, int k) {
+        int n = nums.size();
+        vector<int> DP(n, 1);
+        for(int i = n - 2; i >= 0; i--) {
+            if(nums[i] <= nums[i + 1])
+                DP[i] = DP[i + 1] + 1;
+        }
+        int count = 1;
+        vector<int> ans;
+        for(int i = 1; i < n - 1; i++) {
+            if(count >= k && DP[i + 1] >= k) ans.push_back(i);
+            if(nums[i] <= nums[i - 1]) 
+                count++;
+            else
+                count = 1;
+        }
+        return ans;
+    }
+};
+
+// Golang
+func goodIndices(nums []int, k int) []int {
+    var n int = len(nums)
+    DP := make([]int, n)
+    DP[n - 1] = 1
+    for i := n - 2; i >= 0; i-- {
+        if nums[i] <= nums[i + 1] {
+            DP[i] = DP[i + 1] + 1
+        } else {
+            DP[i] = 1
+        }
+    }
+    var count int = 1
+    ans := []int{}
+    for i := 1; i < n - 1; i++ {
+        if count >= k && DP[i + 1] >= k {
+            ans = append(ans, i)
+        }
+        if nums[i] <= nums[i - 1] {
+            count++
+        } else {
+            count = 1
+        }
+    }
+    return ans
+}
