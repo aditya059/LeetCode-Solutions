@@ -1,0 +1,16 @@
+// C++
+class Solution {
+public:
+    double nthPersonGetsNthSeat(int n) {
+        return n == 1? 1.0: 0.5;
+    }
+};
+
+
+// Golang
+func nthPersonGetsNthSeat(n int) float64 {
+    if n == 1 {
+        return 1
+    }
+    return 0.5
+}
