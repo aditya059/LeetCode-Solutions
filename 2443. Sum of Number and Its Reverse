@@ -1,0 +1,27 @@
+// C++
+class Solution {
+public:
+    bool sumOfNumberAndReverse(int num) {
+        for(int i = num; i >= 0; i--) {
+            int rev = 0;
+            for(int j = i; j > 0; j /= 10) {
+                rev = rev * 10 + (j % 10);
+            }
+            if(i + rev == num) return true;
+        }
+        return false;
+    }
+};
+
+
+// Golang
+func sumOfNumberAndReverse(num int) bool {
+    for i := num; i >= 0; i-- {
+        rev := 0
+        for j := i; j > 0; j /= 10 {
+            rev = rev * 10 + (j % 10)
+        }
+        if i + rev == num {return true}
+    }
+    return false
+}
