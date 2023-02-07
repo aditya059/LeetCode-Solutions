@@ -1,0 +1,45 @@
+// C++
+class Solution {
+public:
+    long long maximumSubarraySum(vector<int>& nums, int k) {
+        long long ans = 0, sum = 0;
+        unordered_map<int, int> Set;
+        for(int i = 0; i < k; i++) {
+            Set[nums[i]]++;
+            sum += nums[i];
+        }
+        if(Set.size() == k) ans = sum;
+        for(int i = k; i < nums.size(); i++) {
+            Set[nums[i]]++;
+            sum += nums[i] - nums[i - k];
+            Set[nums[i - k]]--;
+            if(!Set[nums[i - k]]) Set.erase(nums[i - k]);
+            if(Set.size() == k) ans = max(ans, sum);
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func max(a, b int64) int64 {
+    if a > b {return a}
+    return b
+}
+func maximumSubarraySum(nums []int, k int) int64 {
+    var ans, sum int64 = 0, 0
+    Set := make(map[int]int)
+    for i := 0; i < k; i++ {
+        Set[nums[i]]++
+        sum += int64(nums[i])
+    }
+    if len(Set) == k {ans = sum}
+    for i := k; i < len(nums); i++ {
+        Set[nums[i]]++
+        sum += int64(nums[i] - nums[i - k])
+        Set[nums[i - k]]--
+        if Set[nums[i - k]] == 0 {delete(Set, nums[i - k])}
+        if len(Set) == k {ans = max(ans, sum)}
+    }
+    return ans
+}
