@@ -1,0 +1,51 @@
+// C++
+class Solution {
+    int gcd(int m, int n) {
+        if(n == 0) return m;
+        return gcd(n, m % n);
+    }
+    int lcm(int m, int n) {
+        return (m * 1L * n) / gcd(m, n);
+    }
+public:
+    int subarrayLCM(vector<int>& nums, int k) {
+        int ans = 0;
+        for(int i = 0; i < nums.size(); i++) {  
+            int val = nums[i];
+            for(int j = i; j < nums.size(); j++) {
+                val = lcm(val, nums[j]);
+                if(val > k) break;
+                if(val == k) {
+                    ans++;
+                }
+            }   
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func gcd(m, n int) int {
+    if n == 0 {return m}
+    return gcd(n, m % n)
+}
+
+func lcm(m, n int) int {
+    return (m * n) / gcd(m, n)
+}
+
+func subarrayLCM(nums []int, k int) int {
+    var ans int = 0
+    for i := 0; i < len(nums); i++ {  
+        var val int = nums[i]
+        for j := i; j < len(nums); j++ {
+            val = lcm(val, nums[j])
+            if val > k {break}
+            if val == k {
+                ans++
+            }
+        }   
+    }
+    return ans
+}
