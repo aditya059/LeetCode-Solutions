@@ -1,0 +1,54 @@
+// C++
+class Solution {
+public:
+    int destroyTargets(vector<int>& nums, int space) {
+        int ans = 0, maximum = 0;
+        unordered_map<int, pair<int, int>> Map;
+        for(int num: nums) {
+            int val = num % space;
+            if(Map.find(val) == Map.end()) {
+                Map[val] = {num, 1};
+            } else {
+                Map[val] = {min(Map[val].first, num), Map[val].second + 1};
+            }
+        }
+        for( auto &[key, val]: Map) {
+            if(val.second > maximum) {
+                ans = val.first;
+                maximum = val.second;
+            } else if(val.second == maximum) {
+                ans = min(ans, val.first);
+            }
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func min(a, b int) int {
+    if a < b {return a}
+    return b
+}
+func destroyTargets(nums []int, space int) int {
+    var ans, maximum = 0, 0
+    Map := make(map[int][]int)
+    for _, num := range nums {
+        key := num % space
+        if val, ok := Map[key]; !ok {
+            Map[key] = []int{num, 1}
+        } else {
+            Map[key] = []int{min(val[0], num), val[1] + 1}
+        }
+    }
+   
+    for _, val := range Map {
+        if val[1] > maximum {
+            ans = val[0]
+            maximum = val[1]
+        } else if val[1] == maximum {
+            ans = min(ans, val[0])
+        }
+    }
+    return ans
+}
