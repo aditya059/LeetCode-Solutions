@@ -1,0 +1,27 @@
+// C++
+class Solution {
+public:
+    int xorAllNums(vector<int>& nums1, vector<int>& nums2) {
+        int ans = 0;
+        if(nums1.size() % 2) {
+            for(int num : nums2) ans ^= num;
+        }
+        if(nums2.size() % 2) {
+            for(int num : nums1) ans ^= num;
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func xorAllNums(nums1 []int, nums2 []int) int {
+    var ans int = 0
+    if len(nums1) % 2 == 1 {
+        for _, num := range nums2 {ans ^= num}
+    }
+    if len(nums2) % 2 == 1 {
+        for _, num := range nums1 {ans ^= num}
+    }
+    return ans
+}
