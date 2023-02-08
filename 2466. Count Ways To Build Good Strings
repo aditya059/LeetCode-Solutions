@@ -1,0 +1,37 @@
+// C++
+class Solution {
+    const int MOD = 1e9 + 7;
+public:
+    int countGoodStrings(int low, int high, int zero, int one) {
+        vector<int> DP(high + 1);
+        int ans = 0;
+        DP[0] = 1;
+        for(int i = 1; i <= high; i++) {
+            DP[i] = ((i >= zero? DP[i - zero]: 0) + (i >= one? DP[i - one]: 0)) % MOD;
+            if(i >= low && i <= high)
+                ans = (ans + DP[i]) % MOD;
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+const mod int = 1e9 + 7
+func countGoodStrings(low int, high int, zero int, one int) int {
+    DP := make([]int, high + 1)
+    var ans int = 0
+    DP[0] = 1
+    for i := 1; i <= high; i++ {
+        if i >= zero {
+            DP[i] = DP[i - zero]
+        }
+        if i >= one {
+            DP[i] = (DP[i] + DP[i - one]) % mod
+        }
+        if i >= low && i <= high {
+            ans = (ans + DP[i]) % mod
+        }
+    }
+    return ans
+}
