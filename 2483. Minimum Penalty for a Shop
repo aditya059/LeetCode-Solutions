@@ -1,0 +1,45 @@
+// C++
+class Solution {
+public:
+    int bestClosingTime(string customers) {
+        int n = customers.size();
+        int totalY = 0;
+        for(int i = 0; i < n; i++) {
+            totalY += (customers[i] == 'Y');
+        }
+        int ans = 0, sumN = 0, minPenalty = INT_MAX;
+        for(int i = 0; i <= n; i++) {
+            int penalty = sumN + (totalY - i + sumN);
+            sumN += (i < n && customers[i] == 'N');
+            if(penalty < minPenalty) {
+                ans = i;
+                minPenalty = penalty; 
+            }
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func bestClosingTime(customers string) int {
+    var n int = len(customers)
+    var totalY int = 0
+    for i := 0; i < n; i++ {
+        if customers[i] == 'Y' {
+            totalY++
+        }
+    }
+    var ans, sumN, minPenalty int = 0, 0, math.MaxInt
+    for i := 0; i <= n; i++ {
+        var penalty int = sumN + (totalY - i + sumN)
+        if i < n && customers[i] == 'N' {
+            sumN++
+        }
+        if penalty < minPenalty {
+            ans = i
+            minPenalty = penalty 
+        }
+    }
+    return ans
+}
