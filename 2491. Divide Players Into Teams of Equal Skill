@@ -1,0 +1,31 @@
+// C++
+class Solution {
+public:
+    long long dividePlayers(vector<int>& skill) {
+        sort(skill.begin(), skill.end());
+        int n = skill.size();
+        long long ans = skill[0] * skill[n - 1];
+        long long target = skill[0] + skill[n - 1];
+        for(int i = 1, j = n - 2; i < j; i++, j--) {
+            long long sum = skill[i] + skill[j];
+            if(sum != target) return -1;
+            ans += skill[i] * skill[j];
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func dividePlayers(skill []int) int64 {
+    sort.Ints(skill)
+    var n int = len(skill)
+    var ans int64 = int64(skill[0] * skill[n - 1])
+    var target int64 = int64(skill[0] + skill[n - 1])
+    for i, j := 1, n - 2; i < j; i, j = i + 1, j - 1 {
+        var sum int64 = int64(skill[i] + skill[j])
+        if sum != target {return -1}
+        ans += int64(skill[i] * skill[j])
+    }
+    return ans
+}
