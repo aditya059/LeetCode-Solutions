@@ -1,0 +1,60 @@
+//-----------------------------------------------
+// C++
+//-----------------------------------------------
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNodes(ListNode* head) {
+        stack<ListNode*> Stack;
+        ListNode *ans;
+        for(ListNode *p = head; p != nullptr; p = p -> next) {
+            while(!Stack.empty() && p -> val > Stack.top() -> val) {
+                Stack.pop();
+            }
+            if(Stack.empty()) {
+                ans = p;
+            } else {
+                Stack.top() -> next = p;
+            }
+            Stack.push(p);
+        }
+        return ans;
+    }
+};
+
+
+//-----------------------------------------------
+// Golang
+//-----------------------------------------------
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func removeNodes(head *ListNode) *ListNode {
+    Stack := []*ListNode{}
+    var ans *ListNode
+    for p := head; p != nil; p = p.Next {
+        for len(Stack) > 0 && p.Val > Stack[len(Stack) - 1].Val {
+            Stack = Stack[0:len(Stack) - 1]
+        }
+        if len(Stack) == 0 {
+            ans = p
+        } else {
+            Stack[len(Stack) - 1].Next = p
+        }
+        Stack = append(Stack, p)
+    }
+    return ans
+}
