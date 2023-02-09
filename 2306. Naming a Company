@@ -1,0 +1,23 @@
+class Solution {
+public:
+    long long distinctNames(vector<string>& ideas) {
+        unordered_set<string> suffix[26];
+        for(string idea: ideas) {
+            suffix[idea[0] - 'a'].insert(idea.substr(1));
+        }
+        long long ans = 0;
+        for(int i = 0; i < 26; i++) {
+            for(int j = i + 1; j < 26; j++) {
+                long long count1 = 0, count2 = 0;
+                for(string s: suffix[i]) {
+                    if(suffix[j].find(s) == suffix[j].end()) count1++;
+                }
+                for(string s: suffix[j]) {
+                    if(suffix[i].find(s) == suffix[i].end()) count2++;
+                }
+                ans += count1 * count2;
+            }
+        }
+        return 2 * ans;
+    }
+};
