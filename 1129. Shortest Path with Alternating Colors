@@ -1,0 +1,92 @@
+// C++
+class Solution {
+public:
+    vector<int> shortestAlternatingPaths(int n, vector<vector<int>>& redEdges, vector<vector<int>>& blueEdges) {
+        vector<int> redCities[n], blueCities[n];
+        for(vector<int> edge: redEdges) redCities[edge[0]].push_back(edge[1]);
+        for(vector<int> edge: blueEdges) blueCities[edge[0]].push_back(edge[1]);
+        vector<int> redDist(n, INT_MAX), blueDist(n, INT_MAX);
+        redDist[0] = blueDist[0] = 0;
+        queue<pair<int, char>> Queue;
+        Queue.push({0, 'r'});
+        Queue.push({0, 'b'});
+        while(!Queue.empty()) {
+            pair<int, char> curr = Queue.front();
+            Queue.pop();
+            if(curr.second == 'r') {
+                for(int next: blueCities[curr.first]) {
+                    if(blueDist[next] == INT_MAX) {
+                        blueDist[next] = redDist[curr.first] + 1;
+                        Queue.push({next, 'b'});
+                    }
+                }
+            } else {
+                for(int next: redCities[curr.first]) {
+                    if(redDist[next] == INT_MAX) {
+                        redDist[next] = blueDist[curr.first] + 1;
+                        Queue.push({next, 'r'});
+                    }
+                }
+            }
+        }
+        vector<int> ans(n);
+        for(int i = 0; i < n; i++) {
+            ans[i] = min(redDist[i], blueDist[i]);
+            ans[i] = ans[i] == INT_MAX? -1: ans[i];
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func shortestAlternatingPaths(n int, redEdges [][]int, blueEdges [][]int) []int {
+    redCities := make([][]int, n) 
+    blueCities := make([][]int, n)
+    for _, edge := range redEdges {
+        redCities[edge[0]] = append(redCities[edge[0]], edge[1])
+    }
+    for _, edge := range blueEdges {
+        blueCities[edge[0]] = append(blueCities[edge[0]], edge[1])
+    }
+    redDist := make([]int, n)
+    blueDist := make([]int, n)
+    for i := 0; i < n; i++ {
+        redDist[i] = math.MaxInt
+        blueDist[i] = math.MaxInt
+    }
+    redDist[0], blueDist[0] = 0, 0
+    Queue := [][]int{}
+    Queue = append(Queue, []int{0, 'r'})
+    Queue = append(Queue, []int{0, 'b'})
+    for len(Queue) > 0 {
+        curr := Queue[0]
+        Queue = Queue[1:]
+        if curr[1] == 'r' {
+            for _, next := range blueCities[curr[0]] {
+                if blueDist[next] == math.MaxInt {
+                    blueDist[next] = redDist[curr[0]] + 1
+                    Queue = append(Queue, []int{next, 'b'})
+                }
+            }
+        } else {
+            for _, next := range redCities[curr[0]] {
+                if redDist[next] == math.MaxInt {
+                    redDist[next] = blueDist[curr[0]] + 1
+                    Queue = append(Queue, []int{next, 'r'})
+                }
+            }
+        }
+    }
+    ans := make([]int, n)
+    for i := 0; i < n; i++ {
+        ans[i] = redDist[i]
+        if blueDist[i] < ans[i] {
+            ans[i] = blueDist[i]
+        }
+        if ans[i] == math.MaxInt {
+            ans[i] = -1
+        }
+    }
+    return ans
+}
