@@ -1,0 +1,22 @@
+// C++
+class Solution {
+public:
+    int maxJump(vector<int>& stones) {
+        int ans = stones[1] - stones[0];
+        for(int i = 2; i < stones.size(); i++) {
+            ans = max(ans, stones[i] - stones[i - 2]);
+        }
+        return ans;
+    }
+};
+
+// Golang 
+func maxJump(stones []int) int {
+    var ans int = stones[1] - stones[0]
+    for i := 2; i < len(stones); i++ {
+        if stones[i] - stones[i - 2] > ans {
+            ans = stones[i] - stones[i - 2]
+        }
+    }
+    return ans
+}
