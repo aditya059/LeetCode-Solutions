@@ -1,0 +1,47 @@
+// C++
+class Solution {
+public:
+    int minPathCost(vector<vector<int>>& grid, vector<vector<int>>& moveCost) {
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<int>> DP(m, vector<int>(n, INT_MAX));
+        for(int i = 0; i < n; i++) DP[0][i] = grid[0][i];
+        for(int i = 1; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                for(int k = 0; k < n; k++) {
+                    DP[i][j] = min(DP[i][j], DP[i - 1][k] + grid[i][j] + moveCost[grid[i - 1][k]][j]);
+                }
+            }
+        }
+        return *min_element(DP[m - 1].begin(), DP[m - 1].end());
+    }
+};
+
+
+// Golang
+func min(a, b int) int {
+    if a < b {return a}
+    return b
+}
+
+func minPathCost(grid [][]int, moveCost [][]int) int {
+    var m, n int = len(grid), len(grid[0])
+    DP := make([][]int, m)
+    DP[0] = make([]int, n)
+    for i := 0; i < n; i++ {
+        DP[0][i] = grid[0][i]
+    }
+    for i := 1; i < m; i++ {
+        DP[i] = make([]int, n)
+        for j := 0; j < n; j++ {
+            DP[i][j] = math.MaxInt
+            for k := 0; k < n; k++ {
+                DP[i][j] = min(DP[i][j], DP[i - 1][k] + grid[i][j] + moveCost[grid[i - 1][k]][j])
+            }
+        }
+    }
+    var ans int = math.MaxInt
+    for i := 0; i < n; i++ {
+        ans = min(ans, DP[m - 1][i])
+    }
+    return ans
+}
