@@ -1,0 +1,62 @@
+//------------------------------------------------------
+// Greedy
+//------------------------------------------------------
+// C++
+class Solution {
+public:
+    int minimumNumbers(int num, int k) {
+        if(num == 0) return 0;
+        if(k == 0 && num % 10 != 0) return -1;
+        for(int i = 1; i * k <= num; i++) {
+            if((num - i * k) % 10 == 0) return i;
+        }
+        return -1;
+    }
+};
+
+// Golang
+func minimumNumbers(num int, k int) int {
+    if num == 0 {return 0}
+    if k == 0 && num % 10 != 0 {return -1}
+    for i := 1; i * k <= num; i++ {
+        if (num - i * k) % 10 == 0 {return i}
+    }
+    return -1
+}
+
+
+
+//------------------------------------------------------
+// DP
+//------------------------------------------------------
+// C++
+class Solution {
+public:
+    int minimumNumbers(int num, int k) {
+        vector<int> DP(num + 1, 1e9);
+        DP[0] = 0;
+        for(int i = k; i <= num; i += 10) {
+            for(int j = i; j <= num; j++) {
+                DP[j] = min(DP[j], DP[j - i] + 1);
+            }
+        }
+        return DP[num] == 1e9? -1: DP[num];
+    }
+};
+
+
+// Golang
+func minimumNumbers(num int, k int) int {
+    DP := make([]int, num + 1) 
+    for i := 0; i <= num; i++ {DP[i] = 1e9}
+    DP[0] = 0
+    for i := k; i <= num; i += 10 {
+        for j := i; j <= num; j++ {
+            if DP[j - i] + 1 < DP[j] {
+                DP[j] = DP[j - i] + 1
+            }
+        }
+    }
+    if DP[num] == 1e9 {return -1}
+    return DP[num]
+}
