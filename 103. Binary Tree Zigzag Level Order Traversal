@@ -1,0 +1,88 @@
+// C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        vector<vector<int>> ans;
+        if(root == nullptr)
+            return ans;
+        queue<TreeNode*> Queue;
+    	Queue.push(root);
+        vector<int> level;
+    	int flag = 0;
+    	while(!Queue.empty()) {
+    	    int n = Queue.size();
+    	    for(int i = 0; i < n; i++) {
+    	        TreeNode *temp = Queue.front();
+    	        Queue.pop();
+    	        level.push_back(temp -> val);
+    	        if(temp -> left) Queue.push(temp -> left);
+    	        if(temp -> right) Queue.push(temp -> right);
+    	    }
+    	    if(flag == 1)
+    	        reverse(level.begin(), level.end());
+            ans.push_back(level);
+            level.clear();
+    	    flag = 1 - flag;
+    	}
+    	return ans;
+    }
+};
+
+----------------------------------------------------------------------------
+
+// Golang
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func reverse(nums []int) {
+    for i, j := 0, len(nums) - 1; i < j; i, j = i + 1, j - 1 {
+        nums[i], nums[j] = nums[j], nums[i]
+    }
+}
+
+func zigzagLevelOrder(root *TreeNode) [][]int {
+    ans := [][]int{}
+    if root == nil {
+        return ans
+    }
+    Queue := []*TreeNode{}
+    Queue = append(Queue, root)
+    var flag bool = false
+    for len(Queue) > 0 {
+        level := []int{}
+        var n int = len(Queue)
+        for i := 0; i < n; i++ {
+            temp := Queue[0]
+            Queue = Queue[1:]
+            level = append(level, temp.Val)
+            if temp.Left != nil {
+                Queue = append(Queue, temp.Left)
+            }
+            if temp.Right != nil {
+                Queue = append(Queue, temp.Right)
+            }
+        }
+        if flag {
+            reverse(level)
+        }
+        ans = append(ans, level)
+        flag = !flag
+    }
+    return ans
+}
