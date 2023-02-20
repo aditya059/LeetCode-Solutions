@@ -1,0 +1,40 @@
+// C++
+class Solution {
+public:
+    int maximumSum(vector<int>& nums) {
+        int ans = -1;
+        unordered_map<int, int> Map;
+        for(int num: nums) {
+            int digitSum = 0;
+            for(int i = num; i > 0; i /= 10) {
+                digitSum += i % 10; 
+            }
+            if(Map.find(digitSum) != Map.end()) ans = max(ans, Map[digitSum] + num);
+            Map[digitSum] = max(num, Map[digitSum]);
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func max(a, b int) int {
+    if a > b {return a}
+    return b
+}
+
+func maximumSum(nums []int) int {
+    var ans int = -1
+    Map := make(map[int]int)
+    for _, num := range nums {
+        digitSum := 0
+        for i := num; i > 0; i /= 10 {
+            digitSum += i % 10 
+        }
+        if val, ok := Map[digitSum]; ok {
+            ans = max(ans, val + num)
+        }
+        Map[digitSum] = max(num, Map[digitSum])
+    }
+    return ans
+}
