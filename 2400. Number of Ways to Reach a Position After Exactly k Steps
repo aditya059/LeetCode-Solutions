@@ -1,0 +1,26 @@
+class Solution {
+    const int MOD = 1e9 + 7;
+    int fact(int n) {
+        long f = 1;
+        for(int i = 1; i <= n; i++) {
+            f = (f * i) % MOD;
+        }
+        return f;
+    }
+    int fastExp(int x, int n) {
+        if(n == 0) return 1;
+        long y = fastExp(x, n / 2);
+        if(n % 2) 
+            return (x * ((y * y) % MOD)) % MOD;
+        return (y * y) % MOD;
+    }
+public:
+    int numberOfWays(int startPos, int endPos, int k) {
+        int diff = endPos - startPos;
+        int sum = k + diff;
+        if(k < diff || sum % 2) return 0;
+        int x = (diff + k) / 2;
+        int y = k - x; 
+        return (fact(x + y) * 1L * fastExp((fact(x) * 1L * fact(y)) % MOD, MOD - 2)) % MOD;
+    }
+};
