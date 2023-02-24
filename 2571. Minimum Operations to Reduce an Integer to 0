@@ -1,0 +1,42 @@
+// C++
+class Solution {
+public:
+    int minOperations(int n) {
+        int len = 0, ans = 0;
+        while(n) {
+            if(n & 1) {
+                len++;
+            } else {
+                if(len) ans++;
+                len = len > 1;
+            }
+            n >>= 1;
+        }
+        if(len) ans += (len > 1) + 1;
+        return ans;
+    }
+};
+
+
+// Golang
+func minOperations(n int) int {
+    var len, ans int = 0, 0
+    for n > 0 {
+        if n & 1 == 1 {
+            len++
+        } else {
+            if len > 0 {ans++}
+            if len > 1 {
+                len = 1
+            } else {
+                len = 0
+            }
+        }
+        n >>= 1
+    }
+    if len > 0 {
+        if len > 1 {ans++}
+        ans++
+    }
+    return ans
+}
