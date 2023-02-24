@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int minimumDeviation(vector<int>& nums) {
+        set<int> Set;
+        for(int num: nums) Set.insert(num);
+        int ans = *Set.rbegin() - *Set.begin();
+        while(*Set.begin() % 2 == 1) {
+            Set.insert(*Set.begin() * 2);
+            Set.erase(Set.begin());
+            ans = min(ans, *Set.rbegin() - *Set.begin());
+        }
+        while(*Set.rbegin() % 2 == 0) {
+            Set.insert(*Set.rbegin() / 2);
+            Set.erase(--Set.end());
+            ans = min(ans, *Set.rbegin() - *Set.begin());
+        }
+        return ans;
+    }
+};
