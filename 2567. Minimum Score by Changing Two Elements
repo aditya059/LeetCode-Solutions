@@ -1,0 +1,30 @@
+// C++
+class Solution {
+public:
+    int minimizeSum(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        int ans = INT_MAX;
+        int n = nums.size();
+        for(int i = n - 3; i < n; i++) {
+            ans = min(ans, nums[i] - nums[i - n + 3]);
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func min(a, b int) int {
+    if a < b {return a}
+    return b
+}
+
+func minimizeSum(nums []int) int {
+    sort.Ints(nums)
+    var ans int = math.MaxInt
+    var n int = len(nums)
+    for i := n - 3; i < n; i++ {
+        ans = min(ans, nums[i] - nums[i - n + 3])
+    }
+    return ans
+}
