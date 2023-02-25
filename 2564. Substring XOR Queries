@@ -1,0 +1,53 @@
+// C++
+class Solution {
+public:
+    vector<vector<int>> substringXorQueries(string s, vector<vector<int>>& queries) {
+        int n = s.length();
+        unordered_map<int, vector<int>> Map;
+        for(int i = 0; i < n; i++) {
+            int val = 0;
+            for(int j = 0; j <= 30; j++) {
+                if(i + j >= s.length()) continue;
+                val = val * 2 + (s[i + j] - '0'); 
+                if(Map.find(val) == Map.end() || j < Map[val][1] - Map[val][0])
+                    Map[val] = {i, i + j};
+            }
+        }
+        vector<vector<int>> ans;
+        for(vector<int> query: queries) {
+            int target = query[0] xor query[1];
+            if(Map.find(target) == Map.end()) 
+                ans.push_back({-1, -1});
+            else
+                ans.push_back(Map[target]);
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func substringXorQueries(s string, queries [][]int) [][]int {
+    var n int = len(s)
+    Map := make(map[int][]int)
+    for i := 0; i < n; i++ {
+        var key int = 0
+        for j := 0; j <= 30; j++ {
+            if i + j >= n {continue}
+            key = key * 2 + int(s[i + j] - '0') 
+            if val, ok := Map[key]; !ok || j < val[1] - val[0] {
+                Map[key] = []int{i, i + j}
+            }  
+        }
+    }
+    ans := [][]int{}
+    for _, query := range queries {
+        var target int = query[0] ^ query[1]
+        if val, ok := Map[target]; ok {
+            ans = append(ans, val)
+        } else {
+            ans = append(ans, []int{-1, -1})
+        }
+    }
+    return ans
+}
