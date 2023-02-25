@@ -1,0 +1,43 @@
+// C++
+class Solution {
+public:
+    int takeCharacters(string s, int k) {
+        int freq[3] = {0};
+        int n = s.length();
+        int ans = INT_MAX;
+        for(char ch: s) freq[ch - 'a']++;
+        if(freq[0] < k || freq[1] < k || freq[2] < k) return -1;
+        for(int i = 0, j = 0; i < n; i++) {
+            while(j <= n && freq[0] >= k && freq[1] >= k && freq[2] >= k) {
+                ans = min(ans, i + n - j);
+                if(j < n) freq[s[j] - 'a']--;
+                j++;
+            }
+            freq[s[i] - 'a']++;
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func takeCharacters(s string, k int) int {
+    freq := make([]int, 3)
+    var n int = len(s)
+    var ans int = math.MaxInt
+    for _, ch := range s {freq[ch - 'a']++}
+    if freq[0] < k || freq[1] < k || freq[2] < k {return -1}
+    for i, j := 0, 0; i < n; i++ {
+        for j <= n && freq[0] >= k && freq[1] >= k && freq[2] >= k {
+            if i + n - j < ans {
+                ans = i + n - j
+            }
+            if j < n {
+                freq[s[j] - 'a']--
+            }
+            j++
+        }
+        freq[s[i] - 'a']++
+    }
+    return ans
+}
