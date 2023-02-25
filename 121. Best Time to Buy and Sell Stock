@@ -1,3 +1,4 @@
+// C++
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
@@ -10,3 +11,19 @@ public:
         return maxProfit;
     }
 };
+
+
+// Golang
+func maxProfit(prices []int) int {
+    var maxProfit int = 0
+    var minPrice int = math.MaxInt
+    for i := 0; i < len(prices); i++ {
+        if prices[i] < minPrice {
+            minPrice = prices[i]
+        }
+        if prices[i] - minPrice > maxProfit {
+            maxProfit = prices[i] - minPrice
+        }
+    }
+    return maxProfit
+}
