@@ -1,0 +1,42 @@
+// SC = O(mn)
+class Solution {
+public:
+    int minDistance(string s, string t) {
+        vector<vector<int>> DP(s.length() + 1, vector<int>(t.length() + 1, INT_MAX));
+        iota(DP[0].begin(), DP[0].end(), 0);
+        for(int i = 0; i <= s.length(); i++) {
+            DP[i][0] = i;
+        }
+        for(int i = 0; i < s.length(); i++) {
+            for(int j = 0; j < t.length(); j++) {
+                if(s[i] == t[j])
+                    DP[i + 1][j + 1] = DP[i][j];
+                else
+                    DP[i + 1][j + 1] = 1 + min(min(DP[i][j], DP[i][j + 1]), DP[i + 1][j]); 
+            }
+        }
+        return DP[s.length()][t.length()];
+    }
+};
+
+OR
+
+// SC = O(n)
+class Solution {
+public:
+    int minDistance(string s, string t) {
+        vector<vector<int>> DP(2, vector<int>(t.length() + 1, INT_MAX));
+        iota(DP[0].begin(), DP[0].end(), 0);
+        DP[0][0] = 0;
+        for(int i = 0; i < s.length(); i++) {
+            DP[(i + 1) % 2][0] = i + 1;
+            for(int j = 0; j < t.length(); j++) {
+                if(s[i] == t[j])
+                    DP[(i + 1) % 2][j + 1] = DP[i % 2][j];
+                else
+                    DP[(i + 1) % 2][j + 1] = 1 + min(min(DP[i % 2][j], DP[i % 2][j + 1]), DP[(i + 1) %2][j]); 
+            }
+        }
+        return DP[s.length() % 2][t.length()];
+    }
+};
