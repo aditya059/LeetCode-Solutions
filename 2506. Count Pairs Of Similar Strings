@@ -1,0 +1,33 @@
+// C++
+class Solution {
+public:
+    int similarPairs(vector<string>& words) {
+        int ans = 0;
+        unordered_map<int, int> Map;
+        for(string word: words) {
+            int key = 0;
+            for(char ch: word) {
+                key |= 1 << (ch - 'a');
+            }
+            ans += Map[key];
+            Map[key]++;
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func similarPairs(words []string) int {
+    var ans int = 0
+    Map := make(map[int]int)
+    for _, word := range words {
+        key := 0
+        for _, ch := range word {
+            key |= 1 << (ch - 'a')
+        }
+        ans += Map[key]
+        Map[key]++
+    }
+    return ans
+}
