@@ -40,3 +40,31 @@ public:
         return DP[s.length() % 2][t.length()];
     }
 };
+
+------------------------------------------------------------------------------------
+// Golang - SC = O(n)
+func min(a, b int) int {
+    if a < b {return a}
+    return b
+}
+
+func minDistance(s string, t string) int {
+    DP := make([][]int, 2)
+    DP[0] = make([]int, len(t) + 1)
+    DP[1] = make([]int, len(t) + 1)
+    for i := 0; i <= len(t); i++ {
+        DP[0][i] = i
+        DP[1][i] = math.MaxInt
+    }
+    for i := 0; i < len(s); i++ {
+        DP[(i + 1) % 2][0] = i + 1
+        for j := 0; j < len(t); j++ {
+            if s[i] == t[j] {
+                DP[(i + 1) % 2][j + 1] = DP[i % 2][j]
+            } else {
+                DP[(i + 1) % 2][j + 1] = 1 + min(min(DP[i % 2][j], DP[i % 2][j + 1]), DP[(i + 1) %2][j])
+            }
+        }
+    }
+    return DP[len(s) % 2][len(t)]
+}
