@@ -1,0 +1,36 @@
+// C++
+class Solution {
+public:
+    int closetTarget(vector<string>& words, string target, int startIndex) {
+        int ans = INT_MAX;
+        int n = words.size();
+        for(int i = 0; i < n; i++) {
+            if(words[i] == target)
+                ans = min(min(abs(i - startIndex), min(n + i - startIndex, n - i + startIndex)), ans);
+        }
+        return ans == INT_MAX? -1: ans;
+    }
+};
+
+// Golang
+func min(a, b int) int {
+    if a < b {return a}
+    return b
+}
+
+func abs(a int) int {
+    if a < 0 {return -a}
+    return a
+}
+
+func closetTarget(words []string, target string, startIndex int) int {
+    var ans int = math.MaxInt
+    var n int = len(words)
+    for i := 0; i < n; i++ {
+        if words[i] == target {
+            ans = min(min(abs(i - startIndex), min(n + i - startIndex, n - i + startIndex)), ans)
+        }
+    }
+    if ans == math.MaxInt {return -1}
+    return ans
+}
