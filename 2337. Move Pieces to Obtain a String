@@ -1,0 +1,34 @@
+// C++
+class Solution {
+public:
+    bool canChange(string start, string target) {
+        int n = start.size(), i = 0, j = 0;
+        while(i < n || j < n) {
+            while(i < n && target[i] == '_') i++;
+            while(j < n && start[j] == '_') j++;
+            if(i == n || j == n) break;
+            if(start[j] != target[i]) break;
+            if(start[j] == 'L' && j < i) break;
+            if(start[j] == 'R' && j > i) break;
+            i++; j++;
+        }
+        return i == n && j == n;
+    }
+};
+
+
+// Golang
+func canChange(start string, target string) bool {
+    var n, i, j int = len(start), 0, 0
+    for i < n || j < n {
+        for i < n && target[i] == '_' {i++}
+        for j < n && start[j] == '_' {j++}
+        if i == n || j == n {break}
+        if start[j] != target[i] {break}
+        if start[j] == 'L' && j < i {break}
+        if start[j] == 'R' && j > i {break}
+        i++ 
+        j++
+    }
+    return i == n && j == n
+}
