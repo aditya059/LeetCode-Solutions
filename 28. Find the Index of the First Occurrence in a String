@@ -1,0 +1,48 @@
+// C++
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        const int MOD = 1e9 + 7;
+        int n = haystack.size();
+        int k = needle.size();
+        if(k > n) return -1; 
+        long target = 0, val = 0, power = 1;
+        for(int i = 0; i < k; i++) {
+            target = (target * 26 + (needle[i] - 'a')) % MOD;
+            val = (val * 26 + (haystack[i] - 'a')) % MOD;
+            if(i < k - 1)
+                power = (power * 26) % MOD;
+        }
+        if(val == target && needle == haystack.substr(0, k)) return 0;
+        for(int i = k; i < n; i++) {
+            val = (val - (haystack[i - k] - 'a') * power) % MOD;
+            val = (val * 26 + (haystack[i] - 'a')) % MOD;
+            if((val + MOD) % MOD == target && needle == haystack.substr(i - k + 1, k)) return i - k + 1;
+        }
+        return -1;
+    }
+};
+
+
+// Golang
+func strStr(haystack string, needle string) int {
+    const mod int = 1e9 + 7
+    var n int = len(haystack)
+    var k int = len(needle)
+    if k > n {return -1}
+    var target, val, power int = 0, 0, 1
+    for i := 0; i < k; i++ {
+        target = (target * 26 + int(needle[i] - 'a')) % mod
+        val = (val * 26 + int(haystack[i] - 'a')) % mod
+        if i < k - 1 {
+            power = (power * 26) % mod
+        }
+    }
+    if val == target && needle == haystack[0: k] {return 0}
+    for i := k; i < n; i++ {
+        val = (val - int(haystack[i - k] - 'a') * power) % mod
+        val = (val * 26 + int(haystack[i] - 'a')) % mod
+        if (val + mod) % mod == target && needle == haystack[i - k + 1: i + 1] {return i - k + 1}
+    }
+    return -1
+}
