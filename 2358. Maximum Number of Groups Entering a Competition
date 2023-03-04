@@ -1,0 +1,13 @@
+// C++
+class Solution {
+public:
+    int maximumGroups(vector<int>& grades) {
+        return (sqrt(1 + 8 * grades.size()) - 1) / 2;
+    }
+};
+
+
+// Golang
+func maximumGroups(grades []int) int {
+    return int((math.Sqrt(float64(1 + 8 * len(grades))) - 1.0) / 2.0)
+}
