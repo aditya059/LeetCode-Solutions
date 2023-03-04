@@ -1,0 +1,39 @@
+// C++
+class Solution {
+public:
+    long long countSubarrays(vector<int>& nums, int minK, int maxK) {
+        long long ans = 0;
+        int minNumIndex = -1, maxNumIndex = -1, badNumIndex = -1;
+        for(int i = 0; i < nums.size(); i++) {
+            if(nums[i] < minK || nums[i] > maxK) badNumIndex = i;
+            if(nums[i] == maxK) maxNumIndex = i;
+            if(nums[i] == minK) minNumIndex = i;
+            ans += max(0, min(minNumIndex, maxNumIndex) - badNumIndex);
+        }
+        return ans;
+    }
+};
+
+-----------------------------------------------------------------------------
+// Golang
+func min(a, b int) int {
+    if a < b {return a}
+    return b
+}
+
+func max(a, b int) int {
+    if a > b {return a}
+    return b
+}
+
+func countSubarrays(nums []int, minK int, maxK int) int64 {
+    var ans int64 = 0
+    var minNumIndex, maxNumIndex, badNumIndex int = -1, -1, -1
+    for i, num := range nums {
+        if num < minK || num > maxK {badNumIndex = i}
+        if nums[i] == maxK {maxNumIndex = i}
+        if nums[i] == minK {minNumIndex = i}
+        ans += int64(max(0, min(minNumIndex, maxNumIndex) - badNumIndex))
+    }
+    return ans
+}
