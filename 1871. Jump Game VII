@@ -1,0 +1,39 @@
+// C++
+class Solution {
+public:
+    bool canReach(string s, int minJump, int maxJump) {
+        int n = s.length();
+        vector<int> prefixSum(n);
+        prefixSum[0] = 1;
+        for(int i = 1; i < n; i++) {
+            if(s[i] == '0') {
+                int windowSum = (i >= minJump? prefixSum[i - minJump]: 0) - (i > maxJump? prefixSum[i - maxJump - 1]: 0);
+                if(windowSum) prefixSum[i]++;
+            }
+            prefixSum[i] += prefixSum[i - 1];
+        }
+        return prefixSum[n - 1] - prefixSum[n - 2];
+    }
+};
+
+
+// Golang
+func canReach(s string, minJump int, maxJump int) bool {
+    n := len(s)
+    prefixSum := make([]int, n)
+    prefixSum[0] = 1
+    for i := 1; i < n; i++ {
+        if s[i] == '0' {
+            windowSum := 0
+            if i >= minJump {
+                windowSum += prefixSum[i - minJump]
+            } 
+            if i > maxJump {
+                windowSum -= prefixSum[i - maxJump - 1]
+            } 
+            if windowSum > 0 {prefixSum[i]++}
+        }
+        prefixSum[i] += prefixSum[i - 1]
+    }
+    return prefixSum[n - 1] - prefixSum[n - 2] > 0
+}
