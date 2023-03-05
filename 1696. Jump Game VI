@@ -1,4 +1,4 @@
-// C++ 
+// Using Multiset
 class Solution {
 public:
     int maxResult(vector<int>& nums, int k) {
@@ -9,6 +9,23 @@ public:
             nums[i] += *Set.rbegin();
             if(i >= k) Set.erase(Set.find(nums[i - k]));
             Set.insert(nums[i]);
+        }
+        return nums[n - 1];
+    }
+};
+
+
+// Using Priority Queue
+class Solution {
+public:
+    int maxResult(vector<int>& nums, int k) {
+        int n = nums.size();
+        priority_queue<pair<int, int>> PQ;
+        PQ.push({nums[0], 0});
+        for(int i = 1; i < n; i++) {
+            while(PQ.top().second < i - k) PQ.pop();
+            nums[i] += PQ.top().first;
+            PQ.push({nums[i], i});
         }
         return nums[n - 1];
     }
