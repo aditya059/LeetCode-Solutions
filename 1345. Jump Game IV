@@ -1,0 +1,79 @@
+// C++
+class Solution {
+public:
+    int minJumps(vector<int>& arr) {
+        int n = arr.size();
+        unordered_map<int, vector<int>> Map;
+        for(int i = 0; i < n; i++) {
+            Map[arr[i]].push_back(i);
+        }
+        vector<bool> visited(n, false);
+        vector<int> currLayer;
+        currLayer.push_back(0);
+        visited[0] = true;
+        int ans = -1;
+        while(!currLayer.empty()) {
+            ans++;
+            vector<int> nextLayer;
+            for(int currNode: currLayer) {
+                if(currNode == n - 1) return ans;
+                for(int childNode: Map[arr[currNode]]) {
+                    if(!visited[childNode]) {
+                        visited[childNode] = true;
+                        nextLayer.push_back(childNode);
+                    }
+                }
+                Map[arr[currNode]].clear();
+                if(currNode < n - 1 && !visited[currNode + 1]) {
+                    visited[currNode + 1] = true;
+                    nextLayer.push_back(currNode + 1);
+                }
+                if(currNode > 0 && !visited[currNode - 1]) {
+                    visited[currNode - 1] = true;
+                    nextLayer.push_back(currNode - 1);
+                }
+            }
+            currLayer = nextLayer;
+        }
+        return -1;
+    }
+};
+
+------------------------------------------------------------------------------
+
+// Golang
+func minJumps(arr []int) int {
+    n := len(arr)
+    Map := make(map[int][]int)
+    for i, num := range arr {
+        Map[num] = append(Map[num], i)
+    }
+    visited := make([]bool, n)
+    currLayer := []int{0}
+    visited[0] = true
+    var ans int = -1
+    for len(currLayer) > 0 {
+        ans++
+        nextLayer := []int{}
+        for _, currNode := range currLayer {
+            if currNode == n - 1 {return ans}
+            for _, childNode := range Map[arr[currNode]] {
+                if !visited[childNode] {
+                    visited[childNode] = true
+                    nextLayer = append(nextLayer, childNode)
+                }
+            }
+            delete(Map, arr[currNode])
+            if currNode < n - 1 && !visited[currNode + 1] {
+                visited[currNode + 1] = true
+                nextLayer = append(nextLayer, currNode + 1)
+            }
+            if currNode > 0 && !visited[currNode - 1] {
+                visited[currNode - 1] = true
+                nextLayer = append(nextLayer, currNode - 1)
+            }
+        }
+        currLayer = nextLayer
+    }
+    return -1
+}
