@@ -1,0 +1,15 @@
+// C++ 
+class Solution {
+public:
+    int maxResult(vector<int>& nums, int k) {
+        int n = nums.size();
+        multiset<int> Set;
+        Set.insert(nums[0]);
+        for(int i = 1; i < n; i++) {
+            nums[i] += *Set.rbegin();
+            if(i >= k) Set.erase(Set.find(nums[i - k]));
+            Set.insert(nums[i]);
+        }
+        return nums[n - 1];
+    }
+};
