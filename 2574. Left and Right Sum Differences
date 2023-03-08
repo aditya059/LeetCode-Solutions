@@ -1,0 +1,37 @@
+// C++
+class Solution {
+public:
+    vector<int> leftRigthDifference(vector<int>& nums) {
+        int rightSum = accumulate(nums.begin(), nums.end(), 0);
+        int leftSum = 0;
+        for(int i = 0; i < nums.size(); i++) {
+            rightSum -= nums[i];
+            int val = abs(rightSum - leftSum);
+            leftSum += nums[i];
+            nums[i] = val;
+        }
+        return nums;
+    }
+};
+
+
+
+// Golang
+func abs(a int) int {
+    if a < 0 {return -a}
+    return a
+}
+
+func leftRigthDifference(nums []int) []int {
+    var leftSum, rightSum int = 0, 0
+    for _, num := range nums {
+        rightSum += num
+    }
+    for i := 0; i < len(nums); i++ {
+        rightSum -= nums[i]
+        val := abs(rightSum - leftSum)
+        leftSum += nums[i]
+        nums[i] = val
+    }
+    return nums
+}
