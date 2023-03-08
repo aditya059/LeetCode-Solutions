@@ -1,0 +1,61 @@
+// C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+    void dfs(TreeNode* root, int level, vector<long long> &levelSum) {
+        if(!root) return;
+        if(level >= levelSum.size()) levelSum.push_back(0);
+        levelSum[level] += root -> val;
+        dfs(root -> left, level + 1, levelSum);
+        dfs(root -> right, level + 1, levelSum);
+    }
+public:
+    long long kthLargestLevelSum(TreeNode* root, int k) {
+        vector<long long> levelSum;
+        dfs(root, 0, levelSum);
+        sort(levelSum.begin(), levelSum.end(), greater<long long>());
+        if(k > levelSum.size()) return -1;
+        return levelSum[k - 1]; 
+    }
+};
+
+-----------------------------------------------
+
+// Golang
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+func dfs(root *TreeNode, level int, levelSum *[]int64) {
+    if root == nil {return}
+    if level >= len(*levelSum) {
+        *levelSum = append(*levelSum, 0)
+    }
+    (*levelSum)[level] += int64(root.Val)
+    dfs(root.Left, level + 1, levelSum)
+    dfs(root.Right, level + 1, levelSum)
+}
+
+func kthLargestLevelSum(root *TreeNode, k int) int64 {
+    levelSum := []int64{}
+    dfs(root, 0, &levelSum)
+    sort.Slice(levelSum, func(i, j int) bool {
+        return levelSum[i] > levelSum[j]
+    })
+    if k > len(levelSum) {return -1}
+    return levelSum[k - 1]
+}
