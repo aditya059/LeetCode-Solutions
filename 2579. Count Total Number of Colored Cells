@@ -1,0 +1,13 @@
+// C++
+class Solution {
+public:
+    long long coloredCells(int n) {
+        return 2L * n * (n - 1) + 1; 
+    }
+};
+
+
+// Golang
+func coloredCells(n int) int64 {
+    return int64(2 * n * (n - 1) + 1);
+}
