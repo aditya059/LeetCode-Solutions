@@ -1,0 +1,52 @@
+// C++
+class Solution {
+    bool check(vector<int> &piles, int mid, int h) {
+        for(int pile: piles) {
+            h -= ceil(pile * 1.0 / mid);
+        }
+        return h >= 0;
+    }
+public:
+    int minEatingSpeed(vector<int>& piles, int h) {
+        int low = 1;
+        int high = 1e9;
+        int ans = high;
+        while(low <= high) {
+            int mid = low + (high - low) / 2;
+            if(check(piles, mid, h)) {
+                ans = min(ans, mid);
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return ans;
+    }
+};
+
+-----------------------------------------------------------------
+// Golang
+func check(piles []int, mid, h int) bool {
+    for _, pile := range piles {
+        h -= int(math.Ceil(float64(pile) / float64(mid)))
+    }
+    return h >= 0
+}
+
+func minEatingSpeed(piles []int, h int) int {
+    var low int = 1
+    var high int = 1e9
+    var ans int = high
+    for low <= high {
+        var mid int = low + (high - low) / 2
+        if check(piles, mid, h) {
+            if mid < ans {
+                ans = mid
+            }
+            high = mid - 1
+        } else {
+            low = mid + 1
+        }
+    }
+    return ans
+}
