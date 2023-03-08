@@ -1,0 +1,40 @@
+// C++
+class Solution {
+public:
+    int findKthPositive(vector<int>& arr, int k) {
+        int low = 0;
+        int high = arr.size() - 1;
+        int index = -1;
+        while(low <= high) {
+            int mid = low + (high - low) / 2;
+            int missing = arr[mid] - mid - 1;
+            if(missing >= k) high = mid - 1;
+            else {
+                index = max(index, mid);
+                low = mid + 1;
+            }
+        }
+        return k + index + 1; 
+    }
+};
+
+
+// Golang
+func findKthPositive(arr []int, k int) int {
+    var low, high, index = 0, len(arr) - 1, -1
+    for low <= high {
+        mid := low + (high - low) / 2
+        missing := arr[mid] - mid - 1
+        if missing >= k {
+            high = mid - 1
+        } else {
+            if mid > index {
+                index = mid
+            }
+            low = mid + 1
+        }
+    }
+    return k + index + 1 
+}
+
+
