@@ -6,28 +6,26 @@ public:
         for(char ch: num) {
             freq[ch - '0']++;
         }
-        string suffix = "";
+        string prefix = "";
         int centre = -1;
         for(int i = 9; i >= 0; i--) {
             while(freq[i] > 1) {
-                suffix += ('0' + i);
+                prefix += ('0' + i);
                 freq[i] -= 2;
             }
             if(freq[i] == 1) centre = max(centre, i);
         }
-        string prefix = suffix; 
-        reverse(suffix.begin(), suffix.end());
         string middle = "";
         if(centre != -1) middle = '0' + centre;
         if(prefix[0] == '0') {
             if(centre == -1) return "0";
             return middle;
         }
-        return prefix + middle + suffix;
+        return prefix + middle + string(rbegin(prefix), rend(prefix));
     }
 };
 
----------------------------------------------------------------
+------------------------------------------------
 
 // Golang
 func reverse(s string) string {
@@ -54,12 +52,11 @@ func largestPalindromic(num string) string {
             centre = i
         }
     }
-    suffix := reverse(prefix)
     middle := ""
     if centre != -1 {middle = string('0' + centre)}
     if len(prefix) > 0 && prefix[0] == '0' {
         if centre == -1 {return "0"}
         return middle
     }
-    return prefix + middle + suffix
+    return prefix + middle + reverse(prefix)
 }
