@@ -1,0 +1,61 @@
+class Solution {
+public:
+    vector<int> smallestTrimmedNumbers(vector<string>& nums, vector<vector<int>>& queries) {
+        int n = nums.size();
+        vector<pair<string, int>> num_index(n);
+        for(int i = 0; i < n; i++) {
+            num_index[i] = {nums[i], i};
+        }
+        int d = nums[0].length();
+        vector<int> ans(queries.size());
+        for(int i = 0; i < d; i++) {
+            vector<pair<string, int>> queues[10];
+            for(int j = 0; j < n; j++) {
+                queues[num_index[j].first[d - i - 1] - '0'].push_back(num_index[j]);
+            }
+            int p = 0;
+            for(int j = 0; j < 10; j++) {
+                for(pair<string, int> s: queues[j]) {
+                    num_index[p++] = s;
+                }
+            }
+            for(int j = 0; j < queries.size(); j++) {
+                if(i == queries[j][1] - 1)
+                    ans[j] = num_index[queries[j][0] - 1].second;
+            }
+        }
+        return ans;
+    }
+};
+
+
+OR
+
+// Space Optimized
+class Solution {
+public:
+    vector<int> smallestTrimmedNumbers(vector<string>& nums, vector<vector<int>>& queries) {
+        int n = nums.size();
+        int d = nums[0].length();
+        vector<int> index(n);
+        iota(index.begin(), index.end(), 0);
+        vector<int> ans(queries.size());
+        for(int i = 0; i < d; i++) {
+            vector<int> queues[10];
+            for(int j = 0; j < n; j++) {
+                queues[nums[index[j]][d - i - 1] - '0'].push_back(index[j]);
+            }
+            int p = 0;
+            for(int j = 0; j < 10; j++) {
+                for(int s: queues[j]) {
+                    index[p++] = s;
+                }
+            }
+            for(int j = 0; j < queries.size(); j++) {
+                if(i == queries[j][1] - 1)
+                    ans[j] = index[queries[j][0] - 1];
+            }
+        }
+        return ans;
+    }
+};
