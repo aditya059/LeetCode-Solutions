@@ -1,3 +1,4 @@
+// C++
 class Solution {
 public:
     vector<int> smallestTrimmedNumbers(vector<string>& nums, vector<vector<int>>& queries) {
@@ -27,7 +28,6 @@ public:
         return ans;
     }
 };
-
 
 OR
 
@@ -59,3 +59,36 @@ public:
         return ans;
     }
 };
+
+-------------------------------------------------------
+
+// Golang
+// Space Optimised
+func smallestTrimmedNumbers(nums []string, queries [][]int) []int {
+    n := len(nums)
+    d := len(nums[0])
+    index := make([]int, n)
+    for i := 0; i < n; i++ {
+        index[i] = i
+    }
+    ans := make([]int, len(queries))
+    for i := 0; i < d; i++ {
+        queues := make([][]int, 10)
+        for j := 0; j < n; j++ {
+            queues[nums[index[j]][d - i - 1] - '0'] = append(queues[nums[index[j]][d - i - 1] - '0'], index[j])
+        }
+        var p int = 0
+        for j := 0; j < 10; j++ {
+            for _, s := range queues[j] {
+                index[p] = s
+                p++
+            }
+        }
+        for j := 0; j < len(queries); j++ {
+            if i == queries[j][1] - 1 {
+                ans[j] = index[queries[j][0] - 1]
+            }
+        }
+    }
+    return ans
+}
