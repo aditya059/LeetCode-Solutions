@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        int freq[26] = {0};
+        int maxFreq = 0;
+        int countMaxFreq = 0;
+        for(int task: tasks) {
+            freq[task - 'A']++;
+            if(freq[task - 'A'] == maxFreq) 
+                countMaxFreq++;
+            if(freq[task - 'A'] > maxFreq) {
+                maxFreq = freq[task - 'A'];
+                countMaxFreq = 1;
+            }
+        }
+        return max((int)tasks.size(), (n + 1) * (maxFreq - 1) + countMaxFreq);
+    }
+};
+
+------------------------------------------------
+
+// Golang
+func leastInterval(tasks []byte, n int) int {
+    freq := make([]int, 26)
+    maxFreq := 0
+    countMaxFreq := 0
+    for _, task := range tasks {
+        freq[task - 'A']++
+        if freq[task - 'A'] == maxFreq {
+            countMaxFreq++
+        } 
+        if freq[task - 'A'] > maxFreq {
+            maxFreq = freq[task - 'A']
+            countMaxFreq = 1
+        }
+    }
+    ans := (n + 1) * (maxFreq - 1) + countMaxFreq
+    if len(tasks) > ans {ans = len(tasks)}
+    return ans
+}
