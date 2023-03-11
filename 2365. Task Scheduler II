@@ -1,0 +1,40 @@
+// C++
+class Solution {
+public:
+    long long taskSchedulerII(vector<int>& tasks, int space) {
+        long long pos = 0;
+        space++;
+        unordered_map<int, long long> Map;
+        for(int task: tasks) {
+            pos++;
+            if(Map.find(task) != Map.end()) Map[task] = max(Map[task] + space, pos);
+            else Map[task] = pos;
+            pos = max(pos, Map[task]);
+        }
+        return pos;
+    }
+};
+
+---------------------------------------------------
+
+// Golang
+func max(a, b int64) int64 {
+    if a > b {return a}
+    return b
+}
+
+func taskSchedulerII(tasks []int, space int) int64 {
+    var pos int64 = 0
+    space++
+    Map := make(map[int]int64)
+    for _, task := range tasks {
+        pos++
+        if val, ok := Map[task]; ok {
+            Map[task] = max(val + int64(space), pos)
+        } else {
+            Map[task] = pos
+        }
+        pos = max(pos, Map[task])
+    }
+    return pos
+}
