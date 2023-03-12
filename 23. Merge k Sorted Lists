@@ -74,3 +74,38 @@ public:
         return arr[0];
     }
 };
+
+----------------------------------------------------------------------------------------------
+
+// Golang
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+
+func merge(A, B *ListNode) *ListNode {
+    if A == nil {return B}
+    if B == nil {return A}
+    if A.Val <= B.Val {
+        A.Next = merge(A.Next, B)
+        return A
+    } else {
+        B.Next = merge(A, B.Next)
+        return B
+    }
+}
+
+func mergeKLists(lists []*ListNode) *ListNode {
+    length := len(lists)
+    if length == 0 {return nil}
+    for length > 1 {
+        for i := 0; i < length / 2; i++ {
+            lists[i] = merge(lists[i], lists[length - 1 - i])
+        }
+        length = (length + 1) / 2
+    }
+    return lists[0]
+}
