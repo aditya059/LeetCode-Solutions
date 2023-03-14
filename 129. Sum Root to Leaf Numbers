@@ -1,3 +1,6 @@
+//-----------------------------------------------------
+// C++
+//-----------------------------------------------------
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -27,3 +30,33 @@ public:
         return ans;
     }
 };
+
+
+//-----------------------------------------------------
+// Golang
+//-----------------------------------------------------
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+func compute(root *TreeNode, ans *int, temp int) {
+    if root == nil {return}
+    temp = temp * 10 + root.Val
+    if root.Left == nil && root.Right == nil {
+        *ans += temp
+    }
+    compute(root.Left, ans, temp)
+    compute(root.Right, ans, temp)
+    temp = (temp - root.Val) / 10
+}
+
+func sumNumbers(root *TreeNode) int {
+    var ans int = 0
+    compute(root, &ans, 0)
+    return ans
+}
