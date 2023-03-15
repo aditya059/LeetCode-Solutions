@@ -1,0 +1,29 @@
+// C++
+class Solution {
+public:
+    int maxScore(vector<int>& nums) {
+        sort(nums.begin(), nums.end(), greater<int>());
+        long sum = 0;
+        int count = 0;
+        for(int num: nums) {
+            sum += num;
+            count += sum > 0;
+        }
+        return count;
+    }
+};
+
+
+// Golang
+func maxScore(nums []int) int {
+    sort.Slice(nums, func(i, j int) bool {
+        return nums[i] > nums[j]
+    })
+    var sum int64 = 0
+    var count int = 0
+    for _, num := range nums {
+        sum += int64(num)
+        if sum > 0 {count++}
+    }
+    return count
+}
