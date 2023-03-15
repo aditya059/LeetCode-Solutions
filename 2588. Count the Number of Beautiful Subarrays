@@ -1,0 +1,30 @@
+// C++
+class Solution {
+public:
+    long long beautifulSubarrays(vector<int>& nums) {
+        long long ans = 0, currXor = 0;
+        unordered_map<int, int> Map;
+        Map[0] = 1;
+        for(int num: nums) {
+            currXor ^= num;
+            ans += Map[currXor];
+            Map[currXor]++;
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func beautifulSubarrays(nums []int) int64 {
+    var ans int64 = 0
+    var currXor int = 0
+    Map := make(map[int]int)
+    Map[0] = 1
+    for _, num := range nums {
+        currXor ^= num
+        ans += int64(Map[currXor])
+        Map[currXor]++
+    }
+    return ans
+}
