@@ -1,3 +1,6 @@
+//--------------------------------------------------------------
+// C++
+//--------------------------------------------------------------
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -30,3 +33,39 @@ public:
         return compute(postorder, Map, 0, inorder.size() - 1, rootIndex);
     }
 };
+
+
+//--------------------------------------------------------------
+// Golang
+//--------------------------------------------------------------
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+func compute(postorder []int, Map map[int]int, left, right int, rootIndex int) *TreeNode {
+    if left > right {return nil} 
+    p := Map[postorder[rootIndex]]
+    node := &TreeNode {
+        Val: postorder[rootIndex],
+        Left: nil,
+        Right: nil,
+    }
+    
+    node.Right = compute(postorder, Map, p + 1, right, rootIndex - 1)
+    node.Left = compute(postorder, Map, left, p - 1, rootIndex - 1)
+    return node
+}
+
+func buildTree(inorder []int, postorder []int) *TreeNode {
+    rootIndex := len(inorder) - 1
+    Map := make(map[int]int)
+    for i := 0; i < len(inorder); i++ {
+        Map[inorder[i]] = i
+    }
+    return compute(postorder, Map, 0, len(inorder) - 1, rootIndex)
+}    
