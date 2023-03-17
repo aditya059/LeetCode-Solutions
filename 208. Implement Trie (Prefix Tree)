@@ -1,3 +1,6 @@
+//----------------------------------------------------------
+// C++
+//----------------------------------------------------------
 class Trie {
 public:
     typedef struct TrieNode {
@@ -53,4 +56,80 @@ public:
  * obj->insert(word);
  * bool param_2 = obj->search(word);
  * bool param_3 = obj->startsWith(prefix);
+ */
+
+
+
+//----------------------------------------------------------------------------
+// Golang
+//----------------------------------------------------------------------------
+type TrieNode struct {
+    children []*TrieNode
+    endHere bool
+}
+
+
+type Trie struct {
+    root *TrieNode
+}
+
+
+func Constructor() Trie {
+    return Trie {
+        &TrieNode {
+            children: make([]*TrieNode, 26),
+            endHere: false,
+        },
+    }
+}
+
+
+func (this *Trie) Insert(word string)  {
+    ptr := this.root
+    for i := 0; i < len(word); i++ {
+        ch := word[i]
+        if ptr.children[ch - 'a'] == nil {
+            ptr.children[ch - 'a'] = &TrieNode {
+                children: make([]*TrieNode, 26),
+                endHere: false,
+            }
+        }
+        ptr = ptr.children[ch - 'a']
+    }
+    ptr.endHere = true
+}
+
+
+func (this *Trie) Search(word string) bool {
+    ptr := this.root
+    for i := 0; i < len(word); i++ {
+        ch := word[i]
+        if ptr.children[ch - 'a'] == nil {
+            return false
+        }
+        ptr = ptr.children[ch - 'a']
+    }
+    return ptr.endHere
+}
+
+
+func (this *Trie) StartsWith(prefix string) bool {
+    ptr := this.root
+    for i := 0; i < len(prefix); i++ {
+        ch := prefix[i]
+        if ptr.children[ch - 'a'] == nil {
+            return false
+        }
+        ptr = ptr.children[ch - 'a']
+    }
+    return true
+}
+
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.Insert(word);
+ * param_2 := obj.Search(word);
+ * param_3 := obj.StartsWith(prefix);
  */
