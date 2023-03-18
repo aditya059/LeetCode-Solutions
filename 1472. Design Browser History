@@ -1,0 +1,95 @@
+// C++
+class BrowserHistory {
+    vector<string> urls;
+    int end;
+    int index;
+public:
+    BrowserHistory(string homepage) {
+        urls.resize(5005);
+        urls[0] = homepage;
+        end = 0;
+        index = 0;
+    }
+    
+    void visit(string url) {
+        urls[++index] = url;
+        end = index;
+    }
+    
+    string back(int steps) {
+        while(steps > 0 && index > 0) {
+            index--;
+            steps--;
+        }
+        return urls[index];
+    }
+    
+    string forward(int steps) {
+        while(steps > 0 && index < end) {
+            index++;
+            steps--;
+        }
+        return urls[index];
+    }
+};
+
+/**
+ * Your BrowserHistory object will be instantiated and called as such:
+ * BrowserHistory* obj = new BrowserHistory(homepage);
+ * obj->visit(url);
+ * string param_2 = obj->back(steps);
+ * string param_3 = obj->forward(steps);
+ */
+
+//-------------------------------------------------------
+
+// Golang
+type BrowserHistory struct {
+    urls []string
+    end int
+    index int
+}
+
+
+func Constructor(homepage string) BrowserHistory {
+    var p BrowserHistory
+    p.urls = make([]string, 5005)
+    p.urls[0] = homepage
+    p.end = 0
+    p.index = 0
+    return p
+}
+
+
+func (this *BrowserHistory) Visit(url string)  {
+    this.index++
+    this.urls[this.index] = url
+    this.end = this.index
+}
+
+
+func (this *BrowserHistory) Back(steps int) string {
+    for steps > 0 && this.index > 0 {
+        this.index--
+        steps--
+    }
+    return this.urls[this.index]
+}
+
+
+func (this *BrowserHistory) Forward(steps int) string {
+    for steps > 0 && this.index < this.end {
+        this.index++
+        steps--
+    }
+    return this.urls[this.index]
+}
+
+
+/**
+ * Your BrowserHistory object will be instantiated and called as such:
+ * obj := Constructor(homepage);
+ * obj.Visit(url);
+ * param_2 := obj.Back(steps);
+ * param_3 := obj.Forward(steps);
+ */
