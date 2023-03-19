@@ -1,0 +1,27 @@
+// C++
+class Solution {
+public:
+    int maxSatisfaction(vector<int>& satisfaction) {
+        sort(satisfaction.begin(), satisfaction.end());
+        int sum = 0, ans = 0, val = 0;
+        for(int i = satisfaction.size() - 1; i >= 0; i--) {
+            sum += satisfaction[i];
+            val += sum;
+            ans = max(ans, val);
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func maxSatisfaction(satisfaction []int) int {
+    sort.Ints(satisfaction)
+    var sum, ans, val = 0, 0, 0
+    for i := len(satisfaction) - 1; i >= 0; i-- {
+        sum += satisfaction[i]
+        val += sum
+        if val > ans {ans = val}
+    }
+    return ans
+}
