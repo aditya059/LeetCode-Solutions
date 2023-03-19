@@ -38,3 +38,15 @@ func maximizeGreatness(nums []int) int {
     }      
     return ans
 }
+
+OR
+
+func maximizeGreatness(nums []int) int {
+    Map := make(map[int]int)
+    var maxFreq int = 0
+    for _, num := range nums {
+        Map[num]++
+        if Map[num] > maxFreq {maxFreq = Map[num]}
+    }      
+    return len(nums) - maxFreq
+}
