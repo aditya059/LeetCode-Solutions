@@ -1,0 +1,48 @@
+// C++
+class Solution {
+    bool check(vector<int>& ranks, long long cars, long long mid) {
+        for(int rank: ranks) {
+            cars -= floor(sqrt(mid * 1.0 / rank));
+        }
+        return cars <= 0;
+    }
+public:
+    long long repairCars(vector<int>& ranks, int cars) {
+        long long low = 1, high = 1e14;
+        long long ans = high;
+        while(low <= high) {
+            long long mid = low + (high - low) / 2;
+            if(check(ranks, cars, mid)) {
+                ans = min(ans, mid);
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func check(ranks []int, cars, mid int64) bool {
+    for _, rank := range ranks {
+        cars -= int64(math.Floor(math.Sqrt(float64(mid) / float64(rank))))
+    }
+    return cars <= 0
+}
+
+func repairCars(ranks []int, cars int) int64 {
+    var low, high int64 = 1, 1e14
+    var ans int64 = high
+    for low <= high {
+        var mid int64 = low + (high - low) / 2
+        if check(ranks, int64(cars), mid) {
+            if mid < ans {ans = mid}
+            high = mid - 1
+        } else {
+            low = mid + 1
+        }
+    }
+    return ans
+}
