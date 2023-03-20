@@ -1,0 +1,53 @@
+// C++
+class Solution {
+    bool validMove(pair<int, int> &A, pair<int, int> &B) {
+        if(abs(A.first - B.first) == 1 && abs(A.second - B.second) == 2) return true;
+        if(abs(A.first - B.first) == 2 && abs(A.second - B.second) == 1) return true;
+        return false;
+    }
+public:
+    bool checkValidGrid(vector<vector<int>>& grid) {
+        int n = grid.size();
+        vector<pair<int, int>> pos(n * n);
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                pos[grid[i][j]] = {i, j};
+            }
+        }
+        pos[0] = {0, 0};
+        n = n * n;
+        for(int i = 1; i < n; i++) {
+            if(!validMove(pos[i - 1], pos[i])) return false;
+        }
+        return true;
+    }
+};
+
+
+// Golang
+func abs(a int) int {
+    if a < 0 {return -a}
+    return a
+}
+
+func validMove(A, B []int) bool {
+    if abs(A[0] - B[0]) == 1 && abs(A[1] - B[1]) == 2 {return true}
+    if abs(A[0] - B[0]) == 2 && abs(A[1] - B[1]) == 1 {return true}
+    return false
+}
+
+func checkValidGrid(grid [][]int) bool {
+    n := len(grid)
+    pos := make([][]int, n * n)
+    for i := 0; i < n; i++ {
+        for j := 0; j < n; j++ {
+            pos[grid[i][j]] = []int{i, j}
+        }
+    }
+    pos[0] = []int{0, 0}
+    n = n * n
+    for i := 1; i < n; i++ {
+        if !validMove(pos[i - 1], pos[i]) {return false}
+    }
+    return true
+}
