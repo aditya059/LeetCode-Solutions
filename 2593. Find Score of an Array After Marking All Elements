@@ -1,0 +1,19 @@
+class Solution {
+public:
+    long long findScore(vector<int>& nums) {
+        set<pair<int, int>> Set;
+        int n = nums.size();
+        for(int i = 0; i < n; i++) {
+            Set.insert({nums[i], i});
+        }
+        long long ans = 0;
+        while(!Set.empty()) {
+            pair<int, int> curr = *Set.begin();
+            Set.erase(Set.begin());
+            ans += curr.first;
+            if(curr.second > 0) Set.erase({nums[curr.second - 1], curr.second - 1});
+            if(curr.second < n - 1) Set.erase({nums[curr.second + 1], curr.second + 1});
+        }
+        return ans;
+    }
+};
