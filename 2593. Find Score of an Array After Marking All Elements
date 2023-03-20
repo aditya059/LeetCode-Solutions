@@ -1,3 +1,4 @@
+// C++
 class Solution {
 public:
     long long findScore(vector<int>& nums) {
@@ -17,3 +18,48 @@ public:
         return ans;
     }
 };
+ 
+OR
+ 
+class Solution {
+public:
+    long long findScore(vector<int>& nums) {
+        long long ans = 0;
+        int n = nums.size();
+        vector<int> index(n);
+        iota(index.begin(), index.end(), 0);
+        sort(index.begin(), index.end(), [&](int &i, int &j) {
+            return nums[i] < nums[j] || (nums[i] == nums[j] && i < j);  
+        });
+        for(int i: index) {
+            if(nums[i]) {
+                ans += nums[i];
+                if(i < n - 1) nums[i + 1] = 0;
+                if(i > 0) nums[i - 1] = 0;
+            }
+        }
+        return ans;
+    }
+};
+
+//-----------------------------------------------------
+
+// Golang
+func findScore(nums []int) int64 {
+    var ans int64 = 0
+    var n int = len(nums)
+    index := make([]int, n)
+    for i := 0; i < n; i++ {index[i] = i}
+    sort.Slice(index, func(i, j int) bool {
+        return nums[index[i]] < nums[index[j]] || (nums[index[i]] == nums[index[j]] && index[i] < index[j])  
+    })
+    fmt.Println(index)
+    for _, i := range index {
+        if nums[i] != 0 {
+            ans += int64(nums[i])
+            if i < n - 1 {nums[i + 1] = 0}
+            if i > 0 {nums[i - 1] = 0}
+        }
+    }
+    return ans
+}
