@@ -1,0 +1,80 @@
+//-----------------------------------------
+// C++
+//-----------------------------------------
+class FreqStack {
+    int maxFreq;
+    unordered_map<int, stack<int>> freqBucket;
+    unordered_map<int, int> freq;
+public:
+    FreqStack() {
+        maxFreq = 0;
+    }
+    
+    void push(int val) {
+        freq[val]++;
+        freqBucket[freq[val]].push(val);
+        maxFreq = max(maxFreq, freq[val]);
+    }
+    
+    int pop() {
+        int val = freqBucket[maxFreq].top();
+        freqBucket[maxFreq].pop();
+        freq[val]--;
+        if(freqBucket[maxFreq].empty())
+            maxFreq--;
+        return val;
+    }
+};
+
+/**
+ * Your FreqStack object will be instantiated and called as such:
+ * FreqStack* obj = new FreqStack();
+ * obj->push(val);
+ * int param_2 = obj->pop();
+ */
+
+
+//-----------------------------------------
+// Golang
+//-----------------------------------------
+type FreqStack struct {
+    maxFreq int
+    freqBucket map[int][]int
+    freq map[int]int
+}
+
+
+func Constructor() FreqStack {
+    return FreqStack {
+        maxFreq: 0,
+        freqBucket: make(map[int][]int),
+        freq: make(map[int]int),
+    }
+}
+
+
+func (this *FreqStack) Push(val int)  {
+    this.freq[val]++;
+    this.freqBucket[this.freq[val]] = append(this.freqBucket[this.freq[val]], val)
+    if this.freq[val] > this.maxFreq {this.maxFreq = this.freq[val]}
+}
+
+
+func (this *FreqStack) Pop() int {
+    var length int = len(this.freqBucket[this.maxFreq])
+    var val int = this.freqBucket[this.maxFreq][length - 1]
+    this.freqBucket[this.maxFreq] = this.freqBucket[this.maxFreq][:length - 1]
+    this.freq[val]--
+    if length == 1 {
+        this.maxFreq--
+    }
+    return val
+}
+
+
+/**
+ * Your FreqStack object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.Push(val);
+ * param_2 := obj.Pop();
+ */
