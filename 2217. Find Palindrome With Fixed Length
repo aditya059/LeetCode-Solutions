@@ -1,0 +1,40 @@
+// C++
+class Solution {
+public:
+    vector<long long> kthPalindrome(vector<int>& queries, int intLength) {
+        int k = ceil(intLength / 2.0);
+        int start = pow(10, k - 1);
+        vector<long long> ans(queries.size(), -1);
+        for(int i = 0; i < queries.size(); i++) {
+            long long val = start + queries[i] - 1;
+            string suffix = to_string(val);
+            reverse(suffix.begin(), suffix.end());
+            string res = to_string(val) + suffix.substr(intLength & 1);
+            if(res.length() == intLength) ans[i] = stol(res);
+        }       
+        return ans;
+    }
+};
+
+
+// Golang
+func reverse(s []byte) string {
+    for i, j := 0, len(s) - 1; i < j; i, j = i + 1, j - 1 {
+        s[i], s[j] = s[j], s[i]
+    }
+    return string(s)
+}
+
+func kthPalindrome(queries []int, intLength int) []int64 {
+    var k int = (intLength  + 1) / 2
+    var start int = int(math.Pow(10.0, float64(k - 1)))
+    ans := make([]int64, len(queries))
+    for i := 0; i < len(queries); i++ {
+        val := start + queries[i] - 1
+        prefix := strconv.Itoa(val) 
+        res := prefix + reverse([]byte(prefix))[intLength % 2:]
+        ans[i] = -1
+        if len(res) == intLength {ans[i], _ = strconv.ParseInt(res, 10, 64)}
+    }       
+    return ans
+}
