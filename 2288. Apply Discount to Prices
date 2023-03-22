@@ -1,0 +1,26 @@
+class Solution {
+    string applyDiscount(string s, int &discount) {
+        if(s[0] != '$' || s.length() == 1) return s; 
+        long long val = 0;
+        for(int i = 1; i < s.length(); i++) {
+            if(s[i] < '0' || s[i] > '9') return s;
+            val = val * 10 + (s[i] - '0');
+        }
+        stringstream res;
+        res << fixed << setprecision(2) << val - val * discount / 100.0;
+        return "$" + res.str();
+    }
+public:
+    string discountPrices(string sentence, int discount) {
+        int n = sentence.length(), i;
+        string ans = "";
+        for(i = 0; i < n; i++) {
+            int spaceIndex = sentence.find(" ", i); 
+            if(spaceIndex == string::npos) break;
+            ans += applyDiscount(sentence.substr(i, spaceIndex - i), discount) + " ";
+            i = spaceIndex;
+        }
+        ans += applyDiscount(sentence.substr(i, n - i), discount);
+        return ans;
+    }
+};
