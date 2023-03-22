@@ -2,31 +2,27 @@
 class Solution {
 public:
     int countUnguarded(int m, int n, vector<vector<int>>& guards, vector<vector<int>>& walls) {
-        vector<vector<int>> grid(m, vector<int>(n, -1));
+        vector<vector<char>> grid(m, vector<char>(n, -1));
+        int cannotVisit = walls.size() + guards.size();
         for(vector<int> wall: walls) {
             grid[wall[0]][wall[1]] = 0;
         }
         for(vector<int> guard: guards) {
             grid[guard[0]][guard[1]] = 0;
         }
-        vector<int> dirs[4] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        int dirs[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
         for(vector<int> guard: guards) {
-            for(vector<int> dir: dirs) {
+            for(auto dir: dirs) {
                 for(int i = 1; ; i++) {
                     int x = guard[0] + i * dir[0];
                     int y = guard[1] + i * dir[1];
                     if(x < 0 || x >= m || y < 0 || y >= n || grid[x][y] == 0) break;
+                    cannotVisit += grid[x][y] == -1;
                     grid[x][y] = 1;
                 }
             }
         }
-        int ans = 0;
-        for(int i = 0; i < m; i++) {
-            for(int j = 0; j < n; j++) {
-                ans += grid[i][j] == -1;
-            }
-        }
-        return ans;
+        return m * n - cannotVisit;
     }
 };
 
@@ -42,21 +38,17 @@ func countUnguarded(m int, n int, guards [][]int, walls [][]int) int {
         grid[guard[0]][guard[1]] = 1
     }
     dirs := [][]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
+    cannotVisit := len(guards) + len(walls)
     for _, guard := range guards {
         for _, dir := range dirs {
             for i := 1; ; i++ {
                 x := guard[0] + i * dir[0]
                 y := guard[1] + i * dir[1]
                 if x < 0 || x >= m || y < 0 || y >= n || grid[x][y] == 1 {break}
+                if grid[x][y] == 0 {cannotVisit++}
                 grid[x][y] = 2
             }
         }
     }
-    ans := 0
-    for i := 0; i < m; i++ {
-        for j := 0; j < n; j++ {
-            if grid[i][j] == 0 {ans++}
-        }
-    }
-    return ans
+    return m * n - cannotVisit
 }
