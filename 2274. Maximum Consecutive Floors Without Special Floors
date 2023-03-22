@@ -1,0 +1,30 @@
+// C++
+class Solution {
+public:
+    int maxConsecutive(int bottom, int top, vector<int>& special) {
+        int ans = 0;
+        sort(special.begin(), special.end());
+        for(int s: special) {
+            ans = max(ans, s - bottom);
+            bottom = s + 1;
+        }
+        return max(ans, top + 1 - bottom);
+    }
+};
+
+
+// Golang
+func max(a, b int) int {
+    if a > b {return a}
+    return b
+}
+
+func maxConsecutive(bottom int, top int, special []int) int {
+    var ans int = 0
+    sort.Ints(special)
+    for _, s := range special {
+        ans = max(ans, s - bottom)
+        bottom = s + 1
+    }
+    return max(ans, top + 1 - bottom)
+}
