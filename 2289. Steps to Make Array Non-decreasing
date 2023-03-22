@@ -18,6 +18,39 @@ public:
     }
 };
 
+OR
+
+// Simulation
+class Solution {
+public:
+    int totalSteps(vector<int>& nums) {
+        map<int, int> Map;
+        vector<pair<int, int>> remove;
+        int n = nums.size();
+        for(int i = 0; i < n; i++) {
+            Map[i] = nums[i];
+            if(i < n - 1 && nums[i] > nums[i + 1]) remove.push_back({i, i + 1});
+        }
+        int ans = 0;
+        while(!remove.empty()) {
+            ans++;
+            vector<pair<int, int>> nextRemove;
+            for(auto [i, j]: remove) Map.erase(j);
+            for(auto [i, j]: remove) {
+                auto currIter = Map.find(i);
+                if(currIter == Map.end() || next(currIter) == Map.end()) continue;
+                auto nextIter = next(currIter);
+                if(nextIter -> second < currIter -> second) {
+                    nextRemove.push_back({i, nextIter -> first});
+                }
+            }
+            remove = nextRemove;
+        }
+        return ans;
+    }
+};
+
+//--------------------------------------------------------------------------
 
 // Golang
 func max(a, b int) int {
