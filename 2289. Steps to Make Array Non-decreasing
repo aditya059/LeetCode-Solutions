@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int totalSteps(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> DP(n, 0);
+        stack<int> Stack;
+        int ans = 0;
+        for(int i = nums.size() - 1; i >= 0; i--) {
+            while(!Stack.empty() && nums[Stack.top()] < nums[i]) {
+                DP[i] = max(DP[Stack.top()], DP[i] + 1);
+                Stack.pop();
+            }
+            ans = max(ans, DP[i]);
+            Stack.push(i);
+        }
+        return ans;
+    }
+};
