@@ -1,0 +1,50 @@
+// C++
+class Solution {
+public:
+    int minimumRefill(vector<int>& plants, int capacityA, int capacityB) {
+        int ans = 0, haveA = capacityA, haveB = capacityB, n = plants.size();
+        for(int i = 0, j = n - 1; i < j; i++, j--) {
+            if(haveA < plants[i]) {
+                ans++;
+                haveA = capacityA;
+            }
+            if(haveB < plants[j]) {
+                ans++;
+                haveB = capacityB;
+            }
+            haveA -= plants[i];
+            haveB -= plants[j];
+        }
+        if(n % 2) {
+            if(haveA >= haveB) ans += haveA < plants[n / 2];
+            else ans += haveB < plants[n / 2]; 
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func minimumRefill(plants []int, capacityA int, capacityB int) int {
+    var ans, haveA, haveB, n int = 0, capacityA, capacityB, len(plants)
+    for i, j := 0, n - 1; i < j; i, j = i + 1, j - 1 {
+        if haveA < plants[i] {
+            ans++
+            haveA = capacityA
+        }
+        if haveB < plants[j] {
+            ans++
+            haveB = capacityB
+        }
+        haveA -= plants[i]
+        haveB -= plants[j]
+    }
+    if n % 2 == 1 {
+        if haveA >= haveB {
+            if haveA < plants[n / 2] {ans++}
+        } else {
+            if haveB < plants[n / 2] {ans++} 
+        }
+    }
+    return ans
+}
