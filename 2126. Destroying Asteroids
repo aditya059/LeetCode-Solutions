@@ -1,0 +1,25 @@
+// C++
+class Solution {
+public:
+    bool asteroidsDestroyed(int mass, vector<int>& asteroids) {
+        sort(asteroids.begin(), asteroids.end());
+        long long total = mass;
+        for(int asteroid: asteroids) {
+            if(total < asteroid) return false;
+            total += asteroid;
+        }
+        return true;
+    }
+};
+
+
+// Golang
+func asteroidsDestroyed(mass int, asteroids []int) bool {
+    sort.Ints(asteroids)
+    var total int64 = int64(mass)
+    for _, asteroid := range asteroids {
+        if total < int64(asteroid) {return false}
+        total += int64(asteroid)
+    }
+    return true
+}
