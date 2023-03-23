@@ -1,0 +1,31 @@
+// C++
+class Solution {
+public:
+    long long minimumRemoval(vector<int>& beans) {
+        long long sum = accumulate(beans.begin(), beans.end(), 0L);
+        sort(beans.begin(), beans.end());
+        int n = beans.size();
+        long long ans = 1e10;
+        for(int i = 0; i < n; i++) {
+            ans = min(ans, sum - beans[i] * 1L * (n - i));
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func minimumRemoval(beans []int) int64 {
+    var sum int64 = 0
+    for _, bean := range beans {
+        sum += int64(bean)
+    }
+    sort.Ints(beans)
+    var n int = len(beans)
+    var ans int64 = 1e10
+    for i := 0; i < n; i++ {
+        val := sum - int64(beans[i] * (n - i))
+        if val < ans {ans = val}
+    }
+    return ans
+}
