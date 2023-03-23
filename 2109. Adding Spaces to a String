@@ -1,0 +1,28 @@
+// C++
+class Solution {
+public:
+    string addSpaces(string s, vector<int>& spaces) {
+        string ans = "";
+        int start = 0;
+        for(int i = 0; i < spaces.size(); i++) {
+            ans += s.substr(start, spaces[i] - start) + " ";
+            start = spaces[i];
+        }
+        ans += s.substr(start, s.length() - start);
+        return ans;
+    }
+};
+
+
+// Golang
+func addSpaces(s string, spaces []int) string {
+    var ans strings.Builder
+    var start int = 0
+    for i := 0; i < len(spaces); i++ {
+        ans.WriteString(s[start: spaces[i]])
+        ans.WriteString(" ")
+        start = spaces[i]
+    }
+    ans.WriteString(s[start:])
+    return ans.String()
+}
