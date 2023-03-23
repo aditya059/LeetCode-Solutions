@@ -1,0 +1,70 @@
+// C++ 
+// With Stack - SC = O(n)
+class Solution {
+public:
+    int minDeletion(vector<int>& nums) {
+        int deleted = 0, n = nums.size();
+        stack<int> Stack;
+        for(int i = 0; i < n; i++) {
+            while(Stack.size() % 2 == 1 && i < n && Stack.top() == nums[i]) {
+                i++;
+                deleted++;
+            }
+            if(i < n) Stack.push(nums[i]);
+        }
+        return deleted + (n - deleted) % 2;
+    }
+};
+
+OR
+
+// Without Stack - SC = O(1)
+class Solution {
+public:
+    int minDeletion(vector<int>& nums) {
+        int deleted = 0, n = nums.size(), top = -1;
+        for(int i = 0; i < n; i++) {
+            while(top % 2 == 0 && i < n && nums[top] == nums[i]) {
+                i++;
+                deleted++;
+            }
+            if(i < n) nums[++top] = nums[i];
+        }
+        return deleted + (n - deleted) % 2;
+    }
+};
+
+//-------------------------------------------
+
+// Golang
+// With Stack - O(n)
+func minDeletion(nums []int) int {
+    var deleted, n int = 0, len(nums)
+    Stack := []int{}
+    for i := 0; i < n; i++ {
+        for len(Stack) % 2 == 1 && i < n && Stack[len(Stack) - 1] == nums[i] {
+            i++
+            deleted++
+        }
+        if i < n {Stack = append(Stack, nums[i])}
+    }
+    return deleted + (n - deleted) % 2
+}
+
+OR
+
+// Without Stack - O(1)
+func minDeletion(nums []int) int {
+    var deleted, n, top int = 0, len(nums), -1
+    for i := 0; i < n; i++ {
+        for top % 2 == 0 && i < n && nums[top] == nums[i] {
+            i++
+            deleted++
+        }
+        if i < n {
+            top++
+            nums[top] = nums[i]
+        }
+    }
+    return deleted + (n - deleted) % 2
+}
