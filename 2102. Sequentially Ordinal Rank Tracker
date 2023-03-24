@@ -42,6 +42,37 @@ public:
  */
  
 //----------------------------------------------------------------------------
+
+class SORTracker {
+    priority_queue<pair<int, string>, vector<pair<int, string>>, greater<pair<int, string>>> left;
+    priority_queue<pair<int, string>> right;
+public:
+    SORTracker() {
+
+    }
+    
+    void add(string name, int score) {
+        right.push({-score, name});
+        left.push(right.top());
+        right.pop();
+    }
+    
+    string get() {
+        auto removed = left.top();
+        right.push(removed);
+        left.pop();
+        return removed.second;  
+    }
+};
+
+/**
+ * Your SORTracker object will be instantiated and called as such:
+ * SORTracker* obj = new SORTracker();
+ * obj->add(name,score);
+ * string param_2 = obj->get();
+ */
+ 
+//----------------------------------------------------------------------------
  
 class SORTracker {
     set<pair<int, string>> PQ;
