@@ -1,4 +1,49 @@
 class SORTracker {
+    struct compMax {
+        bool operator()(pair<int, string> &B, pair<int, string> &A) {
+          return B.first < A.first || (B.first == A.first && B.second > A.second);
+        }
+    };
+    struct compMin {
+        bool operator()(pair<int, string> &B, pair<int, string> &A) {
+          return B.first > A.first || (B.first == A.first && B.second < A.second);
+        }
+    };
+    priority_queue<pair<int, string>, vector<pair<int, string>>, compMax> left;
+    priority_queue<pair<int, string>, vector<pair<int, string>>, compMin> right;
+    int iter;
+public:
+    SORTracker() {
+        iter = 0;
+    }
+    
+    void add(string name, int score) {
+        right.push({score, name});
+        while(right.size() > iter) {
+            left.push(right.top());
+            right.pop();
+        }
+    }
+    
+    string get() {
+        auto removed = left.top();
+        right.push(removed);
+        left.pop();
+        iter++;
+        return removed.second;  
+    }
+};
+
+/**
+ * Your SORTracker object will be instantiated and called as such:
+ * SORTracker* obj = new SORTracker();
+ * obj->add(name,score);
+ * string param_2 = obj->get();
+ */
+ 
+//----------------------------------------------------------------------------
+ 
+class SORTracker {
     set<pair<int, string>> PQ;
     set<pair<int, string>>::iterator currIter = PQ.end();
 public:
@@ -23,3 +68,4 @@ public:
  * obj->add(name,score);
  * string param_2 = obj->get();
  */
+
