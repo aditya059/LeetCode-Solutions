@@ -1,0 +1,96 @@
+//----------------------------------------------------------------------------
+// C++
+//----------------------------------------------------------------------------
+class Solution {
+    void dfs(int curr, int parent, vector<int> adjList[], int &ans, set<vector<int>> &Set) {
+        ans += Set.find({parent, curr}) != Set.end();
+        for(int next: adjList[curr]) {
+            if(next == parent) continue;
+            dfs(next, curr, adjList, ans, Set);
+        }
+    }
+public:
+    int minReorder(int n, vector<vector<int>>& connections) {
+        int ans = 0;
+        vector<int> adjList[n];
+        set<vector<int>> Set;
+        for(vector<int> edge: connections) {
+            adjList[edge[0]].push_back(edge[1]);
+            adjList[edge[1]].push_back(edge[0]);
+            Set.insert(edge);
+        }
+        dfs(0, -1, adjList, ans, Set);
+        return ans;
+    }
+};
+
+OR
+
+class Solution {
+    void dfs(int curr, int parent, vector<pair<int, int>> adjList[], int &ans) { 
+        for(auto [next, sign]: adjList[curr]) {
+            if(next == parent) continue;
+            ans += sign;
+            dfs(next, curr, adjList, ans);
+        }
+    }
+public:
+    int minReorder(int n, vector<vector<int>>& connections) {
+        int ans = 0;
+        vector<pair<int, int>> adjList[n];
+        for(vector<int> edge: connections) {
+            adjList[edge[0]].push_back({edge[1], 1});
+            adjList[edge[1]].push_back({edge[0], 0});
+        }
+        dfs(0, -1, adjList, ans);
+        return ans;
+    }
+};
+
+
+//----------------------------------------------------------------------------
+// Golang
+//----------------------------------------------------------------------------
+func dfs(curr, parent int, adjList [][]int, ans *int, Map map[string]bool) { 
+    if _, ok := Map[string(parent) + " " + string(curr)]; ok {
+        *ans++
+    }
+    for _, next := range adjList[curr] {
+        if next == parent {continue}
+        dfs(next, curr, adjList, ans, Map)
+    }
+}
+
+func minReorder(n int, connections [][]int) int {
+    var ans int = 0
+    adjList := make([][]int, n)
+    Map := make(map[string]bool)
+    for _, edge := range connections {
+        adjList[edge[0]] = append(adjList[edge[0]], edge[1])
+        adjList[edge[1]] = append(adjList[edge[1]], edge[0])
+        Map[string(edge[0]) + " " + string(edge[1])] = true;
+    }
+    dfs(0, -1, adjList, &ans, Map)
+    return ans
+}
+
+OR
+
+func dfs(curr, parent int, adjList [][][]int, ans *int) { 
+    for _, edge := range adjList[curr] {
+        if edge[0] == parent {continue}
+        *ans += edge[1]
+        dfs(edge[0], curr, adjList, ans)
+    }
+}
+
+func minReorder(n int, connections [][]int) int {
+    var ans int = 0
+    adjList := make([][][]int, n)
+    for _, edge := range connections {
+        adjList[edge[0]] = append(adjList[edge[0]], []int{edge[1], 1})
+        adjList[edge[1]] = append(adjList[edge[1]], []int{edge[0], 0})
+    }
+    dfs(0, -1, adjList, &ans)
+    return ans
+}
