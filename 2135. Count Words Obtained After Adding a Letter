@@ -1,0 +1,58 @@
+// C++
+class Solution {
+    int convert(string &word) {
+        int ans = 0;
+        for(char ch: word) {
+            ans |= 1 << (ch - 'a');
+        }
+        return ans;
+    }
+public:
+    int wordCount(vector<string>& startWords, vector<string>& targetWords) {
+        unordered_map<int, int> Map;
+        for(string word: targetWords) {
+            Map[convert(word)]++;
+        }
+        int ans = 0;
+        for(string word: startWords) {
+            int mask = convert(word);
+            for(int i = 0; i < 26; i++) {
+                bool isBitSet = mask & (1 << i);
+                if(!isBitSet) {
+                    ans += Map[mask | (1 << i)];
+                    Map.erase(mask | (1 << i));
+                }
+            }
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func convert(word string) int {
+    ans := 0
+    for _, ch := range word {
+        ans |= 1 << int(ch - 'a')
+    }
+    return ans
+}
+
+func wordCount(startWords []string, targetWords []string) int {
+    Map := make(map[int]int)
+    for _, word := range targetWords {
+        Map[convert(word)]++
+    }
+    var ans int = 0
+    for _, word := range startWords {
+        mask := convert(word)
+        for i := 0; i < 26; i++ {
+            isBitSet := mask & (1 << i)
+            if isBitSet == 0 {
+                ans += Map[mask | (1 << i)]
+                delete(Map, mask | (1 << i))
+            }
+        }
+    }
+    return ans
+}
