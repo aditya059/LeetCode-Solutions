@@ -1,0 +1,47 @@
+// C++
+class Solution {
+    int solve(string &s, int i, int j, vector<vector<int>> &memo) {
+        if(i >= j) return 0;
+        if(memo[i][j] != -1) return memo[i][j];
+        if(s[i] == s[j]) {
+            return memo[i][j] = solve(s, i + 1, j - 1, memo);
+        }
+        return memo[i][j] = 1 + min(solve(s, i + 1, j, memo), solve(s, i, j - 1, memo));
+    }
+public:
+    int minInsertions(string s) {
+        int n = s.length();
+        vector<vector<int>> memo(n, vector<int>(n, -1));
+        return solve(s, 0, n - 1, memo);
+    }
+};
+
+
+// Golang
+func min(a, b int) int {
+    if a < b {return a}
+    return b
+}
+
+func solve(s string, i, j int, memo [][]int) int {
+    if i >= j {return 0}
+    if memo[i][j] != -1 {return memo[i][j]}
+    if s[i] == s[j] {
+        memo[i][j] = solve(s, i + 1, j - 1, memo)
+    } else {
+        memo[i][j] = 1 + min(solve(s, i + 1, j, memo), solve(s, i, j - 1, memo))
+    }
+    return memo[i][j]
+}
+
+func minInsertions(s string) int {
+    var n int = len(s);
+    memo := make([][]int, n)
+    for i := 0; i < n; i++ {
+        memo[i] = make([]int, n)
+        for j := 0; j < n; j++ {
+            memo[i][j] = -1
+        }
+    }
+    return solve(s, 0, n - 1, memo)
+}
