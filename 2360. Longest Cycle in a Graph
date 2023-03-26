@@ -1,0 +1,60 @@
+// C++
+class Solution {
+    void dfs(int curr, vector<int> &edges, vector<bool> &visited, unordered_map<int, int> &distance, int &ans) {
+        visited[curr] = true;
+        int next = edges[curr];
+        if(next != -1) {
+            if(!visited[next]) {
+                distance[next] = distance[curr] + 1;
+                dfs(next, edges, visited, distance, ans);
+            } else if(distance.find(next) != distance.end()){
+                ans = max(ans, distance[curr] - distance[next] + 1);
+            }
+        }
+    }
+public:
+    int longestCycle(vector<int>& edges) {
+        int n = edges.size(), ans = -1;
+        vector<bool> visited(n);
+        for(int i = 0; i < n; i++) {
+            if(!visited[i]) {
+                unordered_map<int, int> distance;
+                distance[i] = 0;
+                dfs(i, edges, visited, distance, ans);
+            }
+        }
+        return ans;
+    }
+};
+
+//----------------------------------------------------
+
+// Golang
+func dfs(curr int, edges []int, visited []bool, distance map[int]int, ans *int) {
+    visited[curr] = true
+    var next int = edges[curr]
+    if next != -1 {
+        if !visited[next] {
+            distance[next] = distance[curr] + 1
+            dfs(next, edges, visited, distance, ans)
+        } else if _, ok := distance[next]; ok {
+            dist := distance[curr] - distance[next] + 1
+            if dist > *ans {
+                *ans = dist
+            }
+        }
+    }
+}
+
+func longestCycle(edges []int) int {
+    var n, ans int = len(edges), -1
+    visited := make([]bool, n)
+    for i := 0; i < n; i++ {
+        if !visited[i] {
+            distance := make(map[int]int)
+            distance[i] = 0
+            dfs(i, edges, visited, distance, &ans)
+        }
+    }
+    return ans
+}
