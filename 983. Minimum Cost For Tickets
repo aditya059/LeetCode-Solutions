@@ -1,0 +1,54 @@
+class Solution {
+public:
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        int n = days.size();
+        vector<int> DP(n, 0);
+        for(int i = n - 1; i >= 0; i--) {
+            auto i1 = upper_bound(days.begin(), days.end(), days[i]);
+            auto i2 = upper_bound(days.begin(), days.end(), days[i] + 6);
+            auto i3 = upper_bound(days.begin(), days.end(), days[i] + 29);
+            DP[i] = min(costs[0] + (i1 != days.end()? DP[i1 - days.begin()]: 0), costs[1] + (i2 != days.end()? DP[i2 - days.begin()]: 0));
+            DP[i] = min(DP[i], costs[2] + (i3 != days.end()? DP[i3 - days.begin()]: 0));
+        }
+        return DP[0];
+    }
+};
+
+OR
+
+class Solution {
+public:
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        vector<int> DP(367, 0);
+        int n = days.size();
+        for(int i = 365; i > 0; i--) {
+            if(binary_search(days.begin(), days.end(), i)) {
+                DP[i] = min(costs[0] + (i + 1 < 366? DP[i + 1]: 0), costs[1] + (i + 7 < 366? DP[i + 7]: 0));
+                DP[i] = min(DP[i], costs[2] + (i + 30 < 366? DP[i + 30]: 0));
+            } else {
+                DP[i] = DP[i + 1];
+            }
+        }
+        return DP[1];
+    }
+};
+
+OR
+
+class Solution {
+public:
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        vector<bool> present(366);
+        for(int day: days) present[day] = true;;
+        vector<int> DP(367, 0);
+        for(int i = 365; i > 0; i--) {
+            if(present[i]) {
+                DP[i] = min(costs[0] + (i + 1 < 366? DP[i + 1]: 0), costs[1] + (i + 7 < 366? DP[i + 7]: 0));
+                DP[i] = min(DP[i], costs[2] + (i + 30 < 366? DP[i + 30]: 0));
+            } else {
+                DP[i] = DP[i + 1];
+            }
+        }
+        return DP[1];
+    }
+};
