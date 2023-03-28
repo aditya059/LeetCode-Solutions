@@ -1,0 +1,23 @@
+class Solution {
+    void dfs(int i, int numArrows, vector<int>& aliceArrows, vector<int> &ans, vector<int> &bobArrows, int score, int &maxScore) {
+        if(i < 0 || numArrows < 0) return;
+        if(score > maxScore) {
+            maxScore = score;
+            ans = bobArrows;
+        }
+        if(numArrows > aliceArrows[i]) {
+            bobArrows[i] = aliceArrows[i] + 1;
+            dfs(i - 1, numArrows - bobArrows[i], aliceArrows, ans, bobArrows, score + i, maxScore);
+            bobArrows[i] = 0;
+        }
+        dfs(i - 1, numArrows, aliceArrows, ans, bobArrows, score, maxScore);
+    }
+public:
+    vector<int> maximumBobPoints(int numArrows, vector<int>& aliceArrows) {
+        vector<int> ans, bobArrows(12);
+        int maxScore = INT_MIN;
+        dfs(11, numArrows, aliceArrows, ans, bobArrows, 0, maxScore);
+        ans[0] += numArrows - accumulate(ans.begin(), ans.end(), 0);
+        return ans;
+    }
+};
