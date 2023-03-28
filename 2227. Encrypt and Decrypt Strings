@@ -1,0 +1,103 @@
+//--------------------------------------
+// C++
+//--------------------------------------
+class Encrypter {
+    unordered_map<char, string> EMap;
+    unordered_map<string, int> DMap;
+public:
+    Encrypter(vector<char>& keys, vector<string>& values, vector<string>& dictionary) {
+        for(int i = 0; i < keys.size(); i++) {
+            EMap[keys[i]] = values[i];
+        }
+        for(string word: dictionary) {
+            string val = "";
+            bool flag = true;
+            for(char ch: word) {
+                if(EMap.find(ch) != EMap.end())
+                    val += EMap[ch];
+                else {
+                    flag = false;
+                    break;
+                }
+            } 
+            if(flag)
+            DMap[val]++;
+        }
+    }
+    
+    string encrypt(string word1) {
+        string ans = "";
+        for(char ch: word1) {
+            ans += EMap[ch];
+        } 
+        return ans;
+    }
+    
+    int decrypt(string word2) {
+        return DMap[word2];
+    }
+};
+
+/**
+ * Your Encrypter object will be instantiated and called as such:
+ * Encrypter* obj = new Encrypter(keys, values, dictionary);
+ * string param_1 = obj->encrypt(word1);
+ * int param_2 = obj->decrypt(word2);
+ */
+
+
+//--------------------------------------
+// Golang
+//--------------------------------------
+type Encrypter struct {
+    EMap map[byte]string
+    DMap map[string]int
+}
+
+
+func Constructor(keys []byte, values []string, dictionary []string) Encrypter {
+    EMap := make(map[byte]string)
+    DMap := make(map[string]int)
+    for i := 0; i < len(keys); i++ {
+        EMap[keys[i]] = values[i]
+    }
+    for _, word := range dictionary {
+        val := ""
+        flag := true
+        for _, ch := range word {
+            if _, ok := EMap[byte(ch)]; ok {
+                val += EMap[byte(ch)]
+            } else {
+                flag = false
+                break
+            }
+        } 
+        if flag {DMap[val]++} 
+    }
+    return Encrypter {
+        EMap: EMap,
+        DMap: DMap,
+    }
+}
+
+
+func (this *Encrypter) Encrypt(word1 string) string {
+    ans := ""
+    for _, ch := range word1 {
+        ans += this.EMap[byte(ch)]
+    } 
+    return ans
+}
+
+
+func (this *Encrypter) Decrypt(word2 string) int {
+    return this.DMap[word2]
+}
+
+
+/**
+ * Your Encrypter object will be instantiated and called as such:
+ * obj := Constructor(keys, values, dictionary);
+ * param_1 := obj.Encrypt(word1);
+ * param_2 := obj.Decrypt(word2);
+ */
