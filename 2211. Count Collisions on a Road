@@ -1,0 +1,57 @@
+// C++
+class Solution {
+public:
+    int countCollisions(string directions) {
+        int n = directions.size(), ans = 0;
+        char prev = 'L';
+        for(int i = 0; i < n; i++) {
+            int rlen = 0;
+            while(i < n && directions[i] == 'R') {
+                i++;
+                rlen++;
+                prev = directions[i - 1];
+            }
+            if(i < n) {
+                if(directions[i] == 'S') {
+                    if(prev == 'R') ans += rlen;
+                    prev = directions[i];
+                } else {
+                    if(prev == 'S') ans++;
+                    if(prev == 'R') {
+                        ans += rlen + 1;
+                        prev = 'S';
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func countCollisions(directions string) int {
+    var n, ans int = len(directions), 0
+    var prev byte = 'L'
+    for i := 0; i < n; i++ {
+        rlen := 0
+        for i < n && directions[i] == 'R' {
+            i++
+            rlen++
+            prev = directions[i - 1]
+        }
+        if i < n {
+            if directions[i] == 'S' {
+                if prev == 'R' {ans += rlen}
+                prev = directions[i]
+            } else {
+                if prev == 'S' {ans++}
+                if prev == 'R' {
+                    ans += rlen + 1
+                    prev = 'S'
+                }
+            }
+        }
+    }
+    return ans
+}
