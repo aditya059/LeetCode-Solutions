@@ -1,0 +1,27 @@
+// C++
+class Solution {
+public:
+    bool divideArray(vector<int>& nums) {
+        int freq[501] = {0};
+        for(int num: nums) {
+            freq[num]++;
+        }
+        for(int i = 0; i < 501; i++) {
+            if(freq[i] % 2) return false;
+        }
+        return true;
+    }
+};
+
+
+// Golang
+func divideArray(nums []int) bool {
+    freq := make([]int, 501)
+    for _, num := range nums {
+        freq[num]++
+    }
+    for i := 0; i < 501; i++ {
+        if freq[i] % 2 == 1 {return false}
+    }
+    return true
+}
