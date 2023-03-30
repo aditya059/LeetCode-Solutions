@@ -1,0 +1,43 @@
+// C++
+class Solution {
+    bool solve(string &s1, string &s2, int i, int j, int len, vector<vector<vector<int>>> &memo) {
+        if(len == 1) return s1[i] == s2[j];
+        if(memo[i][j][len] != -1) return memo[i][j][len];
+        for(int k = 1; k < len; k++) {
+            if(solve(s1, s2, i, j, k, memo) && solve(s1, s2, i + k, j + k, len - k, memo) || solve(s1, s2, i, j + len - k, k, memo) && solve(s1, s2, i + k, j, len - k, memo))  {
+                return memo[i][j][len] = true;
+            }
+        }
+        return memo[i][j][len] = false;
+    }
+public:
+    bool isScramble(string s1, string s2) {
+        int n = s1.length();
+        vector<vector<vector<int>>> memo(n, vector<vector<int>>(n, vector<int>(n + 1, -1)));
+        return solve(s1, s2, 0, 0, n, memo);
+    }
+};
+
+
+// Golang
+func solve(s1, s2 string, i, j, length int, memo map[string]bool) bool {
+    if length == 1 {return s1[i] == s2[j]}
+    key := string(i) + " " + string(j) + " " + string(length)
+    if val, ok := memo[key]; ok {
+        return val
+    }
+    for k := 1; k < length; k++ {
+        if (solve(s1, s2, i, j, k, memo) && solve(s1, s2, i + k, j + k, length - k, memo)) || (solve(s1, s2, i, j + length - k, k, memo) && solve(s1, s2, i + k, j, length - k, memo)) {
+            memo[key] = true
+            return memo[key]
+        }
+    }
+    memo[key] = false
+    return memo[key]
+}
+
+func isScramble(s1 string, s2 string) bool {
+    var n int = len(s1)
+    memo := make(map[string]bool)
+    return solve(s1, s2, 0, 0, n, memo)
+}
