@@ -1,0 +1,69 @@
+// C++
+class Solution {
+    bool dfs(string curr, unordered_map<string, vector<string>> &adjList, unordered_map<string, bool> &visited, unordered_set<string> &present) {
+        if(visited.find(curr) != visited.end()) {
+            return present.find(curr) != present.end();
+        }
+        visited[curr] = true; 
+        bool possible = adjList[curr].size() > 0;
+        for(string next: adjList[curr]) {
+            possible = possible && dfs(next, adjList, visited, present);
+        }
+        if(possible) present.insert(curr);
+        return possible;
+    }
+public:
+    vector<string> findAllRecipes(vector<string>& recipes, vector<vector<string>>& ingredients, vector<string>& supplies) {
+        unordered_map<string, vector<string>> adjList;
+        for(int i = 0; i < recipes.size(); i++) {
+            adjList[recipes[i]] = ingredients[i];
+        }
+        unordered_map<string, bool> visited;
+        unordered_set<string> present;
+        for(string supply: supplies) {
+            present.insert(supply);
+            visited[supply] = true;
+        }
+        vector<string> ans;
+        for(int i = 0; i < recipes.size(); i++) {
+            if(dfs(recipes[i], adjList, visited, present))
+                ans.push_back(recipes[i]);
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func dfs(curr string, adjList map[string][]string, visited, present map[string]bool) bool {
+    if _, ok := visited[curr]; ok {
+        return present[curr]
+    }
+    visited[curr] = true
+    var possible bool = len(adjList[curr]) > 0
+    for _, next := range adjList[curr] {
+        possible = possible && dfs(next, adjList, visited, present)
+    }
+    if possible {present[curr] = true}
+    return possible
+}
+
+func findAllRecipes(recipes []string, ingredients [][]string, supplies []string) []string {
+    adjList := make(map[string][]string)
+    for i := 0; i < len(recipes); i++ {
+        adjList[recipes[i]] = ingredients[i]
+    }
+    visited := make(map[string]bool)
+    present := make(map[string]bool)
+    for _, supply := range supplies {
+        present[supply] = true
+        visited[supply] = true
+    }
+    ans := []string{}
+    for i := 0; i < len(recipes); i++ {
+        if dfs(recipes[i], adjList, visited, present) {
+            ans = append(ans, recipes[i])
+        }
+    }
+    return ans
+}
