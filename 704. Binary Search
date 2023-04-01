@@ -1,3 +1,4 @@
+// C++
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
@@ -12,3 +13,21 @@ public:
         return -1;
     }
 };
+
+
+// Golang
+func search(nums []int, target int) int {
+    var l int = 0
+    var h int = len(nums) - 1
+    for l <= h {
+        var m int = l + (h - l) / 2
+        if target == nums[m] {
+            return m
+        } else if target < nums[m] {
+            h = m - 1
+        } else {
+            l = m + 1
+        }
+    }
+    return -1
+}
