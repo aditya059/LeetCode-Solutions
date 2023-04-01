@@ -1,0 +1,73 @@
+// C++
+class Solution {
+public:
+    bool canBeValid(string s, string locked) {
+        if(s.length() % 2) return false;
+        int any = 0, open = 0;
+        for(int i = 0; i < s.length(); i++) {
+            if(locked[i] == '0') any++;
+            else {
+                if(s[i] == '(') open++;
+                else {
+                    if(open > 0) open--;
+                    else any--;
+                }
+                if(open + any < 0) return false;
+            }
+        }
+        any = open = 0;
+        for(int i = s.length() - 1; i >= 0; i--) {
+            if(locked[i] == '0') any++;
+            else {
+                if(s[i] == ')') open++;
+                else {
+                    if(open > 0) open--;
+                    else any--;
+                }
+                if(open + any < 0) return false;
+            }
+        }
+        return true;
+    }
+};
+
+
+// Golang
+func canBeValid(s string, locked string) bool {
+    if len(s) % 2 == 1 {return false}
+    var any, open = 0, 0
+    for i := 0; i < len(s); i++ {
+        if locked[i] == '0' {
+            any++
+        } else {
+            if s[i] == '(' {
+                open++
+            } else {
+                if open > 0 {
+                    open--
+                } else {
+                    any--
+                }
+            }
+            if open + any < 0 {return false}
+        }
+    }
+    any, open = 0, 0
+    for i := len(s) - 1; i >= 0; i-- {
+        if locked[i] == '0' {
+            any++
+        } else {
+            if s[i] == ')' {
+                open++
+            } else {
+                if open > 0 {
+                    open--
+                } else {
+                    any--
+                }
+            }
+            if open + any < 0 {return false}
+        }
+    }
+    return true
+}
