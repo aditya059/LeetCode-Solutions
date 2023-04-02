@@ -1,0 +1,37 @@
+// C++
+class Solution {
+public:
+    int miceAndCheese(vector<int>& reward1, vector<int>& reward2, int k) {
+        int n = reward1.size();
+        vector<int> index(n);
+        iota(index.begin(), index.end(), 0);
+        sort(index.begin(), index.end(), [&](int &A, int &B) {
+            return reward1[A] - reward2[A] > reward1[B] - reward2[B];
+        });
+        int ans = 0;
+        for(int i = 0; i < n; i++) {
+            ans += i < k? reward1[index[i]]: reward2[index[i]];
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func miceAndCheese(reward1 []int, reward2 []int, k int) int {
+    var n int = len(reward1)
+    index := make([]int, n)
+    for i := 0; i < n; i++ {index[i] = i}
+    sort.Slice(index, func(i, j int) bool {
+        return reward1[index[i]] - reward2[index[i]] > reward1[index[j]] - reward2[index[j]]
+    })
+    var ans int = 0
+    for i := 0; i < n; i++ {
+        if i < k {
+            ans += reward1[index[i]]
+        } else {
+            ans += reward2[index[i]]
+        }
+    }
+    return ans
+}
