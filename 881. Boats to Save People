@@ -1,0 +1,42 @@
+// C++
+class Solution {
+public:
+    int numRescueBoats(vector<int>& people, int limit) {
+        int ans = 0, n = people.size();
+        sort(people.begin(), people.end());
+        int i = 0;
+        int j = n - 1;
+        while(i < j) {
+            if(people[i] + people[j] <= limit) {
+                ans++;
+                i++;
+                j--;
+            } else {
+                ans++;
+                j--;
+            }
+        }
+        return ans + (i == j);
+    }
+};
+
+
+// Golang
+func numRescueBoats(people []int, limit int) int {
+    var ans, n = 0, len(people)
+    sort.Ints(people)
+    var i int = 0
+    var j int = n - 1
+    for i < j {
+        if people[i] + people[j] <= limit {
+            ans++
+            i++
+            j--
+        } else {
+            ans++
+            j--
+        }
+    }
+    if i == j {return  ans + 1}
+    return ans
+}
