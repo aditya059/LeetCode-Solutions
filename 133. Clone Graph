@@ -1,0 +1,110 @@
+//------------------------------------------------------------------------
+// C++
+//------------------------------------------------------------------------
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> neighbors;
+    Node() {
+        val = 0;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val) {
+        val = _val;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val, vector<Node*> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+*/
+
+class Solution {
+public:
+    void dfs(Node* node, Node* node1, vector<int> &visited, map<int, Node*> &Map) {
+        visited[node -> val] = 1;
+        for(auto neigh: node -> neighbors) { 
+            Node *temp;
+            if(visited[neigh -> val] == 0) {
+                temp = new Node(neigh -> val);
+                Map.insert({neigh -> val, temp});
+                dfs(neigh, temp, visited, Map);
+            }
+            temp = Map[neigh -> val];
+            if(find(node1 -> neighbors.begin(), node1 -> neighbors.end(), temp) == node1 -> neighbors.end())
+                (node1 -> neighbors).push_back(temp);
+            if(find(temp -> neighbors.begin(), temp -> neighbors.end(), node1) == temp -> neighbors.end())
+                (temp -> neighbors).push_back(node1);
+            
+        }
+    }
+    Node* cloneGraph(Node* node) {
+        Node* node1 = nullptr;
+        if(node == nullptr)
+            return node1;
+        map<int, Node*> Map;
+        vector<int> visited(101, 0);
+        node1 = new Node(node -> val);
+        Map.insert({node -> val, node1});
+        dfs(node, node1, visited, Map);
+        return node1;
+    }
+};
+
+
+//------------------------------------------------------------------------
+// Golang
+//------------------------------------------------------------------------
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Neighbors []*Node
+ * }
+ */
+
+func find(node, target *Node) bool {
+    for _, neigh := range node.Neighbors {
+        if neigh == target {return true}
+    }
+    return false
+}
+
+func dfs(node, node1 *Node, visited []bool, Map map[int]*Node) {
+    visited[node.Val] = true
+    for _, neigh := range node.Neighbors { 
+        var temp *Node
+        if !visited[neigh.Val] {
+            temp = &Node {
+                Val: neigh.Val,
+            }
+            Map[neigh.Val] = temp
+            dfs(neigh, temp, visited, Map)
+        }
+        temp = Map[neigh.Val]
+        if !find(node1, temp) {
+            node1.Neighbors = append(node1.Neighbors, temp)
+        }
+        if !find(temp, node1) {
+            temp.Neighbors = append(temp.Neighbors, node1)
+        }
+    }
+}
+
+func cloneGraph(node *Node) *Node {
+    var node1 *Node
+    if node == nil {
+        return node1
+    }
+    Map := make(map[int]*Node)
+    visited := make([]bool, 101)
+    node1 = &Node {
+        Val: node.Val,
+    }
+    Map[node.Val] = node1
+    dfs(node, node1, visited, Map)
+    return node1
+}
