@@ -1,0 +1,66 @@
+// C++
+class Solution {
+    bool isPalindrome(string &s) {
+        for(int i = 0, j = s.length() - 1; i < j; i++, j--) {
+            if(s[i] != s[j]) return false;
+        }
+        return true;
+    }
+public:
+    int maxProduct(string s) {
+        int n = 1 << s.length();
+        vector<pair<int, int>> Map;
+        for(int i = 0; i < n; i++) {
+            string seq = "";
+            for(int j = 0; j < s.length(); j++) {
+                if((i >> j) & 1) {
+                    seq += s[j];
+                }
+            }
+            if(isPalindrome(seq)) Map.push_back({i, seq.length()});
+        }
+        int ans = 0;
+        for(int i = 0; i < Map.size(); i++) {
+            for(int j = i + 1; j < Map.size(); j++) {
+                if((Map[i].first & Map[j].first) == 0) {
+                    ans = max(Map[i].second * Map[j].second, ans);
+                }
+            }
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func isPalindrome(s string) bool {
+    for i, j := 0, len(s) - 1; i < j; i, j = i + 1, j - 1 {
+        if s[i] != s[j] {return false}
+    }
+    return true
+}
+
+func maxProduct(s string) int {
+    var n int = 1 << len(s)
+    Map := [][]int{}
+    for i := 0; i < n; i++ {
+        seq := ""
+        for j := 0; j < len(s); j++ {
+            if ((i >> j) & 1) == 1 {
+                seq += string(s[j])
+            }
+        }
+        if isPalindrome(seq) {Map = append(Map, []int{i, len(seq)})};
+    }
+    var ans int = 0
+    for i := 0; i < len(Map); i++ {
+        for j := i + 1; j < len(Map); j++ {
+            if (Map[i][0] & Map[j][0]) == 0 {
+                if Map[i][1] * Map[j][1] > ans {
+                    ans = Map[i][1] * Map[j][1]
+                }
+            }
+        }
+    }
+    return ans
+}        
