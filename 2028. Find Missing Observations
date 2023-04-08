@@ -1,0 +1,29 @@
+// C++
+class Solution {
+public:
+    vector<int> missingRolls(vector<int>& rolls, int mean, int n) {
+        int val = (rolls.size() + n) * mean - accumulate(rolls.begin(), rolls.end(), 0);
+        if(val < n || val > 6 * n) return {};
+        vector<int> ans(n);
+        int k = val / n, l = val % n;
+        for(int i = 0; i < n; i++) {
+            ans[i] = k + (i < l);
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func missingRolls(rolls []int, mean int, n int) []int {
+    var val int = (len(rolls) + n) * mean
+    for _, r := range rolls {val -= r} 
+    if val < n || val > 6 * n {return []int{}}
+    ans := make([]int, n)
+    var k, l int = val / n, val % n
+    for i := 0; i < n; i++ {
+        ans[i] = k
+        if i < l {ans[i]++}
+    }
+    return ans
+}
