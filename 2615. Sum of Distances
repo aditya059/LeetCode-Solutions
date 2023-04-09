@@ -1,3 +1,4 @@
+// 1. Prefix & Suffix Array
 class Solution {
 public:
     vector<long long> distance(vector<int>& nums) {
@@ -20,5 +21,29 @@ public:
             prefix[i] = prefix[i] + suffix[i];
         }
         return prefix;
+    }
+};
+
+
+// 2. Prefix Sum
+class Solution {
+public:
+    vector<long long> distance(vector<int>& nums) {
+        unordered_map<int, vector<int>> index;
+        for(int i = 0; i < nums.size(); i++) {
+            index[nums[i]].push_back(i);
+        }
+        vector<long long> ans(nums.size());
+        for(auto iter: index) {
+            int n = iter.second.size();
+            long long sum = 0;
+            for(int i = 1; i < n; i++) sum += iter.second[i] - iter.second[0];
+            ans[iter.second[0]] = sum;
+            for(int i = 1; i < n; i++) {
+                sum -= (n - 2 * i) * (iter.second[i] - iter.second[i - 1]);
+                ans[iter.second[i]] = sum; 
+            }
+        }
+        return ans;
     }
 };
