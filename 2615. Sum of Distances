@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<long long> distance(vector<int>& nums) {
+        int n = nums.size();
+        vector<long long> prefix(n);
+        vector<long long> suffix(n);
+        unordered_map<int, int> count;
+        unordered_map<int, int> lastPos;
+        for(int i = 0; i < n; i++) {
+            prefix[i] = prefix[lastPos[nums[i]]] + count[nums[i]] * (i - lastPos[nums[i]]);
+            lastPos[nums[i]] = i;
+            count[nums[i]]++;
+        }
+        count.clear();
+        lastPos.clear();
+        for(int i = n - 1; i >= 0; i--) {
+            suffix[i] = suffix[lastPos[nums[i]]] + count[nums[i]] * (lastPos[nums[i]] - i);
+            lastPos[nums[i]] = i;
+            count[nums[i]]++;
+            prefix[i] = prefix[i] + suffix[i];
+        }
+        return prefix;
+    }
+};
