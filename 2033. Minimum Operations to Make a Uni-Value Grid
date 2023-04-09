@@ -1,0 +1,44 @@
+// C++
+class Solution {
+public:
+    int minOperations(vector<vector<int>>& grid, int x) {
+        int m = grid.size(), n = grid[0].size(), ans = 0;
+        vector<int> nums;
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(grid[i][j] % x != grid[0][0] % x) return -1;
+                nums.push_back(grid[i][j]);
+            }
+        }
+        sort(nums.begin(), nums.end());
+        int median = nums[nums.size() / 2];
+        for(int i = 0; i < nums.size(); i++) {
+            ans += abs(nums[i] - median) / x;
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func abs(a int) int {
+    if a > 0 {return a}
+    return -a
+}
+
+func minOperations(grid [][]int, x int) int {
+    var m, n, ans int = len(grid), len(grid[0]), 0
+    nums := []int{}
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            if grid[i][j] % x != grid[0][0] % x {return -1}
+            nums = append(nums, grid[i][j])
+        }
+    }
+    sort.Ints(nums)
+    var median int = nums[len(nums) / 2]
+    for i := 0; i < len(nums); i++ {
+        ans += abs(nums[i] - median) / x
+    }
+    return ans
+}
