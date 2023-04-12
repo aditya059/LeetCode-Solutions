@@ -1,0 +1,53 @@
+// C++
+class Solution {
+    int dfs(int curr, int &n, vector<int> adjList[], long long &maxScore, int &ans) {
+        long long l = adjList[curr].size() > 0? dfs(adjList[curr][0], n, adjList, maxScore, ans): 0;
+        long long r = adjList[curr].size() > 1? dfs(adjList[curr][1], n, adjList, maxScore, ans): 0;
+        long long score = (l == 0? 1: l) * (r == 0? 1: r) * (n - l - r - 1 == 0? 1: n - l - r - 1);
+        if(score == maxScore) {ans++;}
+        else if(score > maxScore) {maxScore = score; ans = 1;}
+        return 1 + l + r;
+    }
+public:
+    int countHighestScoreNodes(vector<int>& parents) {
+        int n = parents.size();
+        vector<int> adjList[n];
+        for(int i = 1; i < n; i++) {
+            adjList[parents[i]].push_back(i);
+        }
+        int ans = 0;
+        long long maxScore = -1e12;
+        dfs(0, n, adjList, maxScore, ans);
+        return ans;
+    }
+};
+
+
+// Golang
+func dfs(curr, n int, adjList [][]int, maxScore *int64, ans *int) int64 {
+    var l, r, score int64 = 0, 0, 1
+    if len(adjList[curr]) > 0 {l = dfs(adjList[curr][0], n, adjList, maxScore, ans)}
+    if len(adjList[curr]) > 1 {r = dfs(adjList[curr][1], n, adjList, maxScore, ans)}
+    if l > 0 {score *= l}
+    if r > 0 {score *= r}
+    if int64(n) - l - r - 1 > 0 {score *= int64(n) - l - r - 1}
+    if score == *maxScore {
+        *ans++
+    } else if score > *maxScore {
+        *maxScore = score
+        *ans = 1
+    }
+    return 1 + l + r
+}
+
+func countHighestScoreNodes(parents []int) int {
+    var n int = len(parents)
+    adjList := make([][]int, n)
+    for i := 1; i < n; i++ {
+        adjList[parents[i]] = append(adjList[parents[i]], i)
+    }
+    var ans int = 0
+    var maxScore int64 = -1e12
+    dfs(0, n, adjList, &maxScore, &ans)
+    return ans
+}
