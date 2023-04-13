@@ -1,0 +1,16 @@
+class Solution {
+public:
+    vector<int> maximumBeauty(vector<vector<int>>& items, vector<int>& queries) {
+        int n = items.size();
+        sort(items.begin(), items.end());
+        for(int i = 1; i < n; i++) {
+            items[i][1] = max(items[i][1], items[i - 1][1]);
+        }
+        vector<int> ans;
+        for(int q: queries) {
+            auto iter = upper_bound(items.begin(), items.end(), vector<int>{q, INT_MAX});
+            ans.push_back(iter != items.begin()? (*prev(iter))[1]: 0);
+        }
+        return ans;
+    }
+};
