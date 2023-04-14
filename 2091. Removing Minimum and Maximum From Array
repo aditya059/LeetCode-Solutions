@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int minimumDeletions(vector<int>& nums) {
+        int n = nums.size(), mini = nums[0], maxi = nums[0], minInx = 0, maxInx = 0;
+        for(int i = 1; i < n; i++) {
+            if(nums[i] < mini) {
+                mini = nums[i];
+                minInx = i;
+            }
+            if(nums[i] > maxi) {
+                maxi = nums[i];
+                maxInx = i;
+            }
+        }
+        int a = min(minInx, maxInx);
+        int b = max(minInx, maxInx);
+        return min(min(a + 1 + n - b, b + 1), n - a);
+    }
+};
