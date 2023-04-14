@@ -1,0 +1,51 @@
+// C++
+class Solution {
+public:
+    int compute(string &s, int i, int j, vector<vector<int>> &DP) {
+        if(j == i)
+            return 1;
+        if(j < i)
+            return 0;
+        if(DP[i][j] != -1)
+            return DP[i][j];
+        if(s[i] == s[j])
+            DP[i][j] = 2 + compute(s, i + 1, j - 1, DP);
+        else
+            DP[i][j] = max(compute(s, i + 1, j, DP), compute(s, i, j - 1, DP));
+        return DP[i][j];
+    }
+    int longestPalindromeSubseq(string s) {
+        vector<vector<int>> DP(1005, vector<int>(1005, -1));
+        return compute(s, 0, s.length() - 1, DP);
+    }
+};
+
+
+// Golang
+func max(a, b int) int {
+    if a > b {return a}
+    return b
+}
+
+func compute(s string, i, j int, DP [][]int) int {
+    if j == i {return 1}
+    if j < i {return 0}
+    if DP[i][j] != -1 {return DP[i][j]}
+    if s[i] == s[j] {
+        DP[i][j] = 2 + compute(s, i + 1, j - 1, DP)
+    } else {
+        DP[i][j] = max(compute(s, i + 1, j, DP), compute(s, i, j - 1, DP))
+    }
+    return DP[i][j]
+}
+
+func longestPalindromeSubseq(s string) int {
+    DP := make([][]int, len(s))
+    for i := 0; i < len(s); i++ {
+        DP[i] = make([]int, len(s)) 
+        for j := 0; j < len(s); j++ {
+            DP[i][j] = -1
+        }
+    }
+    return compute(s, 0, len(s) - 1, DP)
+}   
