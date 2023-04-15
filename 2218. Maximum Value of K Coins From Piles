@@ -1,0 +1,42 @@
+// C++
+class Solution {
+public:
+    int maxValueOfCoins(vector<vector<int>>& piles, int k) {
+        int n = piles.size();
+        vector<vector<int>> DP(2, vector<int>(k + 1));
+        for(int i = 0; i < n; i++) {
+            for(int j = 1; j <= k; j++) {
+                int sum = 0, m = min((int)piles[i].size(), j);
+                for(int coins = 0; coins <= m; coins++) {
+                    if(coins > 0) sum += piles[i][coins - 1];
+                    DP[(i + 1) & 1][j] = max(DP[(i + 1) & 1][j], sum + DP[i & 1][j - coins]);
+                }
+            }
+        }
+        return DP[piles.size() & 1][k];
+    }
+};
+
+
+// Golang
+func max(a, b int) int {
+    if a > b {return a}
+    return b
+}
+
+func maxValueOfCoins(piles [][]int, k int) int {
+    var n int = len(piles)
+    DP := make([][]int, 2)
+    DP[0] = make([]int, k + 1)
+    DP[1] = make([]int, k + 1)
+    for i := 0; i < n; i++ {
+        for j := 1; j <= k; j++ {
+            var sum, m int = 0, -max(-len(piles[i]), -j) // Reusing max func to calculate min
+            for coins := 0; coins <= m; coins++ {
+                if coins > 0 {sum += piles[i][coins - 1]}
+                DP[(i + 1) & 1][j] = max(DP[(i + 1) & 1][j], sum + DP[i & 1][j - coins])
+            }
+        }
+    }
+    return DP[n & 1][k]
+}
