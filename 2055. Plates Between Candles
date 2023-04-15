@@ -1,3 +1,4 @@
+// Solution 1 : Prefix Sum + Binary Search [TC = O(qlogn + n)]
 class Solution {
 public:
     vector<int> platesBetweenCandles(string s, vector<vector<int>>& queries) {
@@ -19,6 +20,36 @@ public:
                 ans.push_back(0);
             else
                 ans.push_back(prefix[candle[iter2 - candle.begin() - 1]] - prefix[candle[iter1 - candle.begin()]]);
+        }
+        return ans;
+    }
+};
+
+
+// Solution2 : Prefix Sum and precomputation [TC = O(q + n)]
+class Solution {
+public:
+    vector<int> platesBetweenCandles(string s, vector<vector<int>>& queries) {
+        int n = s.length(), sum = 0;
+        vector<int> prefix(n), left(n), right(n, -1);
+        for(int i = 0; i < n; i++) {
+            if(s[i] == '*') {
+                sum++;
+            } 
+            prefix[i] = sum;
+        }
+        left[0] = (s[0] == '|'? 0: -1);
+        right[n - 1] = (s[n - 1] == '|'? n - 1: -1);
+        for(int i = 1; i < n; i++) {
+            left[i] = (s[i] == '|'? i: left[i - 1]);
+            right[n - i - 1] = (s[n - i - 1] == '|'? n - i - 1: right[n - i]);
+        }
+        vector<int> ans;
+        for(vector<int> q: queries) {
+            if(right[q[0]] == -1 || left[q[1]] == -1 || right[q[0]] >= left[q[1]]) 
+                ans.push_back(0);
+            else
+                ans.push_back(prefix[left[q[1]]] - prefix[right[q[0]]]);
         }
         return ans;
     }
