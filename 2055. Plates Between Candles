@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> platesBetweenCandles(string s, vector<vector<int>>& queries) {
+        int n = s.length(), sum = 0;
+        vector<int> candle, prefix(n);
+        for(int i = 0; i < n; i++) {
+            if(s[i] == '*') {
+                sum++;
+            } else {
+                candle.push_back(i);
+            }
+            prefix[i] = sum;
+        }
+        vector<int> ans;
+        for(vector<int> q: queries) {
+            auto iter1 = lower_bound(candle.begin(), candle.end(), q[0]);
+            auto iter2 = upper_bound(candle.begin(), candle.end(), q[1]);
+            if(iter1 == candle.end() || iter2 == candle.begin() || iter1 >= iter2) 
+                ans.push_back(0);
+            else
+                ans.push_back(prefix[candle[iter2 - candle.begin() - 1]] - prefix[candle[iter1 - candle.begin()]]);
+        }
+        return ans;
+    }
+};
