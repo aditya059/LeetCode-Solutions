@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int maxDivScore(vector<int>& nums, vector<int>& divisors) {
+        int ans = INT_MAX, maxCount = 0;
+        for(int d: divisors) {
+            int count = 0;
+            for(int n: nums) {
+                count += (n % d == 0);
+            }
+            if(count > maxCount) {
+                ans = d;
+                maxCount = count;
+            } else if(count == maxCount) {
+                ans = min(ans, d);
+            }
+        }
+        return ans;
+    }
+};
