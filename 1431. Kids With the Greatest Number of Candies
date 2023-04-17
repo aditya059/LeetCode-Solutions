@@ -1,0 +1,29 @@
+// C++
+class Solution {
+public:
+    vector<bool> kidsWithCandies(vector<int>& candies, int extraCandies) {
+        int n = candies.size(), maxC = INT_MIN;
+        vector<bool> ans(n);
+        for(int c: candies) {
+            maxC = max(maxC, c);
+        }
+        for(int i = 0; i < n; i++) {
+            ans[i] = (candies[i] + extraCandies >= maxC);
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func kidsWithCandies(candies []int, extraCandies int) []bool {
+    var n, maxC = len(candies), math.MinInt
+    ans := make([]bool, n)
+    for _, c := range candies {
+        if c > maxC {maxC = c}
+    }
+    for i := 0; i < n; i++ {
+        ans[i] = (candies[i] + extraCandies >= maxC)
+    }
+    return ans
+}
