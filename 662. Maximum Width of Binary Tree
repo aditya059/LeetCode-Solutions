@@ -1,0 +1,63 @@
+// C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+    void dfs(TreeNode* root, long long pos, int level, int &ans, unordered_map<int, long long> &Map) {
+        if(!root) return;
+        if(Map.find(level) == Map.end()) Map[level] = pos;
+        else ans = max(ans, int(pos - Map[level] + 1));
+        dfs(root -> left, pos * 2 + 1 - Map[level], level + 1, ans, Map);
+        dfs(root -> right, pos * 2 + 2 - Map[level], level + 1, ans, Map);
+    }
+public:
+    int widthOfBinaryTree(TreeNode* root) {
+        unordered_map<int, long long> Map;
+        int ans = 1;
+        dfs(root, 0, 0, ans, Map);
+        return ans;
+    }
+};
+
+//-----------------------------------------------------------------
+
+// Golang
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+func max(a, b int) int {
+    if a > b {return a}
+    return b
+}
+
+func dfs(root *TreeNode, pos int64, level int, ans *int, Map map[int]int64) {
+    if root == nil {return}
+    if _, ok := Map[level]; !ok {
+        Map[level] = pos
+    } else {
+        *ans = max(*ans, int(pos - Map[level] + 1))
+    }   
+    dfs(root.Left, pos * 2 + 1 - Map[level], level + 1, ans, Map)
+    dfs(root.Right, pos * 2 + 2 - Map[level], level + 1, ans, Map)
+}
+
+func widthOfBinaryTree(root *TreeNode) int {
+    Map := make(map[int]int64)
+    var ans int = 1
+    dfs(root, 0, 0, &ans, Map)
+    return ans
+}
