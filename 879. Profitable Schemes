@@ -1,0 +1,47 @@
+// C++
+class Solution {
+    const int mod = 1e9 + 7;
+    int dfs(int i, int members, int profit, int &n, int &minProfit, vector<int>& group, vector<int>& profits, vector<vector<vector<int>>> &memo) {
+        if(i == profits.size()) return profit >= minProfit;
+        if(memo[i][members][profit] != -1) return memo[i][members][profit];
+        int ignore = dfs(i + 1, members, profit, n, minProfit, group, profits, memo);
+        int take = 0;
+        if(members + group[i] <= n) take = dfs(i + 1, members + group[i], min(minProfit, profit + profits[i]), n, minProfit, group, profits, memo);
+        return memo[i][members][profit] = (ignore + take) % mod;
+    }
+public:
+    int profitableSchemes(int n, int minProfit, vector<int>& group, vector<int>& profit) {
+        vector<vector<vector<int>>> memo = vector<vector<vector<int>>>(group.size(), vector<vector<int>>(n + 1, vector<int>(minProfit + 1, -1)));
+        return dfs(0, 0, 0, n, minProfit, group, profit, memo);
+    }
+};
+
+
+// Golang
+const mod int = 1e9 + 7
+
+func min(a, b int) int {
+    if a < b {return a}
+    return b
+}
+
+func dfs(i, members, profit, n, minProfit int, group []int, profits []int, memo map[string]int) int {
+    if i == len(profits) {
+        if profit >= minProfit {return 1}
+        return 0
+    }
+    var key string = string(i) + " " + string(members) + " " + string(profit)
+    if val, ok := memo[key]; ok {return val}
+    var ignore int = dfs(i + 1, members, profit, n, minProfit, group, profits, memo)
+    var take int = 0
+    if members + group[i] <= n {
+        take = dfs(i + 1, members + group[i], min(minProfit, profit + profits[i]), n, minProfit, group, profits, memo)
+    } 
+    memo[key] = (ignore + take) % mod
+    return memo[key]
+}
+
+func profitableSchemes(n int, minProfit int, group []int, profit []int) int {
+    memo := make(map[string]int)
+    return dfs(0, 0, 0, n, minProfit, group, profit, memo)
+}
