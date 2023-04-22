@@ -1,0 +1,65 @@
+class Robot {
+    int total, width, height, cycleLen;
+    vector<string> directions;
+public:
+    Robot(int width, int height) {
+        total = 0;
+        this -> width = width;
+        this -> height = height;
+        cycleLen = (width + height - 2) * 2;
+        directions = {"East", "North", "West", "South"};
+    }
+    
+    void step(int num) {
+        total += num;
+    }
+
+    vector<int> solve() {
+        if(!total) return {0, 0, 0};
+        int x = 0, y = 0, dir = 3;
+        int steps = total % cycleLen;
+        if(steps) {
+            dir = (dir + 1) % 4;
+            int m = min(steps, width - 1);
+            steps -= m;
+            x = m, y = 0;
+        }
+        if(steps) {
+            dir = (dir + 1) % 4;
+            int m = min(steps, height - 1);
+            steps -= m;
+            x = width - 1, y = m;
+        }
+        if(steps) {
+            dir = (dir + 1) % 4;
+            int m = min(steps, width - 1);
+            steps -= m;
+            x = width - 1 - m, y = height - 1;
+        }
+        if(steps) {
+            dir = (dir + 1) % 4;
+            int m = min(steps, height - 1);
+            steps -= m;
+            x = 0, y = height - 1 - m;
+        }
+        return {x, y, dir};
+    }
+    
+    vector<int> getPos() {
+        vector<int> vals = solve();
+        return {vals[0], vals[1]};
+    }
+    
+    string getDir() {
+        vector<int> vals = solve();
+        return directions[vals[2]];
+    }
+};
+
+/**
+ * Your Robot object will be instantiated and called as such:
+ * Robot* obj = new Robot(width, height);
+ * obj->step(num);
+ * vector<int> param_2 = obj->getPos();
+ * string param_3 = obj->getDir();
+ */
