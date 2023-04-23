@@ -1,0 +1,36 @@
+// C++
+class Solution {
+    int mod = 1e9 + 7;
+public:
+    int numberOfArrays(string s, int k) {
+        int n = s.length();
+        vector<int> DP(n + 1);
+        DP[n] = 1;
+        for(int i = n - 1; i >= 0; i--) {
+            long val = s[i] - '0';
+            for(int j = i + 1; val > 0 && val <= k && j <= n; j++) {
+                DP[i] = (DP[i] + DP[j]) % mod;
+                if(j < n) val = val * 10 + (s[j] - '0');
+            }
+        }
+        return DP[0];
+    }
+};
+
+
+// Golang
+const mod int = 1e9 + 7
+
+func numberOfArrays(s string, k int) int {
+    var n int = len(s)
+    DP := make([]int, n + 1)
+    DP[n] = 1
+    for i := n - 1; i >= 0; i-- {
+        val := int(s[i] - '0')
+        for j := i + 1; val > 0 && val <= k && j <= n; j++ {
+            DP[i] = (DP[i] + DP[j]) % mod
+            if j < n {val = val * 10 + int(s[j] - '0')}
+        }
+    }
+    return DP[0]
+}
