@@ -1,0 +1,35 @@
+// C++
+class Solution {
+    int mod = 1e9 + 7;
+    int fastPow(int x, long long n) {
+        if(n == 0) return 1;
+        if(n == 1) return x;
+        long y = fastPow(x, n / 2);
+        if(n % 2) return (((y * y) % mod) * x) % mod;
+        return (y * y) % mod;
+    }
+public:
+    int countGoodNumbers(long long n) {
+        return (fastPow(20, n / 2) * 1L * (n % 2? 5: 1)) % mod;
+    }
+};
+
+
+// Golang
+const mod int = 1e9 + 7
+
+func fastPow(x int, n int64) int {
+        if n == 0 {return 1}
+        if n == 1 {return x}
+        y := fastPow(x, n / 2)
+        if n % 2 == 1 {
+            return (((y * y) % mod) * x) % mod
+        } 
+        return (y * y) % mod
+    }
+
+func countGoodNumbers(n int64) int {
+    var val int = 1
+    if n % 2 == 1 {val = 5}
+    return (fastPow(20, n / 2) * val) % mod
+}
