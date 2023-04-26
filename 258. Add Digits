@@ -1,3 +1,4 @@
+// C++
 class Solution {
 public:
     int addDigits(int num) {
@@ -6,3 +7,12 @@ public:
         return num;
     }
 };
+
+
+// Golang
+func addDigits(num int) int {
+    for num > 9 {
+        num = addDigits(num / 10) + num % 10
+    }
+    return num
+}
