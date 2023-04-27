@@ -1,6 +1,13 @@
+// C++
 class Solution {
 public:
     int bulbSwitch(int n) {
         return sqrt(n);
     }
 };
+
+
+// Golang
+func bulbSwitch(n int) int {
+    return int(math.Sqrt(float64(n)))
+}
