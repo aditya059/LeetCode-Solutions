@@ -1,0 +1,85 @@
+// C++
+class Solution {
+public:
+    bool check(string a, string b) {
+        if(a == b) return true;
+        int diff = 0;
+        for(int i = 0; i < a.length(); i++) {
+            if(a[i] != b[i])
+                diff++;
+        }
+        return diff == 2;
+    }
+    void dfs(int curr, vector<bool> &visited, vector<int> adjList[]) {
+        visited[curr] = true;
+        for(int next: adjList[curr]) {
+            if(!visited[next])
+                dfs(next, visited, adjList);
+        }
+    }
+    int numSimilarGroups(vector<string>& strs) {
+        int ans = 0;
+        vector<int> adjList[strs.size()];
+        for(int i = 0; i < strs.size(); i++) {
+            for(int j = i + 1; j < strs.size(); j++) {
+                if(check(strs[i], strs[j])) {
+                    adjList[i].push_back(j);
+                    adjList[j].push_back(i);
+                }
+            }
+        }
+        
+        vector<bool> visited(strs.size());
+        for(int i = 0; i < strs.size(); i++) {
+            if(!visited[i]) {
+                ans++;
+                dfs(i, visited, adjList);
+            }
+        }
+        return ans;
+    }  
+};
+
+
+// Golang
+func check(a, b string) bool {
+    if a == b {return true}
+    var diff int = 0
+    for i := 0; i < len(a); i++ {
+        if a[i] != b[i] {
+            diff++;
+        }
+    }
+    return diff == 2
+}
+
+func dfs(curr int, visited []bool, adjList [][]int) {
+    visited[curr] = true
+    for _, next := range adjList[curr] {
+        if !visited[next] {
+            dfs(next, visited, adjList)
+        }
+    }
+}
+
+func numSimilarGroups(strs []string) int {
+    var ans, n int = 0, len(strs)
+    adjList := make([][]int, n)
+    for i := 0; i < n; i++ {
+        for j := i + 1; j < n; j++ {
+            if check(strs[i], strs[j]) {
+                adjList[i] = append(adjList[i], j)
+                adjList[j] = append(adjList[j], i)
+            }
+        }
+    }
+    
+    visited := make([]bool, n)
+    for i := 0; i < n; i++ {
+        if !visited[i] {
+            ans++
+            dfs(i, visited, adjList)
+        }
+    }
+    return ans
+}
