@@ -1,0 +1,87 @@
+// C++
+class Solution {
+    int findParent(vector<int> &parent, int u) {
+        if(parent[u] == u) return u;
+        return parent[u] = findParent(parent, parent[u]);
+    }
+    void unionSet(vector<int> &parent, int u, int v) {
+        int parU = findParent(parent, u);
+        int parV = findParent(parent, v);
+        if(parU == parV) return;
+        if(parU < parV) {
+            parent[parV] = parU;
+        }
+        else {
+            parent[parU] = parV; 
+        }
+    }
+public:
+    vector<bool> distanceLimitedPathsExist(int n, vector<vector<int>>& edgeList, vector<vector<int>>& queries) {
+        vector<int> index(queries.size());
+        sort(edgeList.begin(), edgeList.end(), [](auto &A, auto &B) {
+            return A[2] < B[2];
+        });
+        iota(index.begin(), index.end(), 0);
+        sort(index.begin(), index.end(), [&](int &A, int &B) {
+            return queries[A][2] < queries[B][2];
+        });
+        vector<int> parent(n);
+        iota(parent.begin(), parent.end(), 0);
+        int j = 0;
+        vector<bool> ans(queries.size());
+        for(int i: index) {
+            for(; j < edgeList.size() && edgeList[j][2] < queries[i][2]; j++) {
+                unionSet(parent, edgeList[j][0], edgeList[j][1]);
+            }
+            ans[i] = findParent(parent, queries[i][0]) == findParent(parent, queries[i][1]);
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func findParent(parent []int, u int) int {
+    if parent[u] == u {return u}
+    parent[u] = findParent(parent, parent[u])
+    return parent[u]
+}
+
+func unionSet(parent []int, u, v int) {
+    parU := findParent(parent, u)
+    parV := findParent(parent, v)
+    if parU == parV {return}
+    if parU < parV {
+        parent[parV] = parU
+    } else {
+        parent[parU] = parV 
+    }
+}
+
+func iota(num []int) {
+    for i := 0; i < len(num); i++ {
+        num[i] = i
+    }
+}
+
+func distanceLimitedPathsExist(n int, edgeList [][]int, queries [][]int) []bool {
+    index := make([]int, len(queries))
+    sort.Slice(edgeList, func(i, j int) bool {
+        return edgeList[i][2] < edgeList[j][2]
+    })
+    iota(index)
+    sort.Slice(index, func(i, j int) bool {
+        return queries[index[i]][2] < queries[index[j]][2]
+    })
+    parent := make([]int, n)
+    iota(parent)
+    var j int = 0
+    ans := make([]bool, len(queries))
+    for _, i := range index {
+        for ; j < len(edgeList) && edgeList[j][2] < queries[i][2]; j++ {
+            unionSet(parent, edgeList[j][0], edgeList[j][1])
+        }
+        ans[i] = findParent(parent, queries[i][0]) == findParent(parent, queries[i][1])
+    }
+    return ans
+}
