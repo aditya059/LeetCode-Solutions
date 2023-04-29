@@ -1,0 +1,87 @@
+class Solution {
+    int query(vector<int> &BIT, int i) {
+        int sum = 0; i++;
+        while(i > 0) {
+            sum += BIT[i];
+            i = i - (i & -i);
+        }
+        return sum;
+    }
+    void update(vector<int> &BIT, int i) {
+        i++;
+        while(i < BIT.size()) {
+            BIT[i]++;
+            i = i + (i & -i);
+        }
+    }
+public:
+    long long countOperationsToEmptyArray(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> index(n);
+        iota(index.begin(), index.end(), 0);
+        sort(index.begin(), index.end(), [&](int i, int j) {
+            return nums[i] < nums[j];
+        });
+        vector<int> BIT(n + 1);
+        long long ans = index[0] + 1;
+        update(BIT, index[0]);
+        for(int i = 1; i < n; i++) {
+            if(index[i] > index[i - 1]) {
+                ans += (index[i] - index[i - 1]) - (query(BIT, index[i]) - query(BIT, index[i - 1]));
+            } else {
+                ans += (n - index[i - 1] + index[i]) - (query(BIT, n - 1) - query(BIT, index[i - 1]) + query(BIT, index[i]));
+            }
+            update(BIT, index[i]);
+        }
+        return ans;
+    }
+};
+
+
+//--------------------------------------------------------------------------------
+
+
+class Solution {
+    int query(vector<int> &BIT, int i) {
+        int sum = 0; i++;
+        while(i > 0) {
+            sum += BIT[i];
+            i = i - (i & -i);
+        }
+        return sum;
+    }
+    void update(vector<int> &BIT, int i, int val) {
+        i++;
+        while(i < BIT.size()) {
+            BIT[i] += val;
+            i = i + (i & -i);
+        }
+    }
+    void build(vector<int> &BIT, int n) {
+        for(int i = 0; i < n; i++) {
+            update(BIT, i, 1);
+        }
+    }
+public:
+    long long countOperationsToEmptyArray(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> index(n);
+        iota(index.begin(), index.end(), 0);
+        sort(index.begin(), index.end(), [&](int i, int j) {
+            return nums[i] < nums[j];
+        });
+        vector<int> BIT(n + 1); 
+        build(BIT, n);
+        long long ans = index[0] + 1;
+        update(BIT, index[0], -1);
+        for(int i = 1; i < n; i++) {
+            if(index[i] > index[i - 1]) {
+                ans += query(BIT, index[i]) - query(BIT, index[i - 1]);
+            } else {
+                ans += query(BIT, n - 1) - query(BIT, index[i - 1]) + query(BIT, index[i]);
+            }
+            update(BIT, index[i], -1);
+        }
+        return ans;
+    }
+};
