@@ -4,38 +4,36 @@ class Solution {
         if(parent[u] == u) return u;
         return parent[u] = findParent(parent, parent[u]);
     }
-    int unionSet(vector<int> &parent, vector<int> &compSize, int &numOfComp, int u, int v) {
+    int unionSet(vector<int> &parent, int &numOfComp, int u, int v) {
         int parU = findParent(parent, u);
         int parV = findParent(parent, v);
         if(parU == parV) return 0;
         if(parU < parV) {
             parent[parV] = parU;
-            compSize[parU] += compSize[parV];
         }
         else {
             parent[parU] = parV; 
-            compSize[parV] += compSize[parU];
         }
         numOfComp--;
         return 1;
     }
 public:
     int maxNumEdgesToRemove(int n, vector<vector<int>>& edges) {
-        vector<int> bobParent(n + 1), aliceParent(n + 1), bobSize(n + 1, 1), aliceSize(n + 1, 1);
+        vector<int> bobParent(n + 1), aliceParent(n + 1);
         iota(bobParent.begin(), bobParent.end(), 0);
         iota(aliceParent.begin(), aliceParent.end(), 0);
         int needed = 0, numOfCompBob = n, numOfCompAlice = n;
         for(vector<int> edge: edges) {
             if(edge[0] == 3) {
-                if(unionSet(bobParent, bobSize, numOfCompBob, edge[1], edge[2]) | unionSet(aliceParent, aliceSize, numOfCompAlice, edge[1], edge[2]))
+                if(unionSet(bobParent, numOfCompBob, edge[1], edge[2]) | unionSet(aliceParent, numOfCompAlice, edge[1], edge[2]))
                 needed++;
             }
         }
         for(vector<int> edge: edges) {
             if(edge[0] == 1) {
-                needed += unionSet(aliceParent, aliceSize, numOfCompAlice, edge[1], edge[2]);
+                needed += unionSet(aliceParent, numOfCompAlice, edge[1], edge[2]);
             } else if(edge[0] == 2) {
-                needed += unionSet(bobParent, bobSize, numOfCompBob, edge[1], edge[2]);
+                needed += unionSet(bobParent, numOfCompBob, edge[1], edge[2]);
             }
         }
         if(numOfCompAlice == 1 && numOfCompBob == 1) {
