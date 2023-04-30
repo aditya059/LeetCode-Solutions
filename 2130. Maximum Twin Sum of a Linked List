@@ -1,3 +1,6 @@
+//------------------------------------------
+// C++
+//------------------------------------------
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -8,6 +11,7 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
+
 class Solution {
 public:
     int pairSum(ListNode* head) {
@@ -33,3 +37,47 @@ public:
         return ans;
     }
 };
+
+
+//------------------------------------------
+// Golang
+//------------------------------------------
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func max(a, b int) int {
+    if a > b { 
+        return a
+    }
+    return b
+}
+
+func pairSum(head *ListNode) int {
+    slow := head
+    fast := head
+    for fast != nil && fast.Next != nil && fast.Next.Next != nil {
+        fast = fast.Next.Next
+        slow = slow.Next
+    }
+    p := slow.Next
+    var q *ListNode = nil
+    var r *ListNode = nil
+    slow.Next = nil
+    for p != nil {
+        r = q
+        q = p
+        p = p.Next
+        q.Next = r
+    } 
+    var ans int = 0
+    for head != nil {
+        ans = max(ans, head.Val + q.Val)
+        head = head.Next
+        q = q.Next
+    }
+    return ans
+}
