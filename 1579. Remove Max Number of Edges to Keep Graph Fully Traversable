@@ -42,3 +42,59 @@ public:
         return -1;
     }
 };
+
+
+// Golang
+func findParent(parent []int, u int) int {
+    if parent[u] == u {return u}
+    parent[u] = findParent(parent, parent[u])
+    return parent[u]
+}
+
+func unionSet(parent []int, numOfComp *int, u, v int) int {
+    parU := findParent(parent, u)
+    parV := findParent(parent, v)
+    if parU == parV {return 0}
+    if parU < parV {
+        parent[parV] = parU
+    } else {
+        parent[parU] = parV 
+    }
+    (*numOfComp)--
+    return 1
+}
+
+func iota(num []int) {
+    for i := 0; i < len(num); i++ {
+        num[i] = i
+    }
+}
+
+func maxNumEdgesToRemove(n int, edges [][]int) int {
+    bobParent := make([]int, n + 1)
+    aliceParent := make([]int, n + 1)
+    iota(bobParent)
+    iota(aliceParent)
+    var needed, numOfCompBob, numOfCompAlice int = 0, n, n
+    for _, edge := range edges {
+        if edge[0] == 3 {
+            a := unionSet(bobParent, &numOfCompBob, edge[1], edge[2])
+            b := unionSet(aliceParent, &numOfCompAlice, edge[1], edge[2])
+            if a == 1 || b == 1 {
+                needed++
+            }
+        }
+    }
+    for _, edge := range edges {
+        if edge[0] == 1 {
+            needed += unionSet(aliceParent, &numOfCompAlice, edge[1], edge[2])
+        } else if edge[0] == 2 {
+            needed += unionSet(bobParent, &numOfCompBob, edge[1], edge[2])
+        }
+    }
+    fmt.Println(numOfCompAlice, numOfCompBob)
+    if numOfCompAlice == 1 && numOfCompBob == 1 {
+        return len(edges) - needed
+    }
+    return -1
+}
