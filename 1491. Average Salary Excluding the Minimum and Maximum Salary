@@ -1,0 +1,32 @@
+// C++
+class Solution {
+public:
+    double average(vector<int>& salary) {
+        double sum = 0.0;
+        int minSal = INT_MAX, maxSal = INT_MIN;
+        for(int sal: salary) {
+            minSal = min(minSal, sal);
+            maxSal = max(maxSal, sal);
+            sum += sal;
+        }
+        return (sum - minSal - maxSal) / (salary.size() - 2);
+    }
+};
+
+
+// Golang
+func max(a, b int) int {
+    if a > b {return a}
+    return b
+}
+
+func average(salary []int) float64 {
+    var sum int = 0
+    var minSal, maxSal int = math.MaxInt, math.MinInt
+    for _, sal := range salary {
+        minSal = -max(-minSal, -sal) // Reuse max() to calculate min
+        maxSal = max(maxSal, sal)
+        sum += sal
+    }
+    return float64(sum - minSal - maxSal) / float64(len(salary) - 2)
+}
