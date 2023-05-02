@@ -1,0 +1,28 @@
+// C++
+class Solution {
+public:
+    int arraySign(vector<int>& nums) {
+        int ans = 1;
+        for(int num: nums) {
+            if(num == 0) return 0;
+            ans *= (num / abs(num));
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func abs(a int) int {
+    if a > 0 {return a}
+    return -a
+}
+
+func arraySign(nums []int) int {
+    var ans int = 1
+    for _, num := range nums {
+        if num == 0 {return 0}
+        ans *= (num / abs(num))
+    }
+    return ans
+}
