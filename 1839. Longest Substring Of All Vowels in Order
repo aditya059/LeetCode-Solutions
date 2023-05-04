@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int longestBeautifulSubstring(string word) {
+        int ans = 0;
+        for(int start = -1, end = 0; end < word.size(); end++) {
+            int count = 1;
+            while(end + 1 < word.size() && word[end + 1] >= word[end]) {
+                count += word[end + 1] > word[end];
+                end++;
+            }
+            if(count == 5)
+                ans = max(ans, end - start);
+            start = end;
+        }
+        return ans;
+    }
+};
+
+
+OR
+
+
+// Optimisation
+class Solution {
+public:
+    int longestBeautifulSubstring(string word) {
+        int ans = 0, start, end;
+        for(start = 0; start < word.size(); start++) {
+            if(word[start] == 'a') {
+                int count = 1;
+                for(end = start + 1; end < word.size() && word[end] >= word[end - 1]; end++) {
+                    count += word[end] > word[end - 1];
+                }
+                if(count == 5)
+                    ans = max(ans, end - start);
+                start = end - 1;
+            }
+        }
+        return ans;
+    }
+};
