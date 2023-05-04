@@ -1,0 +1,16 @@
+class Solution {
+public:
+    string maxValue(string n, int x) {
+        string prefix = "";
+        bool isNeg = n[0] == '-';
+        int i;
+        for(i = isNeg; i < n.length(); i++) {
+            if((isNeg? -1: 1) * (n[i] - '0' - x) >= 0) {
+                prefix += n[i];
+            } else {
+                break;
+            }
+        }
+        return (isNeg? "-": "") + prefix + char('0' + x) + n.substr(i);
+    }
+};
