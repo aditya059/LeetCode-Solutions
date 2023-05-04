@@ -1,0 +1,13 @@
+class Solution {
+public:
+    bool mergeTriplets(vector<vector<int>>& triplets, vector<int>& target) {
+        vector<int> formed(3);
+        for(vector<int> triplet: triplets) {
+            if(triplet[0] > target[0] || triplet[1] > target[1] || triplet[2] > target[2]) continue;
+            formed[0] = max(triplet[0], formed[0]);
+            formed[1] = max(triplet[1], formed[1]);
+            formed[2] = max(triplet[2], formed[2]);
+        }
+        return target == formed;
+    }
+};
