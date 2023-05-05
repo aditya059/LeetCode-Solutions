@@ -1,0 +1,32 @@
+class Solution {
+public:
+    string findLexSmallestString(string s, int a, int b) {
+        queue<string> Queue;
+        Queue.push(s);
+        unordered_map<string, bool> visited;
+        string ans = s;
+        int n = s.length();
+        while(!Queue.empty()) {
+            int sz = Queue.size();
+            for(int i = 0; i < sz; i++) {
+                string curr = Queue.front();
+                Queue.pop();
+                ans = min(ans, curr);
+                string A = curr.substr(n - b) + curr.substr(0, n - b);
+                string B = curr;
+                for(int j = 1; j < n; j += 2) {
+                    B[j] = (B[j] - '0' + a) % 10 + '0';
+                }
+                if(!visited[A]) {
+                    Queue.push(A);
+                    visited[A] = true;
+                }
+                if(!visited[B]) {
+                    Queue.push(B);
+                    visited[B] = true;
+                }
+            }
+        }
+        return ans;
+    }
+};
