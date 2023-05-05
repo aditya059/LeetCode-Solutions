@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int minSwaps(string s) {
+        int len = s.length(), zero = 0, one = 0, count1 = 0, count2 = 0;
+        char char1 = '0', char2 = '1';
+        for(char ch: s) {
+            if(ch == '0') zero++;
+            else one++;
+            count1 += (ch != char1);
+            count2 += (ch != char2);
+            char1 = (char1 == '0'? '1': '0');
+            char2 = (char2 == '0'? '1': '0');
+        }
+        if(abs(one - zero) >= 2) return -1;
+        if(zero < one) return count2 / 2;
+        else if(zero > one) return count1 / 2;
+        return min(count1, count2) / 2;
+    }
+};
+
+
+OR
+
+
+class Solution {
+public:
+    int minSwaps(string s) {
+        int len = s.length(), zero = 0, one = 0, count1 = 0;
+        char char1 = '0';
+        for(char ch: s) {
+            if(ch == '0') zero++;
+            else one++;
+            count1 += (ch != char1);
+            char1 = (char1 == '0'? '1': '0');
+        }
+        if(abs(one - zero) >= 2) return -1;
+        else if(zero < one) return (len - count1) / 2;
+        else if(zero > one) return count1 / 2;
+        else return min(count1, (len - count1)) / 2;
+    }
+};
