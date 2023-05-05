@@ -1,3 +1,4 @@
+// C++
 class Solution {
 public:
     bool isVowel(char ch) {
@@ -20,3 +21,25 @@ public:
         return ans;
     }
 };
+
+
+// Golang
+func isVowel(ch byte) bool {
+    return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u'
+}
+
+func maxVowels(s string, k int) int {
+    var count, ans = 0, 0
+    for i := 0; i < len(s); i++ {
+        if isVowel(s[i]) {
+            count++
+        }
+        if i >= k && isVowel(s[i - k]) {
+            count--;
+        }    
+        if i >= k - 1 && count > ans {
+            ans = count
+        } 
+    }
+    return ans
+}
