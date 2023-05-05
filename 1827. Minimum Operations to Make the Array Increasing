@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        int val = nums[0], ans = 0;
+        for(int i = 1; i < nums.size(); i++) {
+            val = max(nums[i], val + 1);
+            ans += val - nums[i];
+        }
+        return ans;
+    }
+};
