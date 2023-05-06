@@ -1,0 +1,43 @@
+// C++
+class Solution {
+    const int mod = 1e9 + 7;
+    int fastPow(int x, int n) {
+        if(n == 0) return 1;
+        long y = fastPow(x, n / 2);
+        if(n % 2) return (((y * y) % mod) * x) % mod;
+        return (y * y) % mod;
+    }
+public:
+    int numSubseq(vector<int>& nums, int target) {
+        sort(nums.begin(), nums.end());
+        int n = nums.size(), ans = 0;
+        for(int start = 0, end = n - 1; start <= end; start++) {
+            for(; end >= start && nums[start] + nums[end] > target; end--);
+            if(end < start) break;
+            ans = (ans + fastPow(2, end - start)) % mod;
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+const mod int = 1e9 + 7
+
+func fastPow(x, n int) int {
+    if n == 0 {return 1}
+    y := fastPow(x, n / 2)
+    if n % 2 == 1 {return (((y * y) % mod) * x) % mod}
+    return (y * y) % mod
+}
+
+func numSubseq(nums []int, target int) int {
+    sort.Ints(nums)
+    var n, ans int = len(nums), 0
+    for start, end := 0, n - 1; start <= end; start++ {
+        for ; end >= start && nums[start] + nums[end] > target; end-- {}
+        if end < start {break}
+        ans = (ans + fastPow(2, end - start)) % mod
+    }
+    return ans
+}
