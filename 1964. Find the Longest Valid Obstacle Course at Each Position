@@ -1,3 +1,7 @@
+//------------------------------------------------------------------
+// C++
+//------------------------------------------------------------------
+// Solution 1: LIS + Binary Search
 class Solution {
 public:
     vector<int> longestObstacleCourseAtEachPosition(vector<int>& obstacles) {
@@ -17,9 +21,8 @@ public:
     }
 };
 
-OR
 
-\\ Fenweek Tree
+// Solution 2: Fenwick Tree
 class Solution {
 public:
     int n = 10000005;
@@ -50,3 +53,75 @@ public:
         return ans;
     }
 };
+
+
+//------------------------------------------------------------------
+// Golang
+//------------------------------------------------------------------
+
+// Solution 1: LIS + Binary Search
+func upperBound(LIS []int, x int) int {
+    var low, high int = 0, len(LIS) - 1
+    var ans int = high
+    for low <= high {
+        mid := low + (high - low) / 2
+        if x < LIS[mid] {
+            if mid < ans {ans = mid}
+            high = mid - 1
+        } else {
+            low = mid + 1
+        }
+    }
+    return ans
+}
+
+func longestObstacleCourseAtEachPosition(obstacles []int) []int {
+    LIS := []int{}
+    ans := make([]int, len(obstacles))
+    for i := 0; i < len(obstacles); i++ {
+        if len(LIS) == 0 || obstacles[i] >= LIS[len(LIS) - 1] { 
+            LIS = append(LIS, obstacles[i])
+            ans[i] = len(LIS)
+        } else {
+            ans[i] = upperBound(LIS, obstacles[i]) + 1
+            LIS[ans[i] - 1] = obstacles[i]
+        }
+    }
+    return ans
+}
+
+//----------------------------------------------------------------
+
+// Solution 2: Fenwick Tree
+func max(a, b int) int {
+    if a > b {return a}
+    return b
+}
+
+func update(i, x, n int, BIT []int) {
+    for i < n {
+        BIT[i] = max(BIT[i], x)
+        i += i & -i
+    }
+}
+
+func query(i int, BIT []int) int {
+    var ans int = 0
+    for i > 0 {
+        ans = max(ans, BIT[i])
+        i -= i & -i
+    }
+    return ans
+}
+    
+func longestObstacleCourseAtEachPosition(obstacles []int) []int {
+    var n int = 10000005
+    BIT := make([]int, 10000005)
+    ans := make([]int, len(obstacles))
+    for i := 0; i < len(obstacles); i++ {
+        lenLIS := query(obstacles[i], BIT)
+        ans[i] = lenLIS + 1
+        update(obstacles[i], ans[i], n, BIT)
+    }
+    return ans
+}
