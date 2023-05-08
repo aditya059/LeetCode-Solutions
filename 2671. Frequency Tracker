@@ -1,3 +1,6 @@
+//---------------------------------------
+// Solution 1
+//---------------------------------------
 class FrequencyTracker {
     unordered_map<int, int> numToFreq;
     unordered_map<int, unordered_set<int>> freqToNumList;
@@ -22,6 +25,45 @@ public:
     
     bool hasFrequency(int frequency) {
         return freqToNumList[frequency].size() > 0;
+    }
+};
+
+/**
+ * Your FrequencyTracker object will be instantiated and called as such:
+ * FrequencyTracker* obj = new FrequencyTracker();
+ * obj->add(number);
+ * obj->deleteOne(number);
+ * bool param_3 = obj->hasFrequency(frequency);
+ */
+
+
+//---------------------------------------
+// Solution 2
+//---------------------------------------
+class FrequencyTracker {
+    unordered_map<int, int> count;
+    unordered_map<int, int> freq;
+public:
+    FrequencyTracker() {
+        
+    }
+    
+    void add(int number) {
+        freq[count[number]]--;
+        count[number]++;
+        freq[count[number]]++;
+    }
+    
+    void deleteOne(int number) {
+        if(count[number] > 0) {
+            freq[count[number]]--;
+            count[number]--;
+            freq[count[number]]++;
+        } 
+    }
+    
+    bool hasFrequency(int frequency) {
+        return freq[frequency];
     }
 };
 
