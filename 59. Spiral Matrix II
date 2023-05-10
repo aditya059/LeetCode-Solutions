@@ -1,0 +1,52 @@
+// C++
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        vector<vector<int>> ans(n, vector<int>(n));
+        int i, j, cnt = 0;
+        int r = n, c = n, m = r * c;
+        for(i = 0; i < ceil(r / 2.0) && cnt < m; i++) {
+            for(j = i; j < c - i && cnt < m; j++) {
+                ans[i][j] = ++cnt;
+            }
+            for(j = i + 1; j < r - i - 1 && cnt < m; j++) {
+                ans[j][c - i - 1] = ++cnt;
+            }
+            for(j = c - i - 1; j >= i && cnt < m; j--) {
+                ans[r - i - 1][j] = ++cnt;
+            }
+            for(j = r - i - 2; j > i && cnt < m; j--) {
+                ans[j][i] = ++cnt;
+            }
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func generateMatrix(n int) [][]int {
+    ans := make([][]int, n)
+    for i := 0; i < n; i++ {ans[i] = make([]int, n)}
+    var i, j, cnt int = 0, 0, 0
+    var r, c, m int = n, n, n * n
+    for i = 0; i < (r + 1) / 2 && cnt < m; i++ {
+        for j = i; j < c - i && cnt < m; j++ {
+            cnt++
+            ans[i][j] = cnt
+        }
+        for j = i + 1; j < r - i - 1 && cnt < m; j++ {
+            cnt++
+            ans[j][c - i - 1] = cnt
+        }
+        for j = c - i - 1; j >= i && cnt < m; j-- {
+            cnt++
+            ans[r - i - 1][j] = cnt
+        }
+        for j = r - i - 2; j > i && cnt < m; j-- {
+            cnt++
+            ans[j][i] = cnt
+        }
+    }
+    return ans
+}
