@@ -1,0 +1,16 @@
+class Solution {
+public:
+    vector<int> circularGameLosers(int n, int k) {
+        vector<int> visited(n);
+        for(int turn = 1, pos = 0; !visited[pos]; turn++) {
+            visited[pos]++;
+            pos = (pos + k * turn) % n;
+        }
+        vector<int> ans;
+        for(int i = 0; i < n; i++) {
+            if(!visited[i]) 
+                ans.push_back(i + 1);
+        }
+        return ans;
+    }
+};
