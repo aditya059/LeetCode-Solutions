@@ -1,0 +1,63 @@
+// C++
+class Solution {
+    int backtrack(int &mask, vector<int> &nums, int pairsFormed, vector<int> &memo) {
+        if(pairsFormed * 2 == nums.size()) return 0;
+        if(memo[mask] != -1) return memo[mask];
+        int n = nums.size(), maxScore = 0;
+        for(int i = 0; i < n; i++) {
+            if((mask >> i) & 1) continue;
+            for(int j = i + 1; j < n; j++) {
+                if((mask >> j) & 1) continue;
+                mask |= (1 << i) | (1 << j);
+                maxScore = max(maxScore, (pairsFormed + 1) * gcd(nums[i], nums[j]) + backtrack(mask, nums, pairsFormed + 1, memo));
+                mask &= ~(1 << i) & ~(1 << j);
+            }
+        }
+        return memo[mask] = maxScore;
+    }
+public:
+    int maxScore(vector<int>& nums) {
+        vector<int> memo(1 << nums.size(), -1);
+        int mask = 0;
+        return backtrack(mask, nums, 0, memo);
+    }
+};
+
+//--------------------------------------------------------------------------------
+
+// Golang
+func max(a, b int) int {
+    if a > b {return a}
+    return b
+}
+
+func gcd(a, b int) int {
+    if a % b == 0 {return b}
+    return gcd(b, a % b);
+}
+
+func backtrack(mask *int, nums []int, pairsFormed int, memo []int) int {
+    n := len(nums)
+    if pairsFormed * 2 == n {return 0}
+    if memo[*mask] != -1 {return memo[*mask]}
+    maxScore := 0
+    for i := 0; i < n; i++ {
+        if ((*mask >> i) & 1) == 1 {continue}
+        for j := i + 1; j < n; j++ {
+            if ((*mask >> j) & 1) == 1 {continue}
+            *mask |= (1 << i) | (1 << j)
+            maxScore = max(maxScore, (pairsFormed + 1) * gcd(nums[i], nums[j]) + backtrack(mask, nums, pairsFormed + 1, memo))
+            *mask &= ^(1 << i) & ^(1 << j)
+        }
+    }
+    memo[*mask] = maxScore
+    return memo[*mask]
+}
+
+func maxScore(nums []int) int {
+    m := 1 << len(nums)
+    memo := make([]int, m)
+    for i := 0; i < m; i++ {memo[i] = -1}
+    mask := 0
+    return backtrack(&mask, nums, 0, memo)
+}
