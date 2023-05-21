@@ -1,0 +1,99 @@
+// C++
+class Solution {
+    void dfs(int x, int y, vector<vector<int>>& grid, queue<pair<int, int>> &Queue) {
+        if(x < 0 || y < 0 || x >= grid.size() || y >= grid[0].size() || grid[x][y] != 1) 
+            return;
+        grid[x][y] = 2;
+        Queue.push({x, y});
+        dfs(x + 1, y, grid, Queue);
+        dfs(x - 1, y, grid, Queue);
+        dfs(x, y + 1, grid, Queue);
+        dfs(x, y - 1, grid, Queue);
+    }
+public:
+    int shortestBridge(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size(), f = -1, s = -1;
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(grid[i][j] == 1) {
+                    f = i;
+                    s = j;
+                    break;
+                }
+            }
+        }
+        
+        queue<pair<int, int>> Queue;
+        dfs(f, s, grid, Queue);
+
+        int ans = 0;
+        vector<pair<int, int>> dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        
+        while(!Queue.empty()) {
+            int sz = Queue.size();
+            for(int i = 0; i < sz; i++) {
+                pair<int, int> curr = Queue.front();
+                Queue.pop();
+                for(pair<int, int> dir: dirs) {
+                    int nextX = curr.first + dir.first;
+                    int nextY = curr.second + dir.second;
+                    if(nextX < 0 || nextY < 0 || nextX >= m || nextY >= n || grid[nextX][nextY] == 2) continue;
+                    if(grid[nextX][nextY] == 1) return ans;
+                    Queue.push({nextX, nextY});
+                    grid[nextX][nextY] = 2;
+                }
+            }
+            ans++;
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func dfs(x, y int, grid [][]int, Queue *[][]int) {
+    if x < 0 || y < 0 || x >= len(grid) || y >= len(grid[0]) || grid[x][y] != 1 {return} 
+    grid[x][y] = 2
+    *Queue = append(*Queue, []int{x, y})
+    dfs(x + 1, y, grid, Queue)
+    dfs(x - 1, y, grid, Queue)
+    dfs(x, y + 1, grid, Queue)
+    dfs(x, y - 1, grid, Queue)
+}
+
+func shortestBridge(grid [][]int) int {
+    var m, n, f, s int = len(grid), len(grid[0]), -1, -1
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            if grid[i][j] == 1 {
+                f = i
+                s = j
+                break
+            }
+        }
+    }
+    
+    Queue := [][]int{}
+    dfs(f, s, grid, &Queue)
+
+    var ans int = 0
+    dirs := [][]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+    
+    for len(Queue) > 0 {
+        sz := len(Queue)
+        for i := 0; i < sz; i++ {
+            curr := Queue[0]
+            Queue = Queue[1:]
+            for _, dir := range dirs {
+                nextX := curr[0] + dir[0]
+                nextY := curr[1] + dir[1]
+                if nextX < 0 || nextY < 0 || nextX >= m || nextY >= n || grid[nextX][nextY] == 2 {continue}
+                if grid[nextX][nextY] == 1 {return ans}
+                Queue = append(Queue, []int{nextX, nextY})
+                grid[nextX][nextY] = 2
+            }
+        }
+        ans++
+    }
+    return ans
+}
