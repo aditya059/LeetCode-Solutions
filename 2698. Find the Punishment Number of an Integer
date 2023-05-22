@@ -1,0 +1,24 @@
+class Solution {
+    void compute(string toForm, int &match, int temp, bool &satisfy) {
+        if(toForm == "") {
+            if(temp == match) {
+                satisfy = true;
+                return;
+            }
+        }
+        for(int i = 1; i <= toForm.length(); i++) {
+            compute(toForm.substr(i), match, temp + stoi(toForm.substr(0, i)), satisfy);
+        }
+    }
+public:
+    int punishmentNumber(int n) {
+        int ans = 0;
+        for(int i = 1; i <= n; i++) {
+            bool satisfy = false;
+            compute(to_string(i * i), i, 0, satisfy); 
+            if(satisfy)
+                ans += i * i;
+        }
+        return ans;
+    }
+};
