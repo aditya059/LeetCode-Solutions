@@ -1,0 +1,60 @@
+class Solution {
+    static bool comp(const pair<int, int> &A, const pair<int, int> &B) {
+        return A.second > B.second;
+    }
+public:
+    long long maxScore(vector<int>& nums1, vector<int>& nums2, int k) {
+        int n = nums1.size();
+        vector<pair<int, int>> nums;
+        for(int i = 0; i < n; i++) {
+            nums.push_back({nums1[i], nums2[i]});
+        }
+        sort(nums.begin(), nums.end(), comp);
+        long long sum = 0L;
+        multiset<int> Set;
+        for(int i = 0; i < k; i++) {
+            sum += nums[i].first;
+            Set.insert(nums[i].first);
+        }
+        long long ans = sum * nums[k - 1].second;
+        for(int i = k; i < n; i++) {
+            sum += nums[i].first;
+            Set.insert(nums[i].first);
+            sum -= (*Set.begin());
+            Set.erase(Set.begin());
+            ans = max(ans, sum * nums[i].second);
+        }
+        return ans;
+    }
+};
+
+
+OR
+
+
+class Solution {
+public:
+    long long maxScore(vector<int>& nums1, vector<int>& nums2, int k) {
+        int n = nums1.size();
+        vector<int> index(n);
+        iota(index.begin(), index.end(), 0);
+        sort(index.begin(), index.end(), [&](int i, int j){
+            return nums2[i] > nums2[j];
+        });
+        long long sum = 0L;
+        multiset<int> Set;
+        for(int i = 0; i < k; i++) {
+            sum += nums1[index[i]];
+            Set.insert(nums1[index[i]]);
+        }
+        long long ans = sum * nums2[index[k - 1]];
+        for(int i = k; i < n; i++) {
+            sum += nums1[index[i]];
+            Set.insert(nums1[index[i]]);
+            sum -= (*Set.begin());
+            Set.erase(Set.begin());
+            ans = max(ans, sum * nums2[index[i]]);
+        }
+        return ans;
+    }
+};
