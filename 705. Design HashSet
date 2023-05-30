@@ -1,0 +1,62 @@
+class MyHashSet {
+    vector<bool> present;
+public:
+    MyHashSet() {
+        present = vector<bool>(1000005, false);
+    }
+    
+    void add(int key) {
+        present[key] = true;
+    }
+    
+    void remove(int key) {
+        present[key] = false;
+    }
+    
+    bool contains(int key) {
+        return present[key];
+    }
+};
+
+/**
+ * Your MyHashSet object will be instantiated and called as such:
+ * MyHashSet* obj = new MyHashSet();
+ * obj->add(key);
+ * obj->remove(key);
+ * bool param_3 = obj->contains(key);
+ */
+
+
+OR 
+
+
+class MyHashSet {
+    vector<int> bucket[1010];
+    int hash = 1009;
+public:
+    MyHashSet() {
+        
+    }
+    
+    void add(int key) {
+        if(find(bucket[key % hash].begin(), bucket[key % hash].end(), key) == bucket[key % hash].end())
+            bucket[key % hash].push_back(key);
+    }
+    
+    void remove(int key) {
+        if(find(bucket[key % hash].begin(), bucket[key % hash].end(), key) != bucket[key % hash].end())
+            bucket[key % hash].erase(find(bucket[key % hash].begin(), bucket[key % hash].end(), key));
+    }
+    
+    bool contains(int key) {
+        return find(bucket[key % hash].begin(), bucket[key % hash].end(), key) != bucket[key % hash].end();
+    }
+};
+
+/**
+ * Your MyHashSet object will be instantiated and called as such:
+ * MyHashSet* obj = new MyHashSet();
+ * obj->add(key);
+ * obj->remove(key);
+ * bool param_3 = obj->contains(key);
+ */
