@@ -1,3 +1,35 @@
+// C++
+class Solution {
+public:
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        if(grid[0][0]) return -1;
+        queue<pair<int, int>> Queue;
+        int ans = 0, n = grid.size();
+        pair<int, int> dirs[8] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}; 
+        Queue.push({0, 0});
+        grid[0][0] = 1;
+        while(!Queue.empty()) {
+            int sz = Queue.size();
+            ans++;
+            for(int i = 0; i < sz; i++) {
+                pair<int, int> curr = Queue.front();
+                Queue.pop();
+                if(curr.first == n - 1 && curr.second == n - 1) return ans;
+                for(pair<int, int> dir: dirs) {
+                    int nextX = curr.first + dir.first;
+                    int nextY = curr.second + dir.second;
+                    if(nextX < 0 || nextY < 0 || nextX >= n || nextY >= n || grid[nextX][nextY]) continue;
+                    Queue.push({nextX, nextY});
+                    grid[nextX][nextY] = 1;
+                }
+            }
+        }
+        return -1;
+    }
+};
+
+//-------------------------------------------------------------------------------------
+
 // Golang
 func shortestPathBinaryMatrix(grid [][]int) int {
     if grid[0][0] == 1 {return -1}
