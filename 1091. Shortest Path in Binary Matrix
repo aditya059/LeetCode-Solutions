@@ -1,0 +1,26 @@
+// Golang
+func shortestPathBinaryMatrix(grid [][]int) int {
+    if grid[0][0] == 1 {return -1}
+    Queue := [][]int{}
+    var ans, n int = 0, len(grid)
+    dirs := [][]int{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}} 
+    Queue = append(Queue, []int{0, 0})
+    grid[0][0] = 1
+    for len(Queue) > 0 {
+        sz := len(Queue)
+        ans++
+        for i := 0; i < sz; i++ {
+            x, y := Queue[0][0], Queue[0][1]
+            Queue = Queue[1:]
+            if x == n - 1 && y == n - 1 {return ans}
+            for _, dir := range dirs {
+                nextX := x + dir[0]
+                nextY := y + dir[1]
+                if nextX < 0 || nextY < 0 || nextX >= n || nextY >= n || grid[nextX][nextY] == 1 {continue}
+                Queue = append(Queue, []int{nextX, nextY})
+                grid[nextX][nextY] = 1
+            }
+        }
+    }
+    return -1
+}
