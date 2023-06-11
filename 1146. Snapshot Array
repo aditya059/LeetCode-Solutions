@@ -1,3 +1,4 @@
+// C++
 class SnapshotArray {
     vector<vector<pair<int, int>>> history;
     int snap_id;
@@ -30,4 +31,71 @@ public:
  * obj->set(index,val);
  * int param_2 = obj->snap();
  * int param_3 = obj->get(index,snap_id);
+ */
+
+
+//----------------------------------------------------------------------------------
+
+
+// Golang
+type SnapshotArray struct {
+    history [][][]int
+    snap_id int
+}
+
+
+func Constructor(length int) SnapshotArray {
+    snap_id := 0
+    history := make([][][]int, length)
+    for i := 0; i < length; i++ {
+        history[i] = append(history[i], []int{snap_id, 0})
+    }
+    return SnapshotArray {
+        snap_id: 0,
+        history: history,
+    }
+}
+
+
+func (this *SnapshotArray) Set(index int, val int)  {
+    this.history[index] = append(this.history[index], []int{this.snap_id, val})
+}
+
+
+func (this *SnapshotArray) Snap() int {
+    val := this.snap_id
+    this.snap_id++
+    return val
+}
+
+
+func UpperBound(history [][]int, val int) int {
+    low := 0
+    high := len(history) - 1
+    ans := high + 1
+    for low <= high {
+        mid := low + (high - low) / 2
+        if history[mid][0] <= val {
+            low = mid + 1
+        } else {
+            if mid < ans {ans = mid}
+            high = mid - 1
+        }
+    }
+    return ans
+}
+
+
+func (this *SnapshotArray) Get(index int, snap_id int) int {
+    iter := UpperBound(this.history[index], snap_id)
+    return this.history[index][iter - 1][1]
+}
+
+
+/**
+ * Your SnapshotArray object will be instantiated and called as such:
+ * obj := Constructor(length);
+ * obj.Set(index,val);
+ * param_2 := obj.Snap();
+ * param_3 := obj.Get(index,snap_id);
  */
