@@ -1,0 +1,18 @@
+class Solution {
+    void solve(vector<string> &ans, string temp, int n, int open, int close) {
+        if(close > open || open > n || close > n) return;
+        if(temp.size() == 2 * n) {
+            ans.push_back(temp);
+            return;
+        }
+        solve(ans, temp + "(", n, open + 1, close);
+        solve(ans, temp + ")", n, open, close + 1);
+    }
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> ans;
+        int open = 0, close = 0;
+        solve(ans, "", n, open, close);
+        return ans;
+    }
+};
