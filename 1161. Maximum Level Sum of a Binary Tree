@@ -1,3 +1,4 @@
+// C++
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -36,3 +37,41 @@ public:
         return ans;
     }
 };
+
+//----------------------------------------------------------
+
+// Golang
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func maxLevelSum(root *TreeNode) int {
+    var ans, maxSum, level int = 0, math.MinInt, 1
+    Queue := []*TreeNode{}
+    Queue = append(Queue, root)
+    for len(Queue) > 0 {
+        sz := len(Queue)
+        sum := 0
+        for i := 0; i < sz; i++ {
+            curr := Queue[0]
+            Queue = Queue[1:]
+            sum += curr.Val
+            if curr.Left != nil {
+                Queue = append(Queue, curr.Left)
+            }
+            if curr.Right != nil {
+                Queue = append(Queue, curr.Right)
+            }  
+        }
+        if sum > maxSum {
+            maxSum = sum
+            ans = level
+        }
+        level++
+    }
+    return ans
+}
