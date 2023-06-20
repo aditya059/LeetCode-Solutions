@@ -1,3 +1,4 @@
+// C++
 class Solution {
 public:
     vector<int> getAverages(vector<int>& nums, int k) {
@@ -14,3 +15,22 @@ public:
         return ans;
     }
 };
+
+
+// Golang
+func getAverages(nums []int, k int) []int {
+    var n, m int = len(nums), 2 * k + 1
+    var sum int = 0
+    ans := make([]int, n)
+    for i := 0; i < n; i++ {
+        ans[i] = -1
+        sum += nums[i]
+        if i >= m {
+            sum -= nums[i - m]
+        }
+        if i >= m - 1 {
+            ans[i - k] = sum / m
+        }
+    }
+    return ans
+}
