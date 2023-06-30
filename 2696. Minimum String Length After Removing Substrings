@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int minLength(string s) {
+        stack<char> Stack;
+        for(char ch: s) {
+            if(Stack.empty()) Stack.push(ch);
+            else if(ch == 'B' && Stack.top() == 'A') Stack.pop();
+            else if(ch == 'D' && Stack.top() == 'C') Stack.pop();
+            else Stack.push(ch);
+        }
+        return Stack.size();
+    }
+};
