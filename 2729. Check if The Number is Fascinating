@@ -1,0 +1,14 @@
+class Solution {
+    bool solve(int n, vector<int> &freq) {
+        for(int i = n; i > 0; i /= 10) {
+            freq[i % 10]++;
+            if(i % 10 == 0 || freq[i % 10] > 1) return false;
+        }
+        return true;
+    }
+public:
+    bool isFascinating(int n) {
+        vector<int> freq(10);
+        return solve(n, freq) && solve(2 * n, freq) && solve(3 * n, freq);
+    }
+};
