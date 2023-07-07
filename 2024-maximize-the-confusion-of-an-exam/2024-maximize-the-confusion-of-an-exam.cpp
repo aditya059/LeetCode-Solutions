@@ -3,10 +3,8 @@ public:
     int maxConsecutiveAnswers(string s, int k) {
         unordered_map<int, int> count;
         int maxCount = 0;
-        int start = 0;
-        int end = 0;
         int ans = 0;
-        while(end < s.length()) {
+        for(int start = 0, end = 0; end < s.length(); end++) {
             count[s[end]]++;
             if(maxCount < count[s[end]])
                 maxCount = count[s[end]];
@@ -16,7 +14,6 @@ public:
                 maxCount = max(count['T'], count['F']);
             }
             ans = max(ans, end - start + 1);
-            end++;
         }
         return ans;
     }
