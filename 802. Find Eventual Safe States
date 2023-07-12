@@ -1,3 +1,4 @@
+// C++
 class Solution {
 public:
     void dfs(int curr, vector<char> &color, vector<vector<int>>& graph, vector<bool> &notSafe) {
@@ -26,3 +27,37 @@ public:
         return ans;
     }
 };
+
+
+// Golang
+func dfs(curr int, color []byte, graph [][]int, notSafe []bool) {
+    color[curr] = 'G'
+    for _, next := range graph[curr] {
+        if color[next] == 'W' {
+            dfs(next, color, graph, notSafe)
+        } else if(color[next] == 'G') {
+            notSafe[next] = true
+        }
+        notSafe[curr] = notSafe[curr] || notSafe[next]
+    } 
+    color[curr] = 'B'
+}
+
+func eventualSafeNodes(graph [][]int) []int {
+    n := len(graph)
+    color := make([]byte, n)
+    for i := 0; i < n; i++ {color[i] = 'W'}
+    notSafe := make([]bool, n)
+    ans := []int{}
+    for i := 0; i < n; i++ {
+        if color[i] == 'W' {
+            dfs(i, color, graph, notSafe)
+        }
+    }
+    for i := 0; i < n; i++ {
+        if !notSafe[i] {
+            ans = append(ans, i)
+        }
+    }
+    return ans
+}
