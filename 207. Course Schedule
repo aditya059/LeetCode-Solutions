@@ -1,3 +1,4 @@
+// C++
 class Solution {
 public:
     void dfs(int u, bool &ans, vector<char>& color, vector<int> adjList[]) {
@@ -30,3 +31,38 @@ public:
         return ans;
     }
 };
+
+
+// Golang
+func dfs(u int, ans *bool, color []byte, adjList [][]int) {
+    if *ans == false || color[u] == 'G' {
+        *ans = false
+        return
+    }
+    color[u] = 'G'
+    for _, v := range adjList[u] {
+        if color[v] == 'W' {
+            dfs(v, ans, color, adjList)
+        } else if color[v] == 'G' {
+            *ans = false
+            return
+        }
+    }
+    color[u] = 'B'
+}
+
+func canFinish(numCourses int, prerequisites [][]int) bool {
+    adjList := make([][]int, numCourses)
+    for i := 0; i < len(prerequisites); i++ {
+        adjList[prerequisites[i][1]] = append(adjList[prerequisites[i][1]], prerequisites[i][0])
+    }
+    ans := true
+    color := make([]byte, numCourses)
+    for i := 0; i < numCourses; i++ {color[i] = 'W'}
+    for i := 0; i < numCourses; i++ {
+        if color[i] == 'W' {
+            dfs(i, &ans, color, adjList)
+        }
+    }
+    return ans
+}
