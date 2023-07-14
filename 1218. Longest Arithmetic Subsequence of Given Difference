@@ -1,0 +1,25 @@
+// C++
+class Solution {
+public:
+    int longestSubsequence(vector<int>& arr, int difference) {
+        unordered_map<int, int> Map;
+        int ans = 1;
+        for(int num: arr) {
+            Map[num] = 1 + Map[num - difference];
+            ans = max(ans, Map[num]);
+        }
+        return ans;
+    }
+};
+
+
+// Golang
+func longestSubsequence(arr []int, difference int) int {
+    Map := make(map[int]int)
+    ans := 1
+    for _, num := range arr {
+        Map[num] = 1 + Map[num - difference]
+        if Map[num] > ans {ans = Map[num]}
+    }
+    return ans
+}
