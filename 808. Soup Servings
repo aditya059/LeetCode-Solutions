@@ -1,0 +1,48 @@
+// C++
+class Solution {
+    double solve(int a, int b, unordered_map<int, unordered_map<int, double>> &memo) {
+        if(a <= 0 && b <= 0) return 0.5;
+        else if(a <= 0) return 1;
+        else if(b <= 0) return 0;
+
+        if(memo[a].find(b) != memo[a].end()) return memo[a][b];
+        return memo[a][b] = 0.25 * (solve(a - 4, b, memo) + solve(a - 3, b - 1, memo) + solve(a - 2, b - 2, memo) + solve(a - 1, b - 3, memo));
+    }
+public:
+    double soupServings(int n) {
+        int m = ceil(n / 25.0);
+        unordered_map<int, unordered_map<int, double>> memo;
+        memo[0][0] = 0.5;
+        for(int i = 1; i <= m; i++) {
+            if(solve(i, i, memo) > 1 - 1e-5) 
+                return 1;
+        }
+        return memo[m][m];
+    }
+};
+
+// Golang
+func solve(a, b int, memo map[int]map[int]float64) float64 {
+    if a <= 0 && b <= 0 {
+        return 0.5
+    } else if a <= 0 {
+        return 1
+    } else if b <= 0 {
+        return 0
+    }
+    if val, ok := memo[a][b]; ok { return val}
+    memo[a][b] = 0.25 * (solve(a - 4, b, memo) + solve(a - 3, b - 1, memo) + solve(a - 2, b - 2, memo) + solve(a - 1, b - 3, memo))
+    return memo[a][b]
+}
+
+func soupServings(n int) float64 {
+    m := int(math.Ceil(float64(n) / 25.0))
+    memo := make(map[int]map[int]float64)
+    for i := 1; i <= m; i++ {
+        memo[i] = make(map[int]float64)
+        if solve(i, i, memo) > 1 - 1e-5 {
+            return 1
+        } 
+    }
+    return solve(m, m, memo)
+}
