@@ -1,3 +1,5 @@
+// C++
+// SC = O(mn)
 class Solution {
 public:
     int minimumDeleteSum(string s1, string s2) {
@@ -20,3 +22,57 @@ public:
         return DP[m][n];
     }
 };
+
+
+// SC = O(min(m, n))
+class Solution {
+public:
+    int minimumDeleteSum(string s1, string s2) {
+        if(s1.length() < s2.length()) minimumDeleteSum(s2, s1);
+        int m = s1.length(), n = s2.length();
+        vector<vector<int>> DP(2, vector<int>(n + 1));
+        for(int j = 0; j < n; j++) {
+            DP[0][j + 1] = DP[0][j] + s2[j];
+        }
+        for(int i = 0; i < m; i++) {
+            DP[(i + 1) % 2][0] = DP[i % 2][0] + s1[i];
+            for(int j = 0; j < n; j++) {
+                if(s1[i] == s2[j])
+                    DP[(i + 1) % 2][j + 1] = DP[i % 2][j];
+                else
+                    DP[(i + 1) % 2][j + 1] = min(DP[i % 2][j + 1] + s1[i], DP[(i + 1) % 2][j] + s2[j]); 
+            }
+        }
+        return DP[m % 2][n];
+    }
+};
+
+
+
+// Golang
+func min(a, b int) int {
+    if a < b {return a}
+    return b
+}
+
+func minimumDeleteSum(s1 string, s2 string) int {
+    var m, n int = len(s1), len(s2)
+    if n < m { minimumDeleteSum(s2, s1) }
+    DP := make([][]int, 2)
+    DP[0] = make([]int, n + 1)
+    DP[1] = make([]int, n + 1)
+    for j := 0; j < n; j++ {
+        DP[0][j + 1] = DP[0][j] + int(s2[j])
+    }
+    for i := 0; i < m; i++ {
+        DP[(i + 1) % 2][0] = DP[i % 2][0] + int(s1[i])
+        for j := 0; j < n; j++ {
+            if s1[i] == s2[j] {
+                DP[(i + 1) % 2][j + 1] = DP[i % 2][j]
+            } else {
+                DP[(i + 1) % 2][j + 1] = min(DP[i % 2][j + 1] + int(s1[i]), DP[(i + 1) % 2][j] + int(s2[j]))
+            }
+        }
+    }
+    return DP[m % 2][n]
+}
