@@ -1,0 +1,13 @@
+class Solution {
+    int solve(vector<int> &piles, int i, int j, vector<vector<int>> &memo) {
+        if(i == j) return piles[i];
+        if(memo[i][j] != -1) return memo[i][j];
+        return memo[i][j] = max(piles[i] - solve(piles, i + 1, j, memo), piles[j] - solve(piles, i, j - 1, memo)); 
+    }
+public:
+    bool stoneGame(vector<int>& piles) {
+        int n = piles.size();
+        vector<vector<int>> memo(n, vector<int>(n, -1));
+        return solve(piles, 0, n - 1, memo) >= 0;
+    }
+};
