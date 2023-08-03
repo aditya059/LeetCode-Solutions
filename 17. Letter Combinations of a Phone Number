@@ -47,3 +47,24 @@ public:
         return ans;
     }
 };
+
+
+// Golang
+func solve(digits string, Map []string, i int, temp string, ans *[]string) {
+    if i == len(digits) {
+        *ans = append(*ans, temp)
+        return
+    }
+    str := Map[digits[i] - '0']
+    for j := 0; j < len(str); j++ {
+        solve(digits, Map, i + 1, temp + string(str[j]), ans)
+    }
+}
+
+func letterCombinations(digits string) []string {
+    ans := []string{}
+    if len(digits) == 0 {return ans}
+    Map := []string{"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"}
+    solve(digits, Map, 0, "", &ans)
+    return ans
+}
