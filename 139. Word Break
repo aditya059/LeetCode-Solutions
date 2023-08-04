@@ -1,0 +1,26 @@
+class Solution {
+public:
+    bool solve(int n, vector<string>& dict, string s, map<string, bool> &Map) {
+        if(s == "") {
+            return true;
+        }
+        if(Map.find(s) != Map.end())
+            return Map[s];
+        for(int i = 0; i < n; i++) {
+            if(dict[i] == s.substr(0, dict[i].length())) {
+                if(solve(n, dict, s.substr(dict[i].length()), Map)) {
+                    Map[s] = true;
+                    return true;
+                }
+            }
+        }
+        Map[s] = false;
+        return false;
+    }
+    bool wordBreak(string s, vector<string>& wordDict) {
+        map<string, bool> Map;
+        int n = wordDict.size();
+        bool ans = solve(n, wordDict, s, Map);
+        return ans;
+    }
+};
