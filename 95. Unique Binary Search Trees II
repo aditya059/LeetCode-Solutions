@@ -1,0 +1,167 @@
+//--------------------------------
+// Backtracking
+//--------------------------------
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+    vector<TreeNode*> solve(int i, int j) {
+        vector<TreeNode *> ans;
+        if(i > j) {
+            ans.push_back(nullptr);
+            return ans;
+        }
+        for(int k = i; k <= j; k++) {
+            vector<TreeNode*> L = solve(i, k - 1);
+            vector<TreeNode*> R = solve(k + 1, j);
+
+            for(auto l: L) {
+                for(auto r: R) {
+                    TreeNode* root = new TreeNode(k, l, r);
+                    ans.push_back(root);
+                }
+            }
+        }
+        return ans;
+    }
+public:
+    vector<TreeNode*> generateTrees(int n) {
+        return solve(1, n);
+    }
+};
+
+//-----------------------------------
+// Top Down DP
+//-----------------------------------
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+    vector<TreeNode*> solve(int i, int j, map<pair<int, int>, vector<TreeNode*>> memo) {
+        vector<TreeNode *> ans;
+        if(i > j) {
+            ans.push_back(nullptr);
+            return ans;
+        }
+        if(memo.find({i, j}) != memo.end()) return memo[{i, j}];
+        for(int k = i; k <= j; k++) {
+            vector<TreeNode*> L = solve(i, k - 1, memo);
+            vector<TreeNode*> R = solve(k + 1, j, memo);
+
+            for(auto l: L) {
+                for(auto r: R) {
+                    TreeNode* root = new TreeNode(k, l, r);
+                    ans.push_back(root);
+                }
+            }
+        }
+        return memo[{i, j}] = ans;
+    }
+public:
+    vector<TreeNode*> generateTrees(int n) {
+        map<pair<int, int>, vector<TreeNode*>> memo;
+        return solve(1, n, memo);
+    }
+};
+
+
+//------------------------------
+// Backtracking
+//------------------------------
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+func solve(i, j int) []*TreeNode {
+    ans := []*TreeNode{}
+    if(i > j) {
+        ans = append(ans, nil)
+    }
+    for k := i; k <= j; k++ {
+        left := solve(i, k - 1)
+        right := solve(k + 1, j)
+
+        for _, l := range left {
+            for _, r := range right {
+                root := &TreeNode {
+                    Val: k,
+                    Left: l,
+                    Right: r,
+                }
+                ans = append(ans, root)
+            }
+        }
+    }
+    return ans
+}
+
+func generateTrees(n int) []*TreeNode {
+    return solve(1, n);
+}
+
+
+//---------------------------------
+// Top Down DP
+//---------------------------------
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+func solve(i, j int, memo map[string][]*TreeNode) []*TreeNode {
+    ans := []*TreeNode{}
+    if(i > j) {
+        ans = append(ans, nil)
+    }
+    key := string(i) + " " + string(j)
+    if val, ok := memo[key]; ok {
+        return val
+    }
+    for k := i; k <= j; k++ {
+        left := solve(i, k - 1, memo)
+        right := solve(k + 1, j, memo)
+
+        for _, l := range left {
+            for _, r := range right {
+                root := &TreeNode {
+                    Val: k,
+                    Left: l,
+                    Right: r,
+                }
+                ans = append(ans, root)
+            }
+        }
+    }
+    memo[key] = ans
+    return ans
+}
+
+func generateTrees(n int) []*TreeNode {
+    memo := make(map[string][]*TreeNode)
+    return solve(1, n, memo);
+}
