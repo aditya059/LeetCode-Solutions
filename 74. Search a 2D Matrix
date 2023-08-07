@@ -1,4 +1,6 @@
 // O(log(mn)) = O(log m + log n)
+
+// C++
 class Solution {
 public:
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
@@ -18,3 +20,23 @@ public:
         return false;
     }
 };
+
+
+// Golang
+func searchMatrix(matrix [][]int, target int) bool {
+    i := 0 
+    j := len(matrix) * len(matrix[0]) - 1
+    for i <= j {
+        mid := i + (j - i) / 2
+        r := mid / len(matrix[0]) 
+        c := mid % len(matrix[0])
+        if matrix[r][c] == target {
+            return true
+        } else if matrix[r][c] < target {
+            i = mid + 1
+        } else {
+            j = mid - 1
+        }
+    }
+    return false
+}
