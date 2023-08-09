@@ -1,3 +1,4 @@
+// C++
 class Solution {
     bool check(vector<int> &nums, int p, int mid) {
         for(int i = 1; i < nums.size(); i++) {
@@ -23,3 +24,32 @@ public:
         return ans;
     }
 };
+
+
+// Golang
+func check(nums []int, p, mid int) bool {
+    for i := 1; i < len(nums); i++ {
+        if nums[i] - nums[i - 1] <= mid {
+            p--
+            i++
+        }
+    }
+    return p <= 0
+}
+
+func minimizeMax(nums []int, p int) int {
+    sort.Ints(nums)
+    low := 0
+    high := nums[len(nums) - 1] - nums[0]
+    ans := high
+    for low <= high {
+        mid := low + (high - low) / 2
+        if check(nums, p, mid) {
+            if mid < ans {ans = mid}
+            high = mid - 1
+        } else {
+            low = mid + 1
+        }
+    }
+    return ans
+}
