@@ -1,3 +1,4 @@
+// C++
 class Solution {
 public:
     bool binSearch(vector<int>& nums, int low, int high, int target) {
@@ -24,3 +25,30 @@ public:
         return binSearch(nums, 0, nums.size() - 1, target);
     }
 };
+
+
+// Golang
+func binSearch(nums []int, low, high, target int) bool {
+    if low > high {return false}
+    mid := low + (high - low) / 2
+    if nums[mid] == target {return true}
+    if nums[low] < nums[mid] {
+        if nums[low] <= target && target < nums[mid] {
+            return binSearch(nums, low, mid - 1, target)
+        } else {
+            return binSearch(nums, mid + 1, high, target)
+        }
+    } else if nums[mid] < nums[high] {
+        if nums[mid] < target && target <= nums[high] {
+            return binSearch(nums, mid + 1, high, target)
+        } else {
+            return binSearch(nums, low, mid - 1, target)
+        }
+    } else {
+        return binSearch(nums, mid + 1, high, target) || binSearch(nums, low, mid - 1, target)
+    }                      
+}
+
+func search(nums []int, target int) bool {
+    return binSearch(nums, 0, len(nums) - 1, target)
+}
