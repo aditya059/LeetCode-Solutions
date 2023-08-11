@@ -33,3 +33,18 @@ public:
         return DP[amount];
     }
 };
+
+
+// Golang
+func change(amount int, coins []int) int {
+    DP := make([]int, amount + 1)
+    DP[0] = 1
+    for i := 1; i <= len(coins); i++ {
+        for j := 1; j <= amount; j++ {
+            if coins[i - 1] <= j {
+                DP[j] = DP[j] + DP[j - coins[i - 1]]
+            }
+        }
+    }
+    return DP[amount]
+}
