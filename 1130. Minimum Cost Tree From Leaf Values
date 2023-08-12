@@ -1,0 +1,23 @@
+class Solution {
+    int solve(vector<int>& arr, int i, int j, vector<vector<int>> &memo, vector<vector<int>> &maxEle) {
+        if(i == j) return 0;
+        if(memo[i][j] != -1) return memo[i][j];
+        int ans = INT_MAX;
+        for(int k = i; k < j; k++) {
+            ans = min(ans, solve(arr, i, k, memo, maxEle) + solve(arr, k + 1, j, memo, maxEle) + maxEle[i][k] * maxEle[k + 1][j]);
+        }
+        return memo[i][j] = ans;
+    }
+public:
+    int mctFromLeafValues(vector<int>& arr) {
+        vector<vector<int>> memo(arr.size(), vector<int>(arr.size(), -1));
+        vector<vector<int>> maxEle(arr.size(), vector<int>(arr.size(), INT_MIN));
+        for(int i = 0; i < arr.size(); i++) {
+            maxEle[i][i] = arr[i];
+            for(int j = i + 1; j < arr.size(); j++) {
+                maxEle[i][j] = max(arr[j], maxEle[i][j - 1]);
+            }
+        }
+        return solve(arr, 0, arr.size() - 1, memo, maxEle);
+    }
+};
