@@ -58,3 +58,37 @@ public:
         return QuickSelect(nums, 0, nums.size() - 1, k - 1);
     }
 };
+
+
+
+// Golang
+func partition(nums []int, low, high int) int {
+    item := nums[low]
+    index := low
+    for low < high {
+        for low < len(nums) && nums[low] >= item {low++}
+        for nums[high] < item {high--}
+        if low < high {
+            nums[low], nums[high] = nums[high], nums[low]
+        }
+    }
+    nums[index], nums[high] = nums[high], nums[index]
+    return high
+}
+
+func QuickSelect(nums []int, low, high, k int) int {
+    r := rand.Intn(high - low + 1)
+    nums[low], nums[low + r] = nums[low + r], nums[low]
+    j := partition(nums, low, high)
+    if k == j {
+        return nums[j]
+    } else if k > j {
+        return QuickSelect(nums, j + 1, high, k)
+    } else {
+        return QuickSelect(nums, 0, j - 1, k)
+    }
+}
+
+func findKthLargest(nums []int, k int) int {
+    return QuickSelect(nums, 0, len(nums) - 1, k - 1)
+}
