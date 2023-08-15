@@ -60,3 +60,34 @@ public:
         return first.next;
     }
 };
+
+OR
+
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func partition(head *ListNode, x int) *ListNode {
+    first := &ListNode{}
+    second := &ListNode{}
+    p := first
+    q := second
+    for head != nil {
+        if head.Val < x {
+            p.Next = head
+            p = p.Next
+        } else {
+            q.Next = head
+            q = q.Next
+        }
+        head = head.Next
+    }
+    
+    q.Next = nil
+    p.Next = second.Next
+    head = first.Next
+    return head
+}
