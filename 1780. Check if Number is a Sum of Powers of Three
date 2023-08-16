@@ -1,0 +1,9 @@
+class Solution {
+public:
+    bool checkPowersOfThree(int n) {
+        for(int i = n; i > 0; i /= 3) {
+            if(i % 3 > 1) return false;
+        }
+        return true;
+    }
+};
