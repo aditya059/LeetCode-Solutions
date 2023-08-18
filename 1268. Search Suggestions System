@@ -1,0 +1,39 @@
+class Solution {
+public:
+    vector<vector<string>> suggestedProducts(vector<string>& products, string searchWord) {
+        sort(products.begin(), products.end());
+        vector<vector<string>> ans(searchWord.length()); 
+        string prefix = "";
+        for(int i = 0; i < searchWord.length(); i++) {
+            prefix += searchWord[i]; 
+            int index = lower_bound(products.begin(), products.end(), prefix) - products.begin();
+            for(int j = index; j < products.size() && j < index + 3; j++) {
+                if(prefix == products[j].substr(0, prefix.length()))
+                    ans[i].push_back(products[j]);
+            }
+        }
+        return ans;
+    }
+};
+
+// OR
+
+class Solution {
+public:
+    vector<vector<string>> suggestedProducts(vector<string>& products, string searchWord) {
+        sort(products.begin(), products.end());
+        vector<vector<string>> ans(searchWord.length()); 
+        string prefix = "";
+        int prevIndex = 0;
+        for(int i = 0; i < searchWord.length(); i++) {
+            prefix += searchWord[i]; 
+            int index = lower_bound(products.begin() + prevIndex, products.end(), prefix) - products.begin();
+            for(int j = index; j < products.size() && j < index + 3; j++) {
+                if(prefix == products[j].substr(0, prefix.length()))
+                    ans[i].push_back(products[j]);
+            }
+            prevIndex = index;
+        }
+        return ans;
+    }
+};
