@@ -1,0 +1,31 @@
+/*
+// Definition for Employee.
+class Employee {
+public:
+    int id;
+    int importance;
+    vector<int> subordinates;
+};
+*/
+
+class Solution {
+    void dfs(int curr, unordered_map<int, vector<int>> &adjList, unordered_map<int, int> &val, int &ans) {
+        ans += val[curr];
+        for(int next: adjList[curr]) {
+            dfs(next, adjList, val, ans);
+        }
+    }
+public:
+    int getImportance(vector<Employee*> employees, int id) {
+        unordered_map<int, vector<int>> adjList;
+        unordered_map<int, int> val;
+        for(Employee* emp: employees) {
+            val[emp -> id] = emp -> importance; 
+            for(int sub: emp -> subordinates)
+                adjList[emp -> id].push_back(sub); 
+        }
+        int ans = 0;
+        dfs(id, adjList, val, ans);
+        return ans;
+    }
+};
