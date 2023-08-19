@@ -1,0 +1,129 @@
+// C++
+class Solution {
+    void buildSet(vector<int> &parent) {
+        iota(parent.begin(), parent.end(), 0);
+    }
+    int findParent(vector<int> &parent, int u) {
+        if(parent[u] == u) return u;
+        return parent[u] = findParent(parent, parent[u]);
+    }
+    bool unionSet(vector<int> &parent, int u, int v) {
+        int parU = findParent(parent, u);
+        int parV = findParent(parent, v);
+        if(parU == parV) return false;
+        else if(parU < parV) parent[parV] = parU;
+        else parent[parU] = parV;
+        return true;
+    }
+public:
+    vector<vector<int>> findCriticalAndPseudoCriticalEdges(int n, vector<vector<int>>& edges) {
+        int m = edges.size();
+        for(int i = 0; i < m; i++) {
+            edges[i].push_back(i);
+        }
+        sort(edges.begin(), edges.end(), [&](vector<int> &A, vector<int> &B) {
+            return A[2] < B[2];
+        });
+        int mstWeight = 0;
+        vector<int> parent(n);
+        buildSet(parent);
+        for(vector<int> edge: edges) {
+            if(unionSet(parent, edge[0], edge[1])) mstWeight += edge[2];
+        }
+        vector<vector<int>> ans(2); 
+        for(int i = 0; i < m; i++) {
+            buildSet(parent);
+            int ignoreWeight = 0;
+            int edgeCount = 0;
+            for(int j = 0; j < m; j++) {
+                if(i != j && unionSet(parent, edges[j][0], edges[j][1])) {
+                    ignoreWeight += edges[j][2];
+                    edgeCount++;
+                }
+            }
+            if(edgeCount < n - 1 || ignoreWeight > mstWeight) {
+                ans[0].push_back(edges[i][3]);
+            } else {
+                buildSet(parent);
+                unionSet(parent, edges[i][0], edges[i][1]);
+                int appearWeight = edges[i][2];
+                for(int j = 0; j < m; j++) {
+                    if(i != j && unionSet(parent, edges[j][0], edges[j][1])) 
+                        appearWeight += edges[j][2];
+                }
+                if(appearWeight == mstWeight) ans[1].push_back(edges[i][3]);
+            }
+        }
+        return ans;
+    }
+};
+
+
+//----------------------------------------------------------------------------
+// Golang
+func buildSet(parent []int) {
+    for i := 0; i < len(parent); i++ {
+        parent[i] = i
+    }
+}
+
+func findParent(parent []int, u int) int {
+    if parent[u] == u {return u}
+    parent[u] = findParent(parent, parent[u])
+    return parent[u]
+}
+
+func unionSet(parent []int, u, v int) bool {
+    parU := findParent(parent, u)
+    parV := findParent(parent, v)
+    if parU == parV {
+        return false
+    } else if parU < parV {
+        parent[parV] = parU
+    } else {
+        parent[parU] = parV
+    }
+    return true
+}
+
+func findCriticalAndPseudoCriticalEdges(n int, edges [][]int) [][]int {
+    m := len(edges)
+    for i := 0; i < m; i++ {
+        edges[i] = append(edges[i], i)
+    }
+    sort.Slice(edges, func(i, j int) bool {
+        return edges[i][2] < edges[j][2]
+    })
+    mstWeight := 0
+    parent := make([]int, n)
+    buildSet(parent)
+    for _, edge := range edges {
+        if unionSet(parent, edge[0], edge[1]) {mstWeight += edge[2]}
+    }
+    ans := make([][]int, 2)
+    for i := 0; i < m; i++ {
+        buildSet(parent)
+        ignoreWeight := 0
+        edgeCount := 0
+        for j := 0; j < m; j++ {
+            if i != j && unionSet(parent, edges[j][0], edges[j][1]) {
+                ignoreWeight += edges[j][2]
+                edgeCount++
+            }
+        }
+        if edgeCount < n - 1 || ignoreWeight > mstWeight {
+            ans[0] = append(ans[0], edges[i][3])
+        } else {
+            buildSet(parent)
+            unionSet(parent, edges[i][0], edges[i][1])
+            appearWeight := edges[i][2]
+            for j := 0; j < m; j++ {
+                if i != j && unionSet(parent, edges[j][0], edges[j][1]) {
+                    appearWeight += edges[j][2]
+                } 
+            }
+            if appearWeight == mstWeight {ans[1] = append(ans[1], edges[i][3])}
+        }
+    }
+    return ans
+}
