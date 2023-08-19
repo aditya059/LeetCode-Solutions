@@ -1,0 +1,14 @@
+class Solution {
+public:
+    vector<string> simplifiedFractions(int n) {
+        vector<string> ans;
+        for(int D = 2; D <= n; D++) {
+            for(int N = 1; N < D; N++) {
+                if(gcd(N, D) == 1) {
+                    ans.push_back(to_string(N) + "/" + to_string(D));
+                }
+            }
+        }
+        return ans;
+    }
+};
