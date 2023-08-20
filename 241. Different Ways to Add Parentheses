@@ -1,0 +1,89 @@
+// Bruteforce 
+class Solution {
+    bool isOperator(char ch) {
+        return ch == '+' || ch == '-' || ch == '*';
+    }
+    vector<int> solve(string &expr, int i, int j, vector<int> &index) {
+        vector<int> ans;
+        if(i == j) {
+            ans.push_back(expr[i] - '0');
+            return ans;
+        } else if(i + 1 == j) {
+            ans.push_back((expr[i] - '0') * 10 + expr[j] - '0');
+            return ans;
+        }
+        for(int ind: index) {
+            if(ind > i && ind < j) {
+                vector<int> left = solve(expr, i, ind - 1, index);
+                vector<int> right = solve(expr, ind + 1, j, index);
+                for(int l: left) {
+                    for(int r: right) {
+                        if(expr[ind] == '+')
+                            ans.push_back(l + r);
+                        else if(expr[ind] == '-') 
+                            ans.push_back(l - r);
+                        else
+                            ans.push_back(l * r);
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+public:
+    vector<int> diffWaysToCompute(string expression) {
+        vector<int> index;
+        for(int i = 0; i < expression.length(); i++) {
+            if(isOperator(expression[i]))
+                index.push_back(i);
+        }
+        return solve(expression, 0, expression.length() - 1, index);
+    }
+};
+
+
+// DP
+class Solution {
+    bool isOperator(char ch) {
+        return ch == '+' || ch == '-' || ch == '*';
+    }
+    vector<int> solve(string &expr, int i, int j, vector<int> &index, unordered_map<int, unordered_map<int, vector<int>>> &memo) {
+        vector<int> ans;
+        if(i == j) {
+            ans.push_back(expr[i] - '0');
+            return ans;
+        } else if(i + 1 == j) {
+            ans.push_back((expr[i] - '0') * 10 + expr[j] - '0');
+            return ans;
+        }
+        if(memo[i].find(j) != memo[i].end()) return memo[i][j];
+        for(int ind: index) {
+            if(ind > i && ind < j) {
+                vector<int> left = solve(expr, i, ind - 1, index, memo);
+                vector<int> right = solve(expr, ind + 1, j, index, memo);
+                for(int l: left) {
+                    for(int r: right) {
+                        if(expr[ind] == '+')
+                            ans.push_back(l + r);
+                        else if(expr[ind] == '-') 
+                            ans.push_back(l - r);
+                        else
+                            ans.push_back(l * r);
+                    }
+                }
+            }
+        }
+        return memo[i][j] = ans;
+    }
+public:
+    vector<int> diffWaysToCompute(string expression) {
+        int n = expression.length();
+        vector<int> index;
+        for(int i = 0; i < n; i++) {
+            if(isOperator(expression[i]))
+                index.push_back(i);
+        }
+        unordered_map<int, unordered_map<int, vector<int>>> memo;
+        return solve(expression, 0, n - 1, index, memo);
+    }
+};
