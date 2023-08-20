@@ -1,0 +1,116 @@
+// C++
+class Solution {
+    bool dfs(int curr, vector<char> &color, vector<int> adjList[], vector<int> &ans) {
+        color[curr] = 'G';
+        for(int next: adjList[curr]) {
+            if(color[next] == 'G' || (color[next] == 'W' && dfs(next, color, adjList, ans)))
+                return true;
+        }
+        ans.push_back(curr);
+        color[curr] = 'B';
+        return false;
+    }
+public:
+    vector<int> sortItems(int n, int m, vector<int>& group, vector<vector<int>>& beforeItems) {
+        for(int i = 0; i < n; i++) {
+            if(group[i] == -1) {
+                group[i] = m++;
+            }
+        }
+        vector<int> itemList[n], groupList[m], itemOrder, groupOrder, ans;
+        for(int i = 0; i < n; i++) {
+            for(int j: beforeItems[i]) {
+                itemList[j].push_back(i);
+                if(group[i] != group[j])
+                    groupList[group[j]].push_back(group[i]);
+            }
+        }
+        vector<char> itemVisited(n, 'W'), groupVisited(m, 'W');
+        for(int i = 0; i < n; i++) {
+            if(itemVisited[i] == 'W' && dfs(i, itemVisited, itemList, itemOrder))
+                return {};
+        }
+        for(int i = 0; i < m; i++) {
+            if(groupVisited[i] == 'W' && dfs(i, groupVisited, groupList, groupOrder))
+                return {};
+        }
+        reverse(itemOrder.begin(), itemOrder.end());
+        reverse(groupOrder.begin(), groupOrder.end());
+        unordered_map<int, vector<int>> Map;
+        for(int i: itemOrder) {
+            Map[group[i]].push_back(i);
+        }
+        for(int i: groupOrder) {
+            for(int j: Map[i])
+                ans.push_back(j);
+        }
+        return ans;
+    }
+};
+
+
+//------------------------------------------------------------------
+// Golang
+func reverse(nums []int) {
+    for i, j := 0, len(nums) - 1; i < j; i, j = i + 1, j - 1 {
+        nums[i], nums[j] = nums[j], nums[i]
+    }
+}
+
+func dfs(curr int, color []byte, adjList [][]int, ans *[]int) bool {
+    color[curr] = 'G'
+    for _, next := range adjList[curr] {
+        if color[next] == 'G' || (color[next] == 'W' && dfs(next, color, adjList, ans)) {
+            return true
+        }    
+    }
+    *ans = append(*ans, curr)
+    color[curr] = 'B'
+    return false
+}
+
+func sortItems(n int, m int, group []int, beforeItems [][]int) []int {
+    for i := 0; i < n; i++ {
+        if group[i] == -1 {
+            group[i] = m
+            m++
+        }
+    }
+    itemList := make([][]int, n)
+    groupList := make([][]int, m)
+    itemOrder, groupOrder, ans := []int{}, []int{}, []int{}
+    for i := 0; i < n; i++ {
+        for _, j := range beforeItems[i] {
+            itemList[j] = append(itemList[j], i)
+            if group[i] != group[j] {
+                groupList[group[j]] = append(groupList[group[j]], group[i])
+            }
+        }
+    }
+    itemVisited := make([]byte, n)
+    for i := 0; i < n; i++ {itemVisited[i] = 'W'}
+    for i := 0; i < n; i++ {
+        if itemVisited[i] == 'W' && dfs(i, itemVisited, itemList, &itemOrder) {
+            return []int{}
+        }
+    }
+    groupVisited := make([]byte, m)
+    for i := 0; i < m; i++ {groupVisited[i] = 'W'}
+    for i := 0; i < m; i++ {
+        if groupVisited[i] == 'W' && dfs(i, groupVisited, groupList, &groupOrder) {
+            return []int{}
+        }
+    }
+    reverse(itemOrder)
+    Map := make(map[int][]int)
+    for _, i := range itemOrder {
+        Map[group[i]] = append(Map[group[i]], i)
+    }
+    reverse(groupOrder)
+    for _, i := range groupOrder {
+        for _, j := range Map[i] {
+            ans = append(ans, j)
+        }
+    }
+    return ans
+}
