@@ -1,0 +1,26 @@
+class Solution {
+public:
+    string arrangeWords(string text) {
+        text[0] += 'a' - 'A';
+        string word = "";
+        vector<pair<string, int>> words;
+        text += " ";
+        int index = 0;
+        for(int i = 0; i < text.length(); i++) {
+            if(text[i] != ' ') word += text[i];
+            else {
+                words.push_back({word, index++});
+                word = "";
+            }
+        }
+        sort(words.begin(), words.end(), [&](pair<string, int> &A, pair<string, int> &B) {
+            return A.first.length() < B.first.length() || (A.first.length() == B.first.length() && A.second < B.second);
+        });
+        text = words[0].first;
+        for(int i = 1; i < words.size(); i++) {
+            text += " " + words[i].first;
+        }
+        text[0] += 'A' - 'a';
+        return text;
+    }
+};
