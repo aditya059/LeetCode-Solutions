@@ -1,0 +1,25 @@
+class Solution {
+    void calcF(vector<string> &words, vector<int> &f) {
+        for(string word: words) {
+            int freq[26] = {0};
+            int mn = 25;
+            for(char ch: word) {
+                freq[ch - 'a']++;
+                mn = min(mn, ch - 'a');
+            }
+            f.push_back(freq[mn]);
+        }
+    }
+public:
+    vector<int> numSmallerByFrequency(vector<string>& queries, vector<string>& words) {
+        vector<int> f, q;
+        calcF(words, f);
+        calcF(queries, q);
+        sort(f.begin(), f.end());
+        vector<int> ans(q.size());
+        for(int i = 0; i < q.size(); i++) {
+            ans[i] = f.size() - (upper_bound(f.begin(), f.end(), q[i]) - f.begin());
+        }
+        return ans;
+    }
+};
