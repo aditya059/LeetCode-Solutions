@@ -21,3 +21,23 @@ public:
         return convertToTitle((columnNumber - 1) / 26) + (char)('A' + (columnNumber - 1) % 26);
     }
 };
+
+
+// Iterative
+func convertToTitle(columnNumber int) string {
+    ans := ""
+    for i := columnNumber; i > 0; i /= 26 {
+        i--
+        ans = string('A' + i % 26) + ans
+    }
+    return ans
+}
+
+
+// Recursive
+func convertToTitle(columnNumber int) string {
+    if columnNumber == 0 {
+        return ""
+    }
+    return convertToTitle((columnNumber - 1) / 26) + string('A' + (columnNumber - 1) % 26)
+}
