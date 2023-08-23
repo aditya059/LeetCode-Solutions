@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int minimumSum(int num) {
+        int n[4] = {0}, k = 0;
+        for(int i = num; i > 0; i /= 10) {
+            n[k++] = i % 10;
+        }
+        sort(n, n + k);
+        return 10 * (n[0] + n[1]) + n[2] + n[3];
+    }
+};
