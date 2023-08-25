@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int compute(string &A, string &B, string &C, int i, int j, int k, vector<vector<int>> &DP) {
+        if(i > C.length() || j > A.length() || k > B.length()) return 0;
+        if(i == C.length() && j == A.length() && k == B.length()) return 1;
+        if(DP[i][j] != -1) return DP[i][j];
+        if(A[j] == C[i] && B[k] != C[i])
+            DP[i][j] = compute(A, B, C, i + 1, j + 1, k, DP);
+        else if(B[k] == C[i] && A[j] != C[i])
+            DP[i][j] = compute(A, B, C, i + 1, j, k + 1, DP);
+        else if(B[k] == C[i] && A[j] == C[i])
+            DP[i][j] = compute(A, B, C, i + 1, j, k + 1, DP) || compute(A, B, C, i + 1, j + 1, k, DP);
+        else
+            DP[i][j] = 0;
+        return DP[i][j];
+    }
+    bool isInterleave(string A, string B, string C) {
+        if(A.length() + B.length() != C.length()) return false;
+        vector<vector<int>> DP(205, vector<int>(205, -1));
+        int ans = compute(A, B, C, 0, 0, 0, DP);
+        if(ans == 0) return false;
+        return true;
+    }
+};
