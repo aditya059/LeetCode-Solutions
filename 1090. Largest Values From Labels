@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int largestValsFromLabels(vector<int>& values, vector<int>& labels, int numWanted, int useLimit) {
+        int n = values.size();
+        vector<int> index(n);
+        iota(index.begin(), index.end(), 0);
+        sort(index.begin(), index.end(), [&](int A, int B) {
+            return values[A] > values[B];
+        });
+        unordered_map<int, int> taken;
+        int ans = 0, count = 0;
+        for(int i: index) {
+            if(count == numWanted) break;
+            if(taken[labels[i]] < useLimit) {
+                taken[labels[i]]++;
+                ans += values[i];
+                count++;
+            }
+        }
+        return ans;
+    }
+};
