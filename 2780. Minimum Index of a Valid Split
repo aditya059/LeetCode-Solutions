@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int minimumIndex(vector<int>& nums) {
+        unordered_map<int, int> count;
+        int f = 0, x = -1, n = nums.size();
+        for(int num: nums) {
+            count[num]++;
+            if(count[num] > n / 2) {
+                x = num;
+                f = count[num];
+            }
+        }
+        if(x == -1) return -1;
+        int f1 = 0, f2 = 0;
+        for(int i = 0; i < n - 1; i++) {
+            f1 += (nums[i] == x);
+            f2 = f - f1;
+            if(f1 > (i + 1) / 2 && f2 > (n - 1 - i) / 2) return i;
+        }
+        return -1;
+    }
+};
