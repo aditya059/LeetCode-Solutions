@@ -1,3 +1,4 @@
+// C++
 class Solution {
 public:
     int compute(string &A, string &B, string &C, int i, int j, int k, vector<vector<int>> &DP) {
@@ -22,3 +23,44 @@ public:
         return true;
     }
 };
+
+//------------------------------------------------------------------
+// C++
+class Solution {
+public:
+    bool isInterleave(string A, string B, string C) {
+        int m = A.length(), n = B.length();
+        if(m + n != C.length()) return false;
+        if(m < n) isInterleave(B, A, C);
+        vector<vector<bool>> DP(2, vector<bool>(n + 1, false));
+        DP[0][0] = true;
+        for(int i = 0; i < n; i++) DP[0][i + 1] = (B[i] == C[i]) && DP[0][i]; 
+        for(int i = 0; i < m; i++) {
+            DP[(i + 1) % 2][0] = (A[i] == C[i]) && DP[i % 2][0];
+            for(int j = 0; j < n; j++) {
+                DP[(i + 1) % 2][j + 1] = (DP[i % 2][j + 1] && A[i] == C[i + j + 1]) || (DP[(i + 1) % 2][j] && B[j] == C[i + j + 1]);
+            }
+        }
+        return DP[m % 2][n];
+    }
+};
+
+//-------------------------------------------------
+// Golang
+func isInterleave(A string, B string, C string) bool {
+    var m, n int = len(A), len(B)
+    if m + n != len(C) {return false}
+    if m < n {isInterleave(B, A, C)}
+    DP := make([][]bool, 2)
+    DP[0] = make([]bool, n + 1)
+    DP[1] = make([]bool, n + 1) 
+    DP[0][0] = true
+    for i := 0; i < n; i++ {DP[0][i + 1] = (B[i] == C[i]) && DP[0][i]} 
+    for i := 0; i < m; i++ {
+        DP[(i + 1) % 2][0] = (A[i] == C[i]) && DP[i % 2][0]
+        for j := 0; j < n; j++ {
+            DP[(i + 1) % 2][j + 1] = (DP[i % 2][j + 1] && A[i] == C[i + j + 1]) || (DP[(i + 1) % 2][j] && B[j] == C[i + j + 1])
+        }
+    }
+    return DP[m % 2][n]
+}
