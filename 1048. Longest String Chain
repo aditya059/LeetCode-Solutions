@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int longestStrChain(vector<string>& words) {
+        sort(words.begin(), words.end(), [&](string &A, string &B) {
+            return A.length() < B.length() || (A.length() == B.length() && A < B);
+        });
+        unordered_map<string, int> DP;
+        int ans = 0;
+        for(int i = 0; i < words.size(); i++) {
+            DP[words[i]] = 1;
+            for(int j = 0; j < words[i].size(); j++) {
+                string word = words[i].substr(0, j) + words[i].substr(j + 1);
+                DP[words[i]] = max(DP[words[i]], DP[word] + 1);
+                ans = max(ans, DP[words[i]]);
+            }
+        }
+        return ans;
+    }
+};
