@@ -1,0 +1,14 @@
+class Solution {
+public:
+    string baseNeg2(int n) {
+        if(!n) return "0";
+        string ans = "";
+        for(int i = n; i != 0; i /= -2) {
+            int d = i % -2;
+            if(d < 0) i += d;
+            ans += to_string(abs(d)); 
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
