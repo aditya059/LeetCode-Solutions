@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int maxScoreSightseeingPair(vector<int>& values) {
+        int ans = 0, maximum = INT_MIN;
+        for(int i = 0; i < values.size(); i++) {
+            ans = max(ans, values[i] - i + maximum);
+            maximum = max(maximum, values[i] + i);
+        }
+        return ans;
+    }
+};
