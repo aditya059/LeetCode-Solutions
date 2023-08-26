@@ -1,0 +1,27 @@
+class Solution {
+    bool check(vector<int>& position, int m, int mid) {
+        int picked = position[0];
+        for(int i = 1; i < position.size(); i++) {
+            if(position[i] - picked >= mid) {
+                m--;
+                picked = position[i];
+            }
+        }
+        return m <= 1;
+    }
+public:
+    int maxDistance(vector<int>& position, int m) {
+        sort(position.begin(), position.end());
+        int low = 1, high = 1e9, ans = low;
+        while(low <= high) {
+            int mid = low + (high - low) / 2;
+            if(check(position, m, mid)) {
+                ans = max(ans, mid);
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return ans;
+    }
+};
