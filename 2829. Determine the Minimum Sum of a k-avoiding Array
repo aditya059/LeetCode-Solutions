@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int minimumSum(int n, int k) {
+        int ans = 0, term = 1;
+        unordered_set<int> taken;
+        for(int i = 0; i < n; i++) {
+            while(taken.find(k - term) != taken.end()) term++;
+            taken.insert(term);
+            ans += term++;
+        }
+        return ans;
+    }
+};
