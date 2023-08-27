@@ -1,0 +1,22 @@
+class Solution {
+    int solve(int i, int k, vector<int>& stones, unordered_map<int, int> &index, vector<vector<int>> &memo) {
+        if(i == stones.size() - 1) return 1;
+        if(i >= stones.size() || k == 0) return 0;
+        if(memo[i][k] != -1) return memo[i][k];
+        int A = index.find(stones[i] + k - 1) != index.end()? solve(index[stones[i] + k - 1], k - 1, stones, index, memo): 0;
+        int B = index.find(stones[i] + k) != index.end()? solve(index[stones[i] + k], k, stones, index, memo): 0;
+        int C = index.find(stones[i] + k + 1) != index.end()? solve(index[stones[i] + k + 1], k + 1, stones, index, memo): 0;
+        return memo[i][k] = A || B || C;
+    }
+public:
+    bool canCross(vector<int>& stones) {
+        if(stones[1] != 1) return false;
+        int n = stones.size();
+        unordered_map<int, int> index;
+        for(int i = 0; i < n; i++) {
+            index[stones[i]] = i;
+        }
+        vector<vector<int>> memo(n, vector<int>(n, -1));
+        return solve(1, 1, stones, index, memo);
+    }
+};
