@@ -24,3 +24,31 @@ public:
         return quiet;
     }
 };
+
+OR
+
+class Solution {
+    void dfs(int curr, vector<int> adjList[], vector<bool> &visited, vector<int>& quiet, vector<int>& ans) {
+        if(visited[curr]) return;
+        visited[curr] = true;
+        for(int next: adjList[curr]) {
+            dfs(next, adjList, visited, quiet, ans);
+            if(quiet[ans[next]] < quiet[ans[curr]])
+                ans[curr] = ans[next];
+        }
+    }
+public:
+    vector<int> loudAndRich(vector<vector<int>>& richer, vector<int>& quiet) {
+        int n = quiet.size();
+        vector<int> adjList[n], ans(n);
+        for(vector<int> edge: richer) {
+            adjList[edge[1]].push_back(edge[0]);
+        }
+        iota(ans.begin(), ans.end(), 0);
+        vector<bool> visited(n);
+        for(int i = 0; i < n; i++) {
+            dfs(i, adjList, visited, quiet, ans);
+        }
+        return ans;
+    }
+};
