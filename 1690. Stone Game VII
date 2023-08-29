@@ -14,3 +14,19 @@ public:
         return solve(0, n - 1, stones, memo);
     }
 };
+
+OR
+
+class Solution {
+    int solve(int i, int j, vector<int> &stones, int sum, vector<vector<int>> &memo) {
+        if(i >= j) return 0;
+        if(memo[i][j] != -1) return memo[i][j];
+        return memo[i][j] = max(sum - stones[i] - solve(i + 1, j, stones, sum - stones[i], memo), sum - stones[j] - solve(i, j - 1, stones, sum - stones[j], memo));
+    }
+public:
+    int stoneGameVII(vector<int>& stones) {
+        int n = stones.size();
+        vector<vector<int>> memo(n, vector<int>(n, -1));
+        return solve(0, n - 1, stones, accumulate(stones.begin(), stones.end(), 0), memo);
+    }
+};
