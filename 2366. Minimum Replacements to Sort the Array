@@ -1,0 +1,12 @@
+class Solution {
+public:
+    long long minimumReplacement(vector<int>& nums) {
+        long long ans = 0;
+        for(int i = nums.size() - 2; i >= 0; i--) {
+            int numOfParts = ceil(nums[i] * 1.0 / nums[i + 1]);
+            ans += ceil(numOfParts) - 1;
+            nums[i] = nums[i] / numOfParts;
+        }
+        return ans;
+    }
+};
