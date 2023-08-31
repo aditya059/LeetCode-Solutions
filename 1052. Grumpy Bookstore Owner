@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int minutes) {
+        int total = 0, n = customers.size(), ans = 0;
+        for(int i = 0; i < n; i++) 
+            total += (1 - grumpy[i]) * customers[i];
+        for(int i = 0; i < n; i++) {
+            total += grumpy[i] * customers[i];
+            if(i >= minutes)
+                total -= grumpy[i - minutes] * customers[i - minutes];
+            if(i >= minutes - 1)
+                ans = max(ans, total);
+        }
+        return ans;
+    }
+};
