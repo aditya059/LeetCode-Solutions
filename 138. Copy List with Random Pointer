@@ -1,0 +1,56 @@
+// C++ 
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+    
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+
+class Solution {
+    unordered_map<Node*, Node*> Map;
+public:
+    Node* copyRandomList(Node* head) {
+        if(!head) return nullptr;
+        Node *head1 = new Node(head -> val);
+        Map[head] = head1;
+        head1 -> next = copyRandomList(head -> next);
+        head1 -> random = head -> random == nullptr? nullptr: Map[head -> random];
+        return head1;
+    }
+};
+
+
+// Golang
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Next *Node
+ *     Random *Node
+ * }
+ */
+
+func solve(head *Node, Map map[*Node]*Node) *Node {
+    if head == nil {return nil}
+    head1 := &Node {Val: head.Val}
+    Map[head] = head1
+    head1.Next = solve(head.Next, Map)
+    if head.Random != nil {
+        head1.Random = Map[head.Random]
+    }
+    return head1
+}
+
+func copyRandomList(head *Node) *Node {
+    Map := make(map[*Node]*Node)
+    return solve(head, Map)
+}
