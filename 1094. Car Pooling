@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool carPooling(vector<vector<int>>& trips, int capacity) {
+        int passenger[1002] = {0};
+        for(vector<int> trip: trips) {
+            passenger[trip[1]] += trip[0];
+            passenger[trip[2]] -= trip[0];
+        }
+        if(passenger[0] > capacity) return false;
+        for(int i = 1; i <= 1000; i++) {
+            passenger[i] += passenger[i - 1];
+            if(passenger[i] > capacity) return false;
+        }
+        return true;
+    }
+};
