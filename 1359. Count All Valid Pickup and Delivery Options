@@ -1,0 +1,21 @@
+// C++ 
+class Solution {
+public:
+    int countOrders(int n) {
+        int ans = 1, mod = 1e9 + 7;
+        for(int i = 2 * n; i >= 2; i -= 2) 
+            ans = (ans * 1L * (i * (i - 1) / 2) % mod) % mod;
+        return ans;
+    }
+};
+
+
+// Golang
+func countOrders(n int) int {
+    ans := 1
+    mod := int(1e9 + 7)
+    for i := 2 * n; i >= 2; i -= 2 {
+        ans = (ans * (i * (i - 1) / 2) % mod) % mod
+    } 
+    return ans
+}
