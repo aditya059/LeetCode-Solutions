@@ -1,0 +1,22 @@
+class Solution {
+    void solve(int i, string &s, set<string> &Set, int &ans) { 
+        if(i == s.length()) {
+            ans = max(ans, (int)Set.size());
+            return;
+        }
+        for(int j = s.length() - i; j >= 1; j--) {
+            string part = s.substr(i, j);
+            if(Set.find(part) != Set.end()) continue;
+            Set.insert(part);
+            solve(i + j, s, Set, ans);
+            Set.erase(part);
+        }
+    }
+public:
+    int maxUniqueSplit(string s) {
+        int ans = 0;
+        set<string> Set;
+        solve(0, s, Set, ans);
+        return ans;
+    }
+};
