@@ -1,0 +1,61 @@
+class Solution {
+
+    struct comp {
+
+        bool operator()(const vector<int> &A, const vector<int> &B) const {
+
+            return A[0] < B[0];
+
+        }
+
+    };
+
+public:
+
+    int minimumEffortPath(vector<vector<int>>& heights) {
+
+        vector<int> dirs[4] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+        int ans = 0, m = heights.size(), n = heights[0].size();
+
+        multiset<vector<int>, comp> PQ;
+
+        PQ.insert({0, 0, 0});
+
+        vector<vector<bool>> visited(m, vector<bool>(n));
+
+        while(!PQ.empty()) {
+
+            vector<int> curr = *PQ.begin();
+
+            int uX = curr[1];
+
+            int uY = curr[2];
+
+            PQ.erase(PQ.begin());
+
+            visited[uX][uY] = true;
+
+            ans = max(ans, curr[0]);
+
+            if(uX == m - 1 && uY == n - 1) return ans;
+
+            for(vector<int> dir: dirs) {
+
+                int vX = uX + dir[0];
+
+                int vY = uY + dir[1];
+
+                if(vX < 0 || vY < 0 || vX >= m || vY >= n || visited[vX][vY]) continue; 
+
+                PQ.insert({abs(heights[uX][uY] - heights[vX][vY]), vX, vY});
+
+            }
+
+        }
+
+        return ans;
+
+    }
+
+};
