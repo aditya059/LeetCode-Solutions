@@ -2,8 +2,8 @@ class Solution {
 public:
     int shortestPathLength(vector<vector<int>>& graph) {
         int n = graph.size();
-        queue<vector<int>> Queue;
-        set<vector<int>> Set;
+        queue<pair<int, int>> Queue;
+        set<pair<int, int>> Set;
         for(int i = 0; i < n; i++) {
             Queue.push({i, 1 << i});
             Set.insert({i, 1 << i});
@@ -12,11 +12,11 @@ public:
         while(!Queue.empty()) {
             int sz = Queue.size();
             for(int i = 0; i < sz; i++) {
-                vector<int> curr = Queue.front();
+                pair<int, int> curr = Queue.front();
                 Queue.pop();
-                if(curr[1] == fullSet) return ans;
-                for(int next: graph[curr[0]]) {
-                    int bitMask = curr[1] | (1 << next);
+                if(curr.second == fullSet) return ans;
+                for(int next: graph[curr.first]) {
+                    int bitMask = curr.second | (1 << next);
                     if(Set.find({next, bitMask}) != Set.end()) continue;
                     Set.insert({next, bitMask});
                     Queue.push({next, bitMask});
