@@ -1,0 +1,30 @@
+// Solution 1
+class Solution {
+public:
+    int minDifference(vector<int>& nums) {
+        if(nums.size() <= 3) return 0;
+        sort(nums.begin(), nums.end());
+        int n = nums.size(), ans = INT_MAX;
+        for(int i = 0; i <= 3; i++) {
+            ans = min(ans, nums[n - 4 + i] - nums[i]);
+        }
+        return ans;
+    }
+};
+
+OR
+
+// Solution 2
+class Solution {
+public:
+    int minDifference(vector<int>& nums) {
+        if(nums.size() <= 4) return 0;
+        partial_sort(nums.begin(), nums.begin() + 4, nums.end());
+        partial_sort(nums.rbegin(), nums.rbegin() + 4, nums.rend() - 4, greater<int>());
+        int n = nums.size(), ans = INT_MAX;
+        for(int i = 0; i <= 3; i++) {
+            ans = min(ans, nums[n - 4 + i] - nums[i]);
+        }
+        return ans;
+    }
+};
