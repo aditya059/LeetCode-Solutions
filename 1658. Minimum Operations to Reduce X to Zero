@@ -1,3 +1,4 @@
+// Solution 1: Prefix Sum + Binary Search
 class Solution {
 public:
     int minOperations(vector<int>& nums, int x) {
@@ -16,5 +17,44 @@ public:
             }
         }
         return ans == INT_MAX? -1: ans;
+    }
+};
+
+
+// Solution 2: Prefix Sum + Map
+class Solution {
+public:
+    int minOperations(vector<int>& nums, int x) {
+        int n = nums.size(), ans = -1;
+        x = accumulate(nums.begin(), nums.end(), 0) - x;
+        unordered_map<int, int> Map;
+        Map[0] = -1;
+        int currSum = 0;
+        for(int i = 0; i < n; i++) {
+            currSum += nums[i];
+            Map[currSum] = i;
+            if(Map.find(currSum - x) != Map.end())
+                ans = max(ans, i - Map[currSum - x]);
+        }
+        return ans == -1? -1: n - ans;
+    }
+};
+
+
+// Solution 3: Prefix Sum + Sliding Window
+class Solution {
+public:
+    int minOperations(vector<int>& nums, int x) {
+        int n = nums.size(), ans = -1;
+        x = accumulate(nums.begin(), nums.end(), 0) - x;
+        int currSum = 0;
+        for(int start = 0, end = 0; end < n; end++) {
+            currSum += nums[end];
+            while(start <= end && currSum > x) {
+                currSum -= nums[start++];
+            }
+            if(currSum == x) ans = max(ans, end - start + 1);
+        }
+        return ans == -1? -1: n - ans;
     }
 };
