@@ -1,0 +1,34 @@
+// C++
+class Solution {
+public:
+    double champagneTower(int poured, int query_row, int query_glass) {
+        double DP[101][101] = {0.0};
+        DP[0][0] = poured;
+        for(int row = 0; row <= query_row; row++) {
+            for(int col = 0; col <= row; col++) {
+                double rem = max(0.0, (DP[row][col] - 1.0) / 2.0);
+                DP[row + 1][col] += rem;
+                DP[row + 1][col + 1] += rem;
+            }
+        }
+        return min(1.0, DP[query_row][query_glass]);
+    }
+};
+
+
+// Golang
+func champagneTower(poured int, query_row int, query_glass int) float64 {
+    DP := make([][]float64, 101)
+    for i := 0; i <= 100; i++ {
+        DP[i] = make([]float64, 101)
+    }
+    DP[0][0] = float64(poured)
+    for row := 0; row <= query_row; row++ {
+        for col := 0; col <= row; col++ {
+            rem := math.Max(0.0, (DP[row][col] - 1.0) / 2.0)
+            DP[row + 1][col] += rem
+            DP[row + 1][col + 1] += rem
+        }
+    }
+    return math.Min(1.0, DP[query_row][query_glass])
+}
