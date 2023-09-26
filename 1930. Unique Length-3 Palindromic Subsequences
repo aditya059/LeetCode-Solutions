@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int countPalindromicSubsequence(string s) {
+        int ans = 0, n = s.length();
+        vector<vector<int>> prefix(26, vector<int>(n + 1));
+        vector<int> firstInd(26, n - 1), lastInd(26, 0);
+        for(int i = 0; i < n; i++) {
+            firstInd[s[i] - 'a'] = min(firstInd[s[i] - 'a'], i);
+            lastInd[s[i] - 'a'] = i;
+            prefix[s[i] - 'a'][i + 1]++;
+            for(int j = 0; j < 26; j++) {
+                prefix[j][i + 1] += prefix[j][i];
+            }
+        }
+        for(int i = 0; i < 26; i++) {
+            for(int j = 0; j < 26; j++) {
+                ans += (prefix[j][lastInd[i]] > prefix[j][firstInd[i] + 1]);
+            }
+        }
+        return ans;
+    }
+};
+
+
+OR
+
+
+class Solution {
+public:
+    int countPalindromicSubsequence(string s) {
+        int ans = 0, n = s.length();
+        vector<int> firstInd(26, n - 1), lastInd(26, 0);
+        for(int i = 0; i < n; i++) {
+            firstInd[s[i] - 'a'] = min(firstInd[s[i] - 'a'], i);
+            lastInd[s[i] - 'a'] = i;
+        }
+        for(int i = 0; i < 26; i++) {
+            ans += firstInd[i] < lastInd[i]? unordered_set<char>(s.begin() + firstInd[i] + 1, s.begin() + lastInd[i]).size(): 0;
+        }
+        return ans;
+    }
+};
