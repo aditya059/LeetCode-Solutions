@@ -1,0 +1,54 @@
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+        int lastIndex[26] = {0};
+        for(int i = 0; i < s.length(); i++) lastIndex[s[i] - 'a'] = i;
+        stack<char> Stack;
+        vector<bool> visited(26);
+        for(int i = 0; i < s.length(); i++) {
+            if(visited[s[i] - 'a']) continue;
+            while(!Stack.empty() && Stack.top() > s[i] && lastIndex[Stack.top() - 'a'] > i) {
+                visited[Stack.top() - 'a'] = false;
+                Stack.pop();
+            } 
+            Stack.push(s[i]);
+            visited[s[i] - 'a'] = true;
+        }
+        string ans = "";
+        while(!Stack.empty()) {
+            ans += Stack.top();
+            Stack.pop();
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
+
+
+OR
+
+
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+        int lastIndex[26] = {0};
+        for(int i = 0; i < s.length(); i++) lastIndex[s[i] - 'a'] = i;
+        stack<char> Stack;
+        int mask = 0;
+        for(int i = 0; i < s.length(); i++) {
+            if(mask & (1 << (s[i] - 'a'))) continue;
+            while(!Stack.empty() && Stack.top() > s[i] && lastIndex[Stack.top() - 'a'] > i) {
+                mask &= ~(1 << (Stack.top() - 'a'));
+                Stack.pop();
+            } 
+            Stack.push(s[i]);
+            mask |= 1 << (s[i] - 'a');
+        }
+        string ans = "";
+        while(!Stack.empty()) {
+            ans = Stack.top() + ans;
+            Stack.pop();
+        }
+        return ans;
+    }
+};
