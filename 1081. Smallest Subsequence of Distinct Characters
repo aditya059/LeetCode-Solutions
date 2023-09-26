@@ -1,0 +1,24 @@
+class Solution {
+public:
+    string smallestSubsequence(string s) {
+        int lastIndex[26] = {0};
+        for(int i = 0; i < s.length(); i++) lastIndex[s[i] - 'a'] = i;
+        stack<char> Stack;
+        int mask = 0;
+        for(int i = 0; i < s.length(); i++) {
+            if(mask & (1 << (s[i] - 'a'))) continue;
+            while(!Stack.empty() && Stack.top() > s[i] && lastIndex[Stack.top() - 'a'] > i) {
+                mask &= ~(1 << (Stack.top() - 'a'));
+                Stack.pop();
+            } 
+            Stack.push(s[i]);
+            mask |= 1 << (s[i] - 'a');
+        }
+        string ans = "";
+        while(!Stack.empty()) {
+            ans = Stack.top() + ans;
+            Stack.pop();
+        }
+        return ans;
+    }
+};
