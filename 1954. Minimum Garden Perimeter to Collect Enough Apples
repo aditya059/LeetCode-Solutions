@@ -1,0 +1,17 @@
+class Solution {
+public:
+    long long minimumPerimeter(long long neededApples) {
+        int low = 1, high = 1e5, ans = 1e5;
+        while(low <= high) {
+            int mid = low + (high - low) / 2;
+            long long total = 2L * mid * (2L * mid * mid + 3L * mid + 1);
+            if(total < neededApples) {
+                low = mid + 1;
+            } else {
+                ans = min(ans, mid);
+                high = mid - 1;
+            }
+        }
+        return 8 * ans;
+    }
+};
