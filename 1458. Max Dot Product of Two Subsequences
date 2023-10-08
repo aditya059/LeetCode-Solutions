@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int maxDotProduct(vector<int>& nums1, vector<int>& nums2) {
+        int m = nums1.size(), n = nums2.size();
+        if(m < n) return maxDotProduct(nums2, nums1);
+        vector<vector<int>> DP(2, vector<int>(n));
+        DP[0][0] = nums1[0] * nums2[0];
+        for(int i = 1; i < n; i++) DP[0][i] = max(nums1[0] * nums2[i], DP[0][i - 1]); 
+        for(int i = 1; i < m; i++) {
+            DP[i % 2][0] = max(nums1[i] * nums2[0], DP[(i - 1) % 2][0]);
+            for(int j = 1; j < n; j++) {
+                DP[i % 2][j] = max(nums1[i] * nums2[j] + max(0, DP[(i - 1) % 2][j - 1]), max(DP[(i - 1) % 2][j], DP[i % 2][j - 1]));
+            }
+        }
+        return DP[(m - 1) % 2][n - 1];
+    }
+};
