@@ -6,7 +6,7 @@ public:
         if(iter == nums.end() || *iter != target)
             return ans;
         ans[0] = iter - nums.begin();
-        ans[1] = upper_bound(nums.begin(), nums.end(), target) - nums.begin() - 1;
+        ans[1] = upper_bound(iter + 1, nums.end(), target) - nums.begin() - 1;
         return ans;
     }
 };
