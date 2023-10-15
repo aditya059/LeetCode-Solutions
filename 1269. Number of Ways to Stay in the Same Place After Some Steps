@@ -1,0 +1,14 @@
+class Solution {
+    const int mod = 1e9 + 7; 
+    int solve(int curr, int remSteps, int arrLen, vector<vector<int>> &memo) {
+        if(curr < 0 || curr >= arrLen) return 0;
+        if(remSteps == 0) return !curr;
+        if(memo[curr][remSteps] != -1) return memo[curr][remSteps];
+        return memo[curr][remSteps] = ((solve(curr - 1, remSteps - 1, arrLen, memo) + solve(curr, remSteps - 1, arrLen, memo)) % mod + solve(curr + 1, remSteps - 1, arrLen, memo)) % mod;
+    }
+public:
+    int numWays(int steps, int arrLen) {
+        vector<vector<int>> memo(min(arrLen, steps) + 1, vector<int>(steps + 1, -1));
+        return solve(0, steps, arrLen, memo);
+    }
+};
