@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
+        vector<vector<bool>> canReach(numCourses, vector<bool>(numCourses));
+        for(vector<int> edge: prerequisites) {
+            canReach[edge[0]][edge[1]] = true;
+        }
+        for(int k = 0; k < numCourses; k++) {
+            for(int i = 0; i < numCourses; i++) {
+                for(int j = 0; j < numCourses; j++) {
+                    canReach[i][j] = canReach[i][j] || (canReach[i][k] && canReach[k][j]);
+                }
+            }
+        }
+        vector<bool> ans;
+        for(vector<int> q: queries) {
+            ans.push_back(canReach[q[0]][q[1]]);
+        }
+        return ans;
+    }
+};
