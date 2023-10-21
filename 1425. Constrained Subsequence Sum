@@ -16,3 +16,21 @@ public:
         return ans;
     }
 };
+
+OR
+
+class Solution {
+public:
+    int constrainedSubsetSum(vector<int>& nums, int k) {
+        int n = nums.size(), ans = INT_MIN;
+        vector<int> DP(n);
+        priority_queue<pair<int, int>> PQ;
+        for(int i = 0; i < n; i++) {
+            while(!PQ.empty() && PQ.top().second < i - k) PQ.pop();
+            DP[i] = nums[i] + max(0, PQ.size()? PQ.top().first: 0);
+            PQ.push({DP[i], i});
+            ans = max(ans, DP[i]);
+        }
+        return ans;
+    }
+};
