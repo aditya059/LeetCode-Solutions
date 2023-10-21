@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int constrainedSubsetSum(vector<int>& nums, int k) {
+        int n = nums.size(), ans = INT_MIN;
+        vector<int> DP(n);
+        multiset<int> Set;
+        for(int i = 0; i < n; i++) {
+            int maxEle = Set.size() > 0? *Set.rbegin(): 0;
+            DP[i] = nums[i] + max(0, maxEle);
+            Set.insert(DP[i]);
+            if(i >= k) {
+                Set.erase(Set.find(DP[i - k]));
+            }
+            ans = max(ans, DP[i]);
+        }
+        return ans;
+    }
+};
