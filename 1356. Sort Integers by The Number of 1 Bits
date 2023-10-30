@@ -1,0 +1,13 @@
+class Solution {
+public:
+    static bool comp(int n, int m) {
+        int a = __builtin_popcount(n);
+        int b = __builtin_popcount(m);
+        if(a < b || (a == b && n < m)) return true;
+        return false;
+    }
+    vector<int> sortByBits(vector<int>& arr) {
+        sort(arr.begin(), arr.end(), comp);
+        return arr;
+    }
+};
