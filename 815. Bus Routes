@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int numBusesToDestination(vector<vector<int>>& routes, int source, int target) {
+        if(source == target) return 0;
+        int n = routes.size();
+        vector<bool> visited(n);
+        queue<int> Queue;
+        unordered_set<int> targets;
+        unordered_map<int, vector<int>> Map;
+        for(int i = 0; i < n; i++) {
+            for(int r: routes[i]) {
+                if(r == source) {
+                    Queue.push(i);
+                    visited[i] = true;
+                }
+                if(r == target) targets.insert(i);
+                Map[r].push_back(i);
+            }
+        }
+        int ans = 1;
+        while(!Queue.empty()) {
+            int sz = Queue.size();
+            for(int i = 0; i < sz; i++) {
+                int curr = Queue.front();
+                Queue.pop();
+                if(targets.find(curr) != targets.end()) return ans;
+                for(int u: routes[curr]) {
+                    for(int v: Map[u]) {
+                        if(!visited[v]) {
+                            visited[v] = true;
+                            Queue.push(v);
+                        }
+                    }
+                }
+            }
+            ans++;
+        }
+        return -1;
+    }
+};
