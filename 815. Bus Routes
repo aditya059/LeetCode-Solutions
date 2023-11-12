@@ -5,7 +5,6 @@ public:
         int n = routes.size();
         vector<bool> visited(n);
         queue<int> Queue;
-        unordered_set<int> targets;
         unordered_map<int, vector<int>> Map;
         for(int i = 0; i < n; i++) {
             for(int r: routes[i]) {
@@ -13,7 +12,6 @@ public:
                     Queue.push(i);
                     visited[i] = true;
                 }
-                if(r == target) targets.insert(i);
                 Map[r].push_back(i);
             }
         }
@@ -23,8 +21,8 @@ public:
             for(int i = 0; i < sz; i++) {
                 int curr = Queue.front();
                 Queue.pop();
-                if(targets.find(curr) != targets.end()) return ans;
                 for(int u: routes[curr]) {
+                    if(u == target) return ans;
                     for(int v: Map[u]) {
                         if(!visited[v]) {
                             visited[v] = true;
