@@ -1,0 +1,20 @@
+class Solution {
+public:
+    vector<string> findHighAccessEmployees(vector<vector<string>>& access_times) {
+        unordered_map<string, vector<string>> Map;
+        for(vector<string> access_time: access_times) {
+            Map[access_time[0]].push_back(access_time[1]);
+        }
+        vector<string> ans;
+        for(auto &[key, val]: Map) {
+            sort(val.begin(), val.end());
+            for(int i = 2; i < val.size(); i++) {
+                if(stoi(val[i]) - stoi(val[i - 2]) < 100) {
+                    ans.push_back(key);
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+};
