@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int findMinimumOperations(string s1, string s2, string s3) {
+        int i;
+        for(i = 0; i < s1.length() && i < s2.length() && i < s3.length(); i++) {
+            if(s1[i] == s2[i] && s2[i] == s3[i]) continue;
+            break;
+        }
+        return i == 0? -1: s1.length() + s2.length() + s3.length() - i * 3;
+    }
+};
