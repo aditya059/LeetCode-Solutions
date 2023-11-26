@@ -1,0 +1,17 @@
+class Solution {
+public:
+    string shortestBeautifulSubstring(string s, int k) {
+        int c = 0;
+        string ans = "";
+        for(int start = 0, end = 0; end < s.length(); end++) {
+            c += s[end] == '1';
+            while(c == k) {
+                int len = end - start + 1;
+                if(ans == "" || len < ans.length()) ans = s.substr(start, len);
+                else if(len == ans.length()) ans = min(ans, s.substr(start, len));
+                c -= s[start++] == '1';
+            }
+        }
+        return ans;
+    }
+};
