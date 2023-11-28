@@ -1,0 +1,40 @@
+class Solution {
+    const int mod = 1e9 + 7;
+public:
+    int numberOfWays(string corridor) {
+        int i = 0, ans = 1, sofa = 0, plant = 0, n = corridor.size();
+        while(i < n && corridor[i] == 'P') i++;
+        for(; i < n; i++) {
+            sofa += (corridor[i] == 'S');
+            if(sofa % 2 == 0) {
+                plant += corridor[i] == 'P';
+            } else {
+                ans = (ans * 1LL * (plant + 1)) % mod;
+                plant = 0;
+            }
+        }
+        return sofa == 0 || sofa % 2 == 1? 0: ans;
+    }
+};
+
+
+OR
+
+
+class Solution {
+    const int mod = 1e9 + 7;
+public:
+    int numberOfWays(string corridor) {
+        int i = 0, ans = 1, sofa = 0, plant = 0, n = corridor.size();
+        for(int i = 0; i < n; i++) {
+            sofa += (corridor[i] == 'S');
+            if(sofa > 0 && sofa % 2 == 0) {
+                plant += corridor[i] == 'P';
+            } else {
+                ans = (ans * 1LL * (plant + 1)) % mod;
+                plant = 0;
+            }
+        }
+        return sofa == 0 || sofa % 2 == 1? 0: ans;
+    }
+};
