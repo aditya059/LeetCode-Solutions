@@ -1,0 +1,18 @@
+class Solution {
+    bool isVowel(char ch) {
+        return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+    }
+public:
+    int beautifulSubstrings(string s, int k) {
+        int ans = 0, n = s.length();
+        for(int i = 0; i < n; i++) {
+            int vow = 0, con = 0;
+            for(int j = i; j < n; j++) {
+                vow += isVowel(s[j]);
+                con = j - i + 1 - vow;
+                if(vow == con && (vow * con) % k == 0) ans++;
+            }
+        }
+        return ans;
+    }
+};
