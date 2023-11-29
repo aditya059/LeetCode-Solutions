@@ -14,3 +14,25 @@ public:
         return DP[0];
     }
 };
+
+
+OR
+
+
+class Solution {
+public:
+    int minimumCoins(vector<int>& prices) {
+        int n = prices.size();
+        deque<int> Deque;
+        Deque.push_back(n);
+        prices.push_back(0);
+        for(int i = n - 1; i >= 0; i--) {
+            int m = min(n, 2 * i + 2);
+            while(!Deque.empty() && Deque.front() > m) Deque.pop_front();
+            prices[i] += prices[Deque.front()];
+            while(!Deque.empty() && prices[i] < prices[Deque.back()]) Deque.pop_back();
+            Deque.push_back(i);
+        }
+        return prices[0];
+    }
+};
