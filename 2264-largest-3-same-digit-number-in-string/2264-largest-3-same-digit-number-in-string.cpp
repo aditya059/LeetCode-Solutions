@@ -13,3 +13,21 @@ public:
         return ans;
     }
 };
+
+
+OR
+
+
+class Solution {
+public:
+    string largestGoodInteger(string num) {
+        int mx = INT_MIN, j = -1;
+        for(int i = 2; i < num.size(); i++) {
+            if(num[i - 2] == num[i - 1] && num[i - 1] == num[i] && num[i] > mx) {
+                j = i;
+                mx = num[i];
+            }
+        }
+        return j == -1? "": num.substr(j - 2, 3);
+    }
+};
