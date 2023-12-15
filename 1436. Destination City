@@ -1,0 +1,14 @@
+class Solution {
+public:
+    string destCity(vector<vector<string>>& paths) {
+        unordered_map<string, int> outDegree;
+        for(int i = 0; i < paths.size(); i++) {
+            outDegree[paths[i][0]]++;
+            outDegree[paths[i][1]] += 0;
+        }
+        for(auto iter: outDegree) {
+            if(iter.second == 0) return iter.first;
+        }
+        return "";
+    }
+};
