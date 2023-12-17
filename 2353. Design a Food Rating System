@@ -1,0 +1,30 @@
+class FoodRatings {
+    unordered_map<string, set<pair<int, string>>> cusinesToRatingFood;
+    unordered_map<string, int> foodToRating;
+    unordered_map<string, string> foodToCuisine;
+public:
+    FoodRatings(vector<string>& foods, vector<string>& cuisines, vector<int>& ratings) {
+        for(int i = 0; i < foods.size(); i++) {
+            foodToRating[foods[i]] = -ratings[i];
+            foodToCuisine[foods[i]] = cuisines[i];
+            cusinesToRatingFood[cuisines[i]].insert({-ratings[i], foods[i]});
+        }
+    }
+    
+    void changeRating(string food, int newRating) {
+        cusinesToRatingFood[foodToCuisine[food]].erase({foodToRating[food], food});
+        cusinesToRatingFood[foodToCuisine[food]].insert({-newRating, food});
+        foodToRating[food] = -newRating;
+    }
+    
+    string highestRated(string cuisine) {
+        return cusinesToRatingFood[cuisine].begin() -> second;
+    }
+};
+
+/**
+ * Your FoodRatings object will be instantiated and called as such:
+ * FoodRatings* obj = new FoodRatings(foods, cuisines, ratings);
+ * obj->changeRating(food,newRating);
+ * string param_2 = obj->highestRated(cuisine);
+ */
