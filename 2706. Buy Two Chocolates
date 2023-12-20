@@ -5,3 +5,23 @@ public:
         return prices[0] + prices[1] <= money? money - (prices[0] + prices[1]): money;
     }
 };
+
+
+OR
+
+
+class Solution {
+public:
+    int buyChoco(vector<int>& prices, int money) {
+        int mn = INT_MAX, secMn = INT_MAX;
+        for(int price: prices) {
+            if(price < mn) {
+                secMn = mn;
+                mn = price;
+            } else {
+                secMn = min(secMn, price);
+            }
+        }
+        return money - (secMn + mn > money? 0: secMn + mn);
+    }
+};
