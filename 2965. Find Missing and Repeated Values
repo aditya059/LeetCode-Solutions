@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> findMissingAndRepeatedValues(vector<vector<int>>& grid) {
+        int n = grid.size();
+        long actSum = 0, actSqrSum = 0;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                actSum += grid[i][j];
+                actSqrSum += grid[i][j] * grid[i][j];
+            }
+        }
+        n = n * n;
+        long expSum = n * (n + 1) / 2, expSqrSum = n * 1L * (n + 1) * (2 * n + 1) / 6;
+        vector<int> ans(2);
+        ans[1] = ((expSqrSum  - actSqrSum) / (expSum - actSum) + (expSum - actSum)) / 2; 
+        ans[0] = ans[1] - expSum + actSum;
+        return ans;
+    }
+};
