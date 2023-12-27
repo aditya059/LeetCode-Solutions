@@ -18,3 +18,24 @@ public:
         return sum - ans;
     }
 };
+
+
+OR
+
+
+class Solution {
+public:
+    int minCost(string colors, vector<int>& neededTime) {
+        int ans = 0;
+        for(int i = 0; i < colors.size(); i++) {
+            int maxVal = neededTime[i], sum = neededTime[i];
+            while(i < colors.size() - 1 && colors[i] == colors[i + 1]) {
+                maxVal = max(maxVal, neededTime[i + 1]);
+                sum += neededTime[i + 1];
+                i++;
+            }
+            ans += sum - maxVal;
+        }
+        return ans;
+    }
+};
