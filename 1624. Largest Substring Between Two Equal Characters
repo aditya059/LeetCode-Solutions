@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int maxLengthBetweenEqualCharacters(string s) {
+        int ans = -1;
+        vector<int> index(26, INT_MAX);
+        for(int i = 0; i < s.length(); i++) {
+            char ch = s[i] - 'a';
+            ans = max(ans, i - index[ch] - 1);
+            index[ch] = min(index[ch], i);
+        }
+        return ans;
+    }
+};
