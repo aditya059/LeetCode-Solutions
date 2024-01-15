@@ -17,3 +17,22 @@ public:
         return ans;
     }
 };
+
+OR
+
+class Solution {
+public:
+    vector<vector<int>> findWinners(vector<vector<int>>& matches) {
+        map<int, int> Map;
+        for(int i = 0; i < matches.size(); i++) {
+            int x = Map[matches[i][0]];
+            Map[matches[i][1]]++;
+        }
+        vector<vector<int>> ans(2);
+        for(auto iter: Map) {
+            if(iter.second == 0) ans[0].push_back(iter.first);
+            else if(iter.second == 1) ans[1].push_back(iter.first);
+        }
+        return ans;
+    }
+};
