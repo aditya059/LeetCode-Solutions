@@ -25,3 +25,24 @@ public:
         return {ans2, ans1};
     }
 };
+
+
+OR
+
+
+class Solution {
+public:
+    vector<int> findErrorNums(vector<int>& nums) {
+        long actSqrSum = 0;
+        int actSum = 0;
+        int n = nums.size();
+        for(int i = 0; i < n; i++) {
+            actSum += nums[i];
+            actSqrSum += nums[i] * nums[i];
+        }
+        long expSqrSum = n * 1L * (n + 1) * (2 * n + 1) / 6;
+        int expSum = n * (n + 1) / 2;
+        int m = ((expSqrSum - actSqrSum) / (expSum - actSum) + (expSum - actSum)) / 2;
+        return {m - expSum + actSum, m};
+    }
+};
