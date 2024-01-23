@@ -33,3 +33,33 @@ public:
         return ans;
     }
 };
+
+
+OR
+
+
+class Solution {
+public:
+    int dfs(vector<int> &masks, int i, int temp) {
+        if(i == masks.size()) {
+            return __builtin_popcount(temp);
+        }
+        return max(dfs(masks, i + 1, temp), (temp & masks[i])? 0: dfs(masks, i + 1, temp | masks[i]));
+    }
+    int maxLength(vector<string>& arr) {
+        int n = arr.size();
+        vector<int> masks(n);
+        for(int i = 0; i < n; i++) {
+            int mask = 0;
+            for(char ch: arr[i]) {
+                if(mask & (1 << (ch - 'a'))) {
+                    mask = 0;
+                    break;
+                } 
+                mask |= (1 << (ch - 'a'));
+            }
+            masks[i] = mask;
+        }
+        return dfs(masks, 0, 0);
+    }
+};
