@@ -63,3 +63,29 @@ public:
         return dfs(masks, 0, 0);
     }
 };
+
+
+OR
+
+
+class Solution {
+public:
+    int maxLength(vector<string>& arr) {
+        vector<int> DP(1);
+        int ans = 0;
+        for(int i = 0; i < arr.size(); i++) {
+            int mask = 0;
+            for(char ch: arr[i]) {
+                mask |= (1 << (ch - 'a'));
+            }
+            int m = __builtin_popcount(mask);
+            if(m < arr[i].size()) continue;
+            for(int j = 0; j < DP.size(); j++) {
+                if(DP[j] & mask) continue;
+                DP.push_back(DP[j] | mask);
+                ans = max(ans, m + __builtin_popcount(DP[j]));
+            }
+        }
+        return ans;
+    }
+};
