@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int compute(int x, int y, string &s1, string &s2, vector<vector<int>> &DP) {
+        if(x == 0 || y == 0)
+            return 0;
+        if(DP[x - 1][y - 1] != -1)
+            return DP[x - 1][y - 1];
+        if(s1[x - 1] == s2[y - 1]) {
+            DP[x - 1][y - 1] = 1 + compute(x - 1, y - 1, s1, s2, DP);
+            return DP[x - 1][y - 1];
+        }
+        DP[x - 1][y - 1] = max(compute(x - 1, y, s1, s2, DP), compute(x, y - 1, s1, s2, DP));
+        return DP[x - 1][y - 1];
+    }
+    int longestCommonSubsequence(string text1, string text2) {
+        vector<vector<int>> DP(1005, vector<int>(1005, -1));
+        return compute(text1.length(), text2.length(), text1, text2, DP);
+    }
+};
