@@ -1,0 +1,14 @@
+class Solution {
+    const int mod = 1e9 + 7;
+    int solve(int i, int j, int remMove, int &m, int &n, vector<vector<vector<int>>> &memo) {
+        if(i < 0 || j < 0 || i >= m || j >= n) return remMove >= 0;
+        if(remMove <= 0) return 0;
+        if(memo[i][j][remMove] != -1) return memo[i][j][remMove];
+        return memo[i][j][remMove] = ((solve(i - 1, j, remMove - 1, m, n, memo) + solve(i + 1, j, remMove - 1, m, n, memo)) % mod + (solve(i, j - 1, remMove - 1, m, n, memo) + solve(i, j + 1, remMove - 1, m, n, memo)) % mod) % mod;
+    }
+public:
+    int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+        vector<vector<vector<int>>> memo(m + 1, vector<vector<int>>(n + 1, vector<int>(maxMove + 1, -1)));
+        return solve(startRow, startColumn, maxMove, m, n, memo);
+    }
+};
