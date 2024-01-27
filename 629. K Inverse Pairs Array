@@ -1,0 +1,14 @@
+class Solution {
+    const int mod = 1e9 + 7;
+    int solve(int n, int k, vector<vector<int>> &memo) {
+        if(k == 0 || k == n * (n - 1) / 2) return 1;
+        if(k < 0 || k > n * (n - 1) / 2) return 0;
+        if(memo[n][k] != -1) return memo[n][k];
+        return memo[n][k] = ((solve(n, k - 1, memo) + solve(n - 1, k, memo)) % mod - solve(n - 1, k - n, memo)) % mod;
+    }
+public:
+    int kInversePairs(int n, int k) {
+        vector<vector<int>> memo(1001, vector<int>(1001, -1));
+        return (solve(n, k, memo) + mod) % mod;
+    }
+};
