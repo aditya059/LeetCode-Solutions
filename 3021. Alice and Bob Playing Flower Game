@@ -1,0 +1,6 @@
+class Solution {
+public:
+    long long flowerGame(int n, int m) {
+        return ((m + 1) / 2L) * (n / 2L) + (m / 2L) * ((n + 1) / 2L);
+    }
+};
