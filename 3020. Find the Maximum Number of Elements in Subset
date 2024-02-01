@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int maximumLength(vector<int>& nums) {
+        unordered_map<int, int> freq;
+        for(int i = 0; i < nums.size(); i++) {
+            freq[nums[i]]++;
+        }
+        int ans = freq[1], n = sqrt(1e9);
+        for(int i = 2; i <= n; i++) {
+            int count = 0;
+            for(long j = i; j <= 1e9 && freq.find(j) != freq.end(); j = j * j) {
+                if(freq[j] < 2) {
+                    count++; 
+                    break;
+                }
+                count += 2;
+            }
+            ans = max(ans, count);
+        }
+        return ans - !(ans & 1);
+    }
+};
+
+OR
+
+class Solution {
+public:
+    int maximumLength(vector<int>& nums) {
+        map<int, int> freq;
+        for(int i = 0; i < nums.size(); i++) {
+            freq[nums[i]]++;
+        }
+        int ans = freq[1];
+        for(auto iter: freq) {
+            int count = 0;
+            for(long j = iter.first; j <= 1e9 && freq[j]; j = j * j) {
+                if(freq[j] < 2) {
+                    count++; 
+                    break;
+                }
+                count += 2;
+                freq[j] = 0;
+            }
+            ans = max(ans, count);
+        }
+        return ans - !(ans & 1);
+    }
+};
