@@ -1,0 +1,12 @@
+class Solution {
+public:
+    int minimumPushes(string word) {
+        vector<int> freq(26);
+        for(char ch: word) {
+            freq[ch - 'a']++;
+        }
+        sort(freq.begin(), freq.end(), greater<int>());
+        for(int i = 1; i < 26; i++) freq[i] += freq[i - 1];
+        return freq[7] + (freq[15] - freq[7]) * 2 + (freq[23] - freq[15]) * 3 + (freq[25] - freq[23]) * 4;
+    }
+};
