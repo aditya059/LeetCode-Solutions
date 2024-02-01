@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int minimumPushes(string word) {
+        int n = word.size(), ans = 0;
+        for(int i = 1; n > 0; i++) {
+            ans += min(n, 8) * i;
+            n -= min(n, 8);
+        }
+        return ans;
+    }
+};
