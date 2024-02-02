@@ -1,0 +1,17 @@
+class Solution {
+    void solve(int &low, int &high, vector<int> &ans, int temp) {
+        if(temp > high) return;
+        if(temp >= low) ans.push_back(temp);
+        if(temp % 10 < 9)
+            solve(low, high, ans, temp * 10 + (temp % 10 + 1));
+    }
+public:
+    vector<int> sequentialDigits(int low, int high) {
+        vector<int> ans;
+        for(int i = 1; i <= 9; i++) {
+            solve(low, high, ans, i);
+        }
+        sort(ans.begin(), ans.end());
+        return ans;
+    }
+};
