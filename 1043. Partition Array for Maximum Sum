@@ -1,3 +1,4 @@
+// SC = O(n)
 class Solution {
 public:
     int maxSumAfterPartitioning(vector<int>& arr, int k) {
@@ -13,5 +14,26 @@ public:
             }
         } 
         return DP[n];
+    }
+};
+
+
+// SC = O(k)
+class Solution {
+public:
+    int maxSumAfterPartitioning(vector<int>& arr, int k) {
+        int n = arr.size();
+        vector<int> DP(k + 1);
+        for(int i = 0; i < n; i++) {
+            int maxEle = 0, val = 0;
+            for(int j = 0; j < k; j++) {
+                if(i >= j) {
+                    maxEle = max(maxEle, arr[i - j]);
+                    val = max(val, maxEle * (j + 1) + DP[(i - j) % k]);
+                }
+            }
+            DP[(i + 1) % k] = val;
+        }
+        return DP[n % k];
     }
 };
