@@ -1,0 +1,37 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        unordered_map<char, int> Map;
+        for(char ch: t) Map[ch]++;
+        int minWinLen = INT_MAX, counter = t.length(), minWinStart;
+        for(int start = 0, end = 0; end < s.length(); end++) {
+            if(Map[s[end]]-- > 0) counter--;
+            while(!counter) {
+                if(end - start + 1 < minWinLen)
+                    minWinLen = end - (minWinStart = start) + 1;
+                if(Map[s[start++]]++ == 0) counter++;
+            }
+        }
+        return minWinLen == INT_MAX? "": s.substr(minWinStart, minWinLen);
+    }
+};
+
+OR
+
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        vector<int> Map(128);
+        for(char ch: t) Map[ch]++;
+        int minWinLen = INT_MAX, counter = t.length(), minWinStart;
+        for(int start = 0, end = 0; end < s.length(); end++) {
+            if(Map[s[end]]-- > 0) counter--;
+            while(!counter) {
+                if(end - start + 1 < minWinLen)
+                    minWinLen = end - (minWinStart = start) + 1;
+                if(Map[s[start++]]++ == 0) counter++;
+            }
+        }
+        return minWinLen == INT_MAX? "": s.substr(minWinStart, minWinLen);
+    }
+};
