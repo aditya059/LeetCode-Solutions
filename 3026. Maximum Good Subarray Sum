@@ -1,0 +1,16 @@
+class Solution {
+public:
+    long long maximumSubarraySum(vector<int>& nums, int k) {
+        long long ans = -1e18, currSum = 0;
+        unordered_map<int, long long> Map;
+        for(int i = 0; i < nums.size(); i++) {
+            Map[nums[i]] = Map.find(nums[i]) == Map.end()? currSum: min(Map[nums[i]], currSum);
+            currSum += nums[i];
+            if(Map.find(nums[i] - k) != Map.end())
+                ans = max(ans, currSum - Map[nums[i] - k]);
+            if(Map.find(nums[i] + k) != Map.end())
+                ans = max(ans, currSum - Map[nums[i] + k]);
+        }
+        return ans == -1e18? 0: ans;
+    }
+};
