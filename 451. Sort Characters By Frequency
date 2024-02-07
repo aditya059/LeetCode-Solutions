@@ -40,3 +40,19 @@ public:
         return ans;
     }
 };
+
+OR
+
+class Solution {
+public:
+    string frequencySort(string s) {
+        int freq[128] = {0};
+        for(int i = 0; i < s.length(); i++) {
+            freq[s[i]]++;
+        }
+        sort(s.begin(), s.end(), [&](char ch1, char ch2) {
+            return freq[ch1] > freq[ch2] || (freq[ch1] == freq[ch2] && ch1 < ch2);
+        });
+        return s;
+    }
+};
