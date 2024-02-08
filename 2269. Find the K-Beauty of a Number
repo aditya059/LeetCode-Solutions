@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int divisorSubstrings(int num, int k) {
+        int ans = 0, res = 0, pow = 1;
+        for(int i = num, j = 1; i > 0; i /= 10, j++) {
+            res = (i % 10) * pow + res;
+            if(j < k) {
+                pow *= 10;
+            } else {
+                ans += res != 0? (num % res == 0): 0;
+                res /= 10;
+            }
+        }
+        return ans;
+    }
+};
