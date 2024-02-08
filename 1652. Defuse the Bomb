@@ -1,0 +1,15 @@
+class Solution {
+public:
+    vector<int> decrypt(vector<int>& code, int k) {
+        int n = code.size(), sum = 0, p = abs(k);
+        vector<int> ans(n);
+        if(!k) return ans;
+        for(int i = 0; i < n + p; i++) {
+            if(k < 0) ans[i % n] = sum; 
+            sum += code[i % n];
+            if(i >= p) sum -= code[(i - p) % n];
+            if(k > 0) ans[(n + i - k) % n] = sum;
+        }
+        return ans;
+    }
+};
