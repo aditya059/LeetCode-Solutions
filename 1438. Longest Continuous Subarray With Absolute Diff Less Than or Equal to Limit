@@ -1,3 +1,4 @@
+// O(nlogn) 
 class Solution {
 public:
     int longestSubarray(vector<int>& nums, int limit) {
@@ -7,6 +8,32 @@ public:
             Set.insert(nums[end]);
             while(*Set.rbegin() - *Set.begin() > limit) {
                 Set.erase(Set.find(nums[start++]));
+            }
+            ans = max(ans, end - start + 1);
+        }
+        return ans;
+    }
+};
+
+
+OR
+
+
+// O(n)
+class Solution {
+public:
+    int longestSubarray(vector<int>& nums, int limit) {
+        int ans = 0;
+        deque<int> incr, decr;
+        for(int start = 0, end = 0; end < nums.size(); end++) {
+            while(!incr.empty() && nums[end] < incr.back()) incr.pop_back();
+            while(!decr.empty() && nums[end] > decr.back()) decr.pop_back();
+            incr.push_back(nums[end]);
+            decr.push_back(nums[end]);
+            while(decr.front() - incr.front() > limit) {
+                if(decr.front() == nums[start]) decr.pop_front();
+                if(incr.front() == nums[start]) incr.pop_front();
+                start++;
             }
             ans = max(ans, end - start + 1);
         }
