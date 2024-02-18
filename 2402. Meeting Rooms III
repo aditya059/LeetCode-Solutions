@@ -1,0 +1,71 @@
+// Priority Queue
+class Solution {
+public:
+    int mostBooked(int n, vector<vector<int>>& meetings) {
+        sort(meetings.begin(), meetings.end());
+        vector<int> numOfMeet(n);
+        priority_queue<int, vector<int>, greater<int>> unusedRooms;
+        for(int i = 0; i < n; i++) unusedRooms.push(i);
+        priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> usedRooms;
+        for(int i = 0; i < meetings.size(); i++) {
+            int start = meetings[i][0], end = meetings[i][1];
+            while(!usedRooms.empty() && usedRooms.top().first <= start) {
+                unusedRooms.push(usedRooms.top().second);
+                usedRooms.pop();
+            }
+            if(!unusedRooms.empty()) {
+                int room = unusedRooms.top();
+                unusedRooms.pop();
+                usedRooms.push({end, room});
+                numOfMeet[room]++;
+            } else {
+                pair<long long, int> usedRoom = usedRooms.top();
+                usedRooms.pop();
+                usedRooms.push({usedRoom.first + end - start, usedRoom.second});
+                numOfMeet[usedRoom.second]++;
+            }
+        }
+        int ans = n - 1;
+        for(int i = n - 2; i >= 0; i--) {
+            if(numOfMeet[i] >= numOfMeet[ans]) ans = i;
+        }
+        return ans;
+    }
+};
+
+OR
+
+// Ordered Set
+class Solution {
+public:
+    int mostBooked(int n, vector<vector<int>>& meetings) {
+        sort(meetings.begin(), meetings.end());
+        vector<int> numOfMeet(n);
+        set<int> unusedRooms;
+        for(int i = 0; i < n; i++) unusedRooms.insert(i);
+        set<pair<long long, int>> usedRooms;
+        for(int i = 0; i < meetings.size(); i++) {
+            int start = meetings[i][0], end = meetings[i][1];
+            while(!usedRooms.empty() && (*usedRooms.begin()).first <= start) {
+                unusedRooms.insert((*usedRooms.begin()).second);
+                usedRooms.erase(usedRooms.begin());
+            }
+            if(!unusedRooms.empty()) {
+                int room = *unusedRooms.begin();
+                unusedRooms.erase(unusedRooms.begin());
+                usedRooms.insert({end, room});
+                numOfMeet[room]++;
+            } else {
+                pair<long long, int> usedRoom = *usedRooms.begin();
+                usedRooms.erase(usedRooms.begin());
+                usedRooms.insert({usedRoom.first + end - start, usedRoom.second});
+                numOfMeet[usedRoom.second]++;
+            }
+        }
+        int ans = n - 1;
+        for(int i = n - 2; i >= 0; i--) {
+            if(numOfMeet[i] >= numOfMeet[ans]) ans = i;
+        }
+        return ans;
+    }
+};
