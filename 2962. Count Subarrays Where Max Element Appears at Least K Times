@@ -1,0 +1,15 @@
+class Solution {
+public:
+    long long countSubarrays(vector<int>& nums, int k) {
+        int maxEle = *max_element(nums.begin(), nums.end());
+        long long ans = 0;
+        for(int start = 0, end = 0; end < nums.size(); end++) {
+            if(nums[end] == maxEle) k--;
+            while(k == 0) {
+                if(nums[start++] == maxEle) k++;
+            }
+            ans += start;
+        }
+        return ans;
+    }
+};
