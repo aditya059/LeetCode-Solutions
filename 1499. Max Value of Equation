@@ -1,3 +1,4 @@
+// Using multiset
 class Solution {
 public:
     int findMaxValueOfEquation(vector<vector<int>>& points, int k) {
@@ -11,6 +12,28 @@ public:
             if(!Set.empty()) 
                 ans = max(ans, points[end][0] + points[end][1] + *Set.rbegin());
             Set.insert(points[end][1] - points[end][0]);
+        }
+        return ans;
+    }
+};
+
+
+OR
+
+
+// Using Priority Queue
+class Solution {
+public:
+    int findMaxValueOfEquation(vector<vector<int>>& points, int k) {
+        priority_queue<pair<int, int>> PQ;
+        int ans = INT_MIN;
+        for(int start = 0, end = 0; end < points.size(); end++) {
+            while(!PQ.empty() && points[end][0] - PQ.top().second > k) {
+                PQ.pop();
+            }
+            if(!PQ.empty()) 
+                ans = max(ans, points[end][0] + points[end][1] + PQ.top().first);
+            PQ.push({points[end][1] - points[end][0], points[end][0]});
         }
         return ans;
     }
