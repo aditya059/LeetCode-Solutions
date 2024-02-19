@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int findMaxValueOfEquation(vector<vector<int>>& points, int k) {
+        multiset<int> Set;
+        int ans = INT_MIN;
+        for(int start = 0, end = 0; end < points.size(); end++) {
+            while(points[end][0] - points[start][0] > k) {
+                Set.erase(Set.find(points[start][1] - points[start][0]));
+                start++;
+            }
+            if(!Set.empty()) 
+                ans = max(ans, points[end][0] + points[end][1] + *Set.rbegin());
+            Set.insert(points[end][1] - points[end][0]);
+        }
+        return ans;
+    }
+};
