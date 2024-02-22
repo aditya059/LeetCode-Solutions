@@ -1,18 +1,35 @@
 class Solution {
 public:
     int findJudge(int n, vector<vector<int>>& trust) {
-        vector<pair<int, int>> temp(n + 1);
+        vector<int> indegree(n + 1), outdegree(n + 1);
         for(int i = 0; i < trust.size(); i++) {
-            temp[trust[i][0]].first++;
-            temp[trust[i][1]].second++;
+            indegree[trust[i][0]]++;
+            outdegree[trust[i][1]]++;
         }
-        int ans = -1;
         for(int i = 1; i <= n; i++) {
-            if(temp[i].first == 0 && temp[i].second == n - 1) {
-                if(ans != -1) return -1;
-                ans = i;
+            if(indegree[i] == 0 && outdegree[i] == n - 1) {
+                return i;
             }
         }
-        return ans;
+        return -1;
+    }
+};
+
+OR
+
+class Solution {
+public:
+    int findJudge(int n, vector<vector<int>>& trust) {
+        vector<int> degree(n + 1);
+        for(int i = 0; i < trust.size(); i++) {
+            degree[trust[i][0]]--;
+            degree[trust[i][1]]++;
+        }
+        for(int i = 1; i <= n; i++) {
+            if(degree[i] == n - 1) {
+                return i;
+            }
+        }
+        return -1;
     }
 };
