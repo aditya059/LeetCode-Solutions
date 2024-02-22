@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int rangeBitwiseAnd(int left, int right) {
+        long MAX = (1L << 31) - 1;
+        for(int i = 30; i >= 0; i--) {
+            if((left & (1L << (i + 1))) == 0 && ((left & (1L << i))) != 0) {
+                long nextBit0 = (left & (MAX << (i + 1))) | (1L << (i + 1));
+                if(right >= nextBit0) {
+                    left &= nextBit0; 
+                }
+            }
+        }
+        return left;
+    }
+};
