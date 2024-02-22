@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int maxRepOpt1(string text) {
+        int freq[26] = {0};
+        vector<pair<char, int>> count;
+        for(int i = 0; i < text.size(); i++) {
+            freq[text[i] - 'a']++;
+            if(i == 0 || text[i] != text[i - 1]) 
+                count.push_back({text[i], 1});
+            else
+                count.back().second++;
+        }
+        int ans = 0;
+        for(int i = 0; i < count.size(); i++) {
+            int len = count[i].second + (i > 1 && count[i - 1].second == 1 && count[i].first == count[i - 2].first ? count[i - 2].second: 0);
+            ans = max(ans, len + (len < freq[count[i].first - 'a']));
+        }
+        return ans;
+    }
+};
