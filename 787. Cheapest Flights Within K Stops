@@ -63,3 +63,34 @@ public:
         return distance[dst] == 1e7? -1: distance[dst];
     }
 };
+
+OR
+
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<pair<int, int>> adjList[n];
+        for(int i = 0; i < flights.size(); i++) {
+            adjList[flights[i][0]].push_back({flights[i][1], flights[i][2]});
+        }
+        vector<int> distance(n, 1e7);
+        distance[src] = 0;
+        queue<pair<int, int>> Queue;
+        Queue.push({src, 0});
+        while(k-- >= 0 && !Queue.empty()) {
+            int sz = Queue.size();
+            for(int i = 0; i < sz; i++) {
+                auto [u, uCost] = Queue.front();
+                Queue.pop();
+                for(auto [v, w]: adjList[u]) {
+                    int vCost = uCost + w; 
+                    if(vCost < distance[v]) {
+                        distance[v] = vCost;
+                        Queue.push({v, vCost});
+                    }
+                }
+            }
+        }
+        return distance[dst] == 1e7? -1: distance[dst];
+    }
+};
