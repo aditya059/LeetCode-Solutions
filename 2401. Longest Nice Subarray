@@ -11,3 +11,19 @@ public:
         return ans;
     }
 };
+
+OR
+
+class Solution {
+public:
+    int longestNiceSubarray(vector<int>& nums) {
+        int ans = 0, usedBits = 0;
+        for(int start = 0, end = 0; end < nums.size(); end++) {
+            while(usedBits & nums[end])
+                usedBits ^= nums[start++];
+            usedBits |= nums[end];
+            ans = max(ans, end - start + 1);
+        }
+        return ans;
+    }
+};
