@@ -13,3 +13,21 @@ public:
         return distance[dst] == 1e7? -1: distance[dst];
     }
 };
+
+OR
+
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<vector<int>> distance(2, vector<int>(n, 1e7));
+        distance[0][src] = 0;
+        distance[1][src] = 0;
+        while(k-- >= 0) {
+            for(int i = 0; i < flights.size(); i++) {
+                distance[(k + 1) & 1][flights[i][1]] = min(distance[(k + 1) & 1][flights[i][1]], distance[k & 1][flights[i][0]] + flights[i][2]);
+            }
+        }
+        int ans = min(distance[0][dst], distance[1][dst]);
+        return ans >= 1e7? -1: ans; 
+    }
+};
