@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<int> distance(n, 1e7);
+        distance[src] = 0;
+        while(k-- >= 0) {
+            vector<int> temp = distance;
+            for(int i = 0; i < flights.size(); i++) {
+                temp[flights[i][1]] = min(temp[flights[i][1]], distance[flights[i][0]] + flights[i][2]);
+            }
+            distance = temp;
+        }
+        return distance[dst] == 1e7? -1: distance[dst];
+    }
+};
