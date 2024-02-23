@@ -31,3 +31,35 @@ public:
         return ans >= 1e7? -1: ans; 
     }
 };
+
+OR
+
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<pair<int, int>> adjList[n];
+        for(int i = 0; i < flights.size(); i++) {
+            adjList[flights[i][0]].push_back({flights[i][1], flights[i][2]});
+        }
+        vector<int> distance(n, 1e7);
+        distance[src] = 0;
+        queue<int> Queue;
+        Queue.push(src);
+        while(k-- >= 0 && !Queue.empty()) {
+            int sz = Queue.size();
+            vector<int> temp = distance;
+            for(int i = 0; i < sz; i++) {
+                auto u = Queue.front();
+                Queue.pop();
+                for(auto &[v, w]: adjList[u]) {
+                    if(distance[u] + w < temp[v]) {
+                        temp[v] = distance[u] + w;
+                        Queue.push(v);
+                    }
+                }
+            }
+            distance = temp;
+        }
+        return distance[dst] == 1e7? -1: distance[dst];
+    }
+};
