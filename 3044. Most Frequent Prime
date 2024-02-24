@@ -1,0 +1,34 @@
+class Solution {
+    bool isPrime(int n) {
+        for(int i = sqrt(n); i > 1; i--) {
+            if(n % i == 0) return false;
+        }
+        return true;
+    }
+    void solve(int i, int j, int &k, int &l, vector<vector<int>>& mat, unordered_map<int, int> &Map, int num, int &ans, int &maxCount) {
+        if(i < 0 || j < 0 || i >= mat.size() || j >= mat[0].size()) return;
+        num = num * 10 + mat[i][j];
+        if(isPrime(num)) {
+            Map[num]++;
+            if(Map[num] == maxCount) ans = max(ans, num);
+            else if(Map[num] > maxCount) ans = num, maxCount = Map[num];
+        }
+        solve(i + k, j + l, k, l, mat, Map, num, ans, maxCount);
+    }
+public:
+    int mostFrequentPrime(vector<vector<int>>& mat) {
+        int ans = -1, maxCount = 0;
+        unordered_map<int, int> Map;
+        for(int i = 0; i < mat.size(); i++) {
+            for(int j = 0; j < mat[0].size(); j++) {
+                for(int k = -1; k <= 1; k++) {
+                    for(int l = -1; l <= 1; l++) {
+                        if(k == 0 && l == 0) continue;
+                        solve(i + k, j + l, k, l, mat, Map, mat[i][j], ans, maxCount);
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+};
