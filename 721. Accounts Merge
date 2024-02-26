@@ -1,0 +1,36 @@
+class Solution {
+    void dfs(int curr, vector<int> adjList[], vector<bool> &visited, set<string> &Set, vector<vector<string>>& accounts) {
+        visited[curr] = true;
+        for(int i = 1; i < accounts[curr].size(); i++) Set.insert(accounts[curr][i]);
+        for(int next: adjList[curr]) {
+            if(!visited[next]) dfs(next, adjList, visited, Set, accounts);
+        }
+    }
+public:
+    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        int n = accounts.size();
+        unordered_map<string, int> seen;
+        vector<int> adjList[n];
+        for(int i = 0; i < n; i++) {
+            for(int j = 1; j < accounts[i].size(); j++) {
+                if(seen.find(accounts[i][j]) != seen.end()) {
+                    adjList[i].push_back(seen[accounts[i][j]]);
+                    adjList[seen[accounts[i][j]]].push_back(i);
+                } else {
+                    seen[accounts[i][j]] = i;
+                }
+            }
+        }
+        vector<bool> visited(n);
+        vector<vector<string>> ans;
+        for(int i = 0; i < n; i++) {
+            if(!visited[i]) {
+                set<string> Set;
+                dfs(i, adjList, visited, Set, accounts);
+                ans.push_back({accounts[i][0]});
+                for(string email: Set) ans.back().push_back(email);
+            }
+        }
+        return ans;
+    }
+};
