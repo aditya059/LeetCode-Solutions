@@ -1,0 +1,31 @@
+class Solution {
+    int findParent(int u, vector<int> &parent) {
+        if(parent[u] == u) return u;
+        return parent[u] = findParent(parent[u], parent);
+    }
+    void unionSet(int u, int v, vector<int> &parent) {
+        int parU = findParent(u, parent);
+        int parV = findParent(v, parent);
+        if(parU == parV) return;
+        if(parU < parV) parent[parV] = parU;
+        else parent[parU] = parV;
+    }
+public:
+    vector<bool> areConnected(int n, int threshold, vector<vector<int>>& queries) {
+        vector<int> divisor(n + 1, true), parent(n + 1);
+        iota(parent.begin(), parent.end(), 0);
+        for(int i = threshold + 1; i <= n; i++) {
+            if(divisor[i]) {
+                for(int j = i + i; j <= n; j += i) {
+                    divisor[j] = false;
+                    unionSet(i, j, parent);
+                }
+            }
+        }
+        vector<bool> ans;
+        for(int i = 0; i < queries.size(); i++) {
+            ans.push_back(findParent(queries[i][0], parent) == findParent(queries[i][1], parent));
+        }
+        return ans;
+    }
+};
