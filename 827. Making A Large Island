@@ -1,3 +1,4 @@
+// DFS
 class Solution {
     int colorIfValid(int i, int j, vector<vector<int>>& grid) {
         if(i < 0 || j < 0 || i >= grid.size() || j >= grid[0].size()) return 0;
@@ -25,6 +26,67 @@ public:
                     unordered_set<int> Set = {colorIfValid(i + 1, j, grid), colorIfValid(i - 1, j, grid), colorIfValid(i, j + 1, grid), colorIfValid(i, j - 1, grid)};
                     int size = 1;
                     for(int color: Set) size += compSize[color];
+                    ans = max(ans, size); 
+                }
+            }
+        }
+        return ans == 0? m * n: ans;
+    }
+};
+
+
+// Union Find
+class Solution {
+    int findParent(int u, vector<int> &parent) {
+        if(parent[u] == u) return u;
+        return parent[u] = findParent(parent[u], parent);
+    }
+    void unionSet(int u, int v, vector<int> &parent, vector<int> &setSize) {
+        int parU = findParent(u, parent);
+        int parV = findParent(v, parent);
+        if(parU == parV) return;
+        if(setSize[parU] >= setSize[parV]) {
+            parent[parV] = parU;
+            setSize[parU] += setSize[parV];
+        } else {
+            parent[parU] = parV;
+            setSize[parV] += setSize[parU];
+        }
+    }
+    bool isValid(int i, int j, vector<vector<int>>& grid) {
+        if(i < 0 || j < 0 || i >= grid.size() || j >= grid[0].size()) return false;
+        return true;
+    }
+public:
+    int largestIsland(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        vector<int> setSize(m * n, 1);
+        vector<int> parent(m * n);
+        iota(parent.begin(), parent.end(), 0);
+        vector<vector<int>> dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(grid[i][j] == 1) {
+                    for(auto dir: dirs) {
+                        int x = i + dir[0];
+                        int y = j + dir[1];
+                        if(isValid(x, y, grid) && grid[x][y]) unionSet(i * n + j, x * n + y, parent, setSize); 
+                    }
+                }
+            }
+        }
+        int ans = 0;
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(grid[i][j] == 0) {
+                    unordered_set<int> Set;
+                    for(auto dir: dirs) {
+                        int x = i + dir[0];
+                        int y = j + dir[1];
+                        if(isValid(x, y, grid) && grid[x][y]) Set.insert(findParent(x * n + y, parent)); 
+                    }
+                    int size = 1;
+                    for(int par: Set) size += setSize[par];
                     ans = max(ans, size); 
                 }
             }
