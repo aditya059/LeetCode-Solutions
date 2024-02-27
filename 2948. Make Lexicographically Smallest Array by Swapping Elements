@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int> lexicographicallySmallestArray(vector<int>& nums, int limit) {
+        int n = nums.size();
+        vector<int> index(n);
+        iota(index.begin(), index.end(), 0);
+        sort(index.begin(), index.end(), [&](int i, int j) {
+            return nums[i] < nums[j];
+        });
+        vector<int> ans(n), ind{index[0]};
+        int k = 0;
+        for(int i = 1; i < n; i++) {
+            if(nums[index[i]] - nums[index[i - 1]] > limit) {
+                sort(ind.begin(), ind.end());
+                for(int j = 0; j < ind.size(); j++) {
+                    ans[ind[j]] = nums[index[k++]];
+                }
+                ind.clear();
+            }
+            ind.push_back(index[i]);
+        }
+        sort(ind.begin(), ind.end());
+        for(int j = 0; j < ind.size(); j++) {
+            ans[ind[j]] = nums[index[k++]];
+        }
+        return ans;
+    }
+};
