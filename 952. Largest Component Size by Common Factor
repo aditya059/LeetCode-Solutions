@@ -1,0 +1,45 @@
+class Solution {
+    int findParent(int u, vector<int> &parent) {
+        if(parent[u] == u) return u;
+        return parent[u] = findParent(parent[u], parent);
+    }
+    void unionSet(int u, int v, vector<int> &parent) {
+        int parU = findParent(u, parent);
+        int parV = findParent(v, parent);
+        if(parU == parV) return;
+        if(parU < parV) parent[parV] = parU;
+        else parent[parU] = parV;
+    }
+public:
+    int largestComponentSize(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> parent(n);
+        iota(parent.begin(), parent.end(), 0);
+        unordered_map<int, int> seen;
+        for(int i = 0; i < n; i++) {
+            for(int p = 2; p * p <= nums[i]; p++) {
+                if(nums[i] % p == 0) {
+                    if(seen.find(p) != seen.end()) 
+                        unionSet(seen[p], i, parent);
+                    else
+                        seen[p] = i;
+                    while(nums[i] % p == 0) nums[i] /= p;
+                }
+            }
+            if(nums[i] > 1) {
+                if(seen.find(nums[i]) != seen.end()) 
+                    unionSet(seen[nums[i]], i, parent);
+                else
+                    seen[nums[i]] = i;
+            }
+        }
+        unordered_map<int, int> sizes;
+        int ans = 0;
+        for(int i = 0; i < n; i++) {
+            int par = findParent(i, parent); 
+            sizes[par]++;
+            ans = max(ans, sizes[par]);
+        }
+        return ans;
+    }
+};
