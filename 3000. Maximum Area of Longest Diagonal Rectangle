@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int areaOfMaxDiagonal(vector<vector<int>>& dimensions) {
+        int ans = 0, maxDiag = 0;
+        for(int i = 0; i < dimensions.size(); i++) {
+            int l = dimensions[i][0], b = dimensions[i][1];
+            int diag = l * l + b * b;
+            if(diag == maxDiag) ans = max(ans, l * b);
+            if(diag > maxDiag) {
+                ans = l * b;
+                maxDiag = diag;
+            }
+        }
+        return ans;
+    }
+};
