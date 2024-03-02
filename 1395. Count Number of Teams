@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int numTeams(vector<int>& rating) {
+        int n = rating.size(), ans = 0;
+        for(int i = 1; i < n - 1; i++) {
+            int leftLess = 0, leftGreat = 0;
+            for(int j = 0; j < i; j++) {
+                leftLess += rating[j] < rating[i];
+                leftGreat += rating[j] > rating[i];
+            }
+            int rightLess = 0, rightGreat = 0;
+            for(int j = i + 1; j < n; j++) {
+                rightLess += rating[j] < rating[i];
+                rightGreat += rating[j] > rating[i];
+            }
+            ans += leftLess * rightGreat + leftGreat * rightLess;
+        }
+        return ans;
+    }
+};
