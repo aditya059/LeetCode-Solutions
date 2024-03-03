@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums, int k) {
+        int ans = 0;
+        priority_queue<long, vector<long>, greater<long>> PQ(nums.begin(), nums.end());
+        while(PQ.size() > 1) {
+            long x = PQ.top();
+            if(x >= k) return ans;
+            PQ.pop();
+            long y = PQ.top();
+            PQ.pop();
+            ans++;
+            PQ.push({x * 2L + y});
+        }
+        return ans;
+    }
+};
