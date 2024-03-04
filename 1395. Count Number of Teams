@@ -18,3 +18,36 @@ public:
         return ans;
     }
 };
+
+OR
+
+class Solution {
+    void update(int i, int val, vector<int> &BIT) {
+        while(i < BIT.size()) {
+            BIT[i] += val;
+            i += i & -i; 
+        }
+    }
+    int query(int i, vector<int> &BIT) {
+        int res = 0;
+        while(i > 0) {
+            res += BIT[i];
+            i -= i & -i;
+        }
+        return res;
+    }
+public:
+    int numTeams(vector<int>& rating) {
+        int n = rating.size(), ans = 0, MAX = *max_element(rating.begin(), rating.end());
+        vector<int> LBIT(MAX + 1), RBIT(MAX + 1);
+        for(int i = 0; i < n; i++) {
+            update(rating[i], 1, RBIT);
+        }
+        for(int i = 0; i < n; i++) {
+            update(rating[i], -1, RBIT);
+            ans += query(rating[i] - 1, LBIT) * (query(MAX, RBIT) - query(rating[i], RBIT)) + (query(MAX, LBIT) - query(rating[i], LBIT)) * query(rating[i] - 1, RBIT);
+            update(rating[i], 1, LBIT);
+        }
+        return ans;
+    }
+};
