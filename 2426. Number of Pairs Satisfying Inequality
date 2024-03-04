@@ -1,3 +1,4 @@
+// Fenwick Tree
 class Solution {
     void update(int i, vector<int> &BIT) {
         while(i < BIT.size()) {
@@ -15,12 +16,54 @@ class Solution {
     }
 public:
     long long numberOfPairs(vector<int>& nums1, vector<int>& nums2, int diff) {
-        vector<int> BIT(100000);
+        vector<int> BIT(60001);
         long long ans = 0;
         for(int i = 0; i < nums1.size(); i++) {
-            ans += query(50000 + nums1[i] - nums2[i] + diff, BIT);
-            update(50000 + nums1[i] - nums2[i], BIT);
+            ans += query(30000 + nums1[i] - nums2[i] + diff, BIT);
+            update(30000 + nums1[i] - nums2[i], BIT);
         }
+        return ans;
+    }
+};
+
+OR
+
+// Merge Sort
+class Solution {
+    void merge(vector<int> &nums, vector<int> &temp, int l, int mid, int h, int &diff, long long &ans) {
+        for(int i = l, j = mid + 1; j <= h; j++) {
+            while(i <= mid && nums[i] <= nums[j] + diff) i++;
+            ans += i - l;
+        }
+        int i = l, j = mid + 1, k = l;
+        while(i <= mid && j <= h) {
+            if(nums[i] <= nums[j]) {
+                temp[k++] = nums[i++];
+            } else {
+                temp[k++] = nums[j++];
+            }
+        }
+        if(i > mid) {
+            while(j <= h) temp[k++] = nums[j++];
+        }
+        if(j > h) {
+            while(i <= mid) temp[k++] = nums[i++];
+        }
+        for(int p = l; p <= h; p++) nums[p] = temp[p];
+    }
+    void mergeSort(vector<int> &nums, vector<int> &temp, int l, int h, int &diff, long long &ans) {
+        if(l >= h) return;
+        int mid = l + (h - l) / 2;
+        mergeSort(nums, temp, l, mid, diff, ans);
+        mergeSort(nums, temp, mid + 1, h, diff, ans);
+        merge(nums, temp, l, mid, h, diff, ans);
+    }
+public:
+    long long numberOfPairs(vector<int>& nums1, vector<int>& nums2, int diff) {
+        int n = nums1.size();
+        long long ans = 0;
+        for(int i = 0; i < n; i++) nums1[i] = nums1[i] - nums2[i];
+        mergeSort(nums1, nums2, 0, n - 1, diff, ans);
         return ans;
     }
 };
