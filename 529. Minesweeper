@@ -1,0 +1,36 @@
+class Solution {
+    void dfs(int r, int c, vector<vector<char>>& board) {
+        if(board[r][c] != 'E') return;
+        int mines = 0;
+        for(int i = -1; i <= 1; i++) {
+            for(int j = -1; j <= 1; j++) {
+                if(!i && !j) continue;
+                int x = r + i, y = c + j; 
+                if(x < 0 || y < 0 || x >= board.size() || y >= board[0].size()) continue;
+                mines += board[x][y] == 'M';
+            }
+        }
+        if(mines > 0) {
+            board[r][c] = '0' + mines;
+            return; 
+        }
+        board[r][c] = 'B';
+        for(int i = -1; i <= 1; i++) {
+            for(int j = -1; j <= 1; j++) {
+                if(!i && !j) continue;
+                int x = r + i, y = c + j; 
+                if(x < 0 || y < 0 || x >= board.size() || y >= board[0].size()) continue;
+                    dfs(x, y, board);
+            }
+        }
+    }
+public:
+    vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
+        if(board[click[0]][click[1]] == 'M') {
+            board[click[0]][click[1]] = 'X'; 
+            return board;
+        } 
+        dfs(click[0], click[1], board);
+        return board;
+    }
+};
