@@ -1,0 +1,35 @@
+class Solution {
+    string MAX = "zzzzzzzzzzzzzzzzzzzzz";
+    void addRemove(unordered_map<string, int> &Map, string &word, int val) {
+        for(int i = 0; i < word.length(); i++) {
+            string s = "";
+            for(int j = i; j < word.length(); j++) {
+                s += word[j];
+                Map[s] += val;
+            }
+        }
+    }
+public:
+    vector<string> shortestSubstrings(vector<string>& arr) {
+        unordered_map<string, int> Map;
+        for(string word: arr) addRemove(Map, word, 1);
+        vector<string> ans;
+        for(string word: arr) {
+            addRemove(Map, word, -1);
+            string small = MAX;
+            for(int i = 0; i < word.length(); i++) {
+                string s = "";
+                for(int j = i; j < word.length(); j++) {
+                    s += word[j];
+                    if(Map[s] == 0) {
+                        if(s.length() < small.length()) small = s;
+                        if(s.length() == small.length()) small = min(s, small);
+                    }
+                }
+            }
+            ans.push_back(small == MAX? "": small);
+            addRemove(Map, word, 1);
+        }
+        return ans;
+    }
+};
