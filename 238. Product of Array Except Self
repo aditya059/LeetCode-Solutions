@@ -39,3 +39,20 @@ public:
         return ans;
     }
 };
+
+OR
+
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int n = nums.size(), prodLeft = 1, prodRight = 1;
+        vector<int> ans(n, 1);
+        for(int i = 0; i < n; i++) {
+            ans[i] *= prodLeft;
+            ans[n - i - 1] *= prodRight;
+            prodLeft *= nums[i];
+            prodRight *= nums[n - i - 1];
+        }
+        return ans;
+    }
+};
