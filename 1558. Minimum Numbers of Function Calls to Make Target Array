@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        int ans = 0, noOfDiv = 0;
+        for(int i = 0; i < nums.size(); i++) {
+            for(int j = nums[i]; j > 0; j /= 2) {
+                ans += j % 2;
+            }
+            if(nums[i]) noOfDiv = max(noOfDiv, (int)log2(nums[i]));
+        }
+        return ans + noOfDiv;
+    }
+};
+
+OR
+
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        int ans = 0, noOfDiv = 1;
+        for(int i = 0; i < nums.size(); i++) {
+            int bits = 0;
+            for(int j = nums[i]; j > 0; j /= 2) {
+                ans += j % 2;
+                bits++;
+            }
+            noOfDiv = max(noOfDiv, bits);
+        }
+        return ans + noOfDiv - 1;
+    }
+};
