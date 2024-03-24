@@ -1,0 +1,22 @@
+class Solution {
+    void solve(int i, vector<vector<int>>& students, vector<vector<int>>& mentors, int score, int &ans, int used) {
+        if(i == students.size()) {
+            ans = max(ans, score);
+            return;
+        }
+        for(int j = 0; j < students.size(); j++) {
+            if(used & (1 << j)) continue;
+            int currScore = 0;
+            for(int k = 0; k < students[i].size(); k++) {
+                currScore += students[i][k] == mentors[j][k];
+            }
+            solve(i + 1, students, mentors, score + currScore, ans, used | (1 << j));
+        }
+    }
+public:
+    int maxCompatibilitySum(vector<vector<int>>& students, vector<vector<int>>& mentors) {
+        int ans = 0, used = 0;
+        solve(0, students, mentors, 0, ans, used);
+        return ans;
+    }
+};
