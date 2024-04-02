@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int sumOfEncryptedInt(vector<int>& nums) {
+        int ans = 0;
+        for(int num: nums) {
+            int maxD = 0, val = 0;
+            for(int i = num; i > 0; i /= 10) {
+                val = val * 10 + 1;
+                maxD = max(maxD, i % 10); 
+            }
+            ans += maxD * val;
+        }
+        return ans;
+    }
+};
