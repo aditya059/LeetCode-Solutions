@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool checkValidString(string s) {
+        int forward = 0, backward = 0, starForw = 0, starBack = 0;
+        for(int i = 0, j = s.length() - 1; i < s.length(); i++, j--) {
+            if(s[i] == '(') forward++;
+            else if(s[i] == ')') forward--;
+            else starForw++;
+            if(s[j] == ')') backward++;
+            else if(s[j] == '(') backward--;
+            else starBack++;
+            if(backward + starBack < 0 || forward + starForw < 0) return false;
+        }
+        return true;
+    }
+};
