@@ -1,0 +1,17 @@
+class Solution {
+public:
+    vector<long long> mostFrequentIDs(vector<int>& nums, vector<int>& freq) {
+        set<pair<long long, int>> Set;
+        unordered_map<int, long long> Map;
+        vector<long long> ans;
+        for(int i = 0; i < nums.size(); i++) {
+            auto iter = Set.find({Map[nums[i]], nums[i]});
+            if(iter != Set.end())
+                Set.erase(iter);
+            Map[nums[i]] += freq[i];
+            Set.insert({Map[nums[i]], nums[i]});
+            ans.push_back(Set.rbegin() -> first);
+        }
+        return ans;
+    }
+};
