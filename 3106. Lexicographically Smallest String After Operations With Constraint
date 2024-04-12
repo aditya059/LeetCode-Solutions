@@ -1,0 +1,16 @@
+class Solution {
+public:
+    string getSmallestString(string s, int k) {
+        for(int i = 0; i < s.length(); i++) {
+            for(char ch = 'a'; ch <= s[i]; ch++) {
+                int moves = min(s[i] - ch, 26 - s[i] + ch);
+                if(moves <= k) {
+                    s[i] = ch;
+                    k -= moves;
+                    break;
+                }
+            }
+        }
+        return s;
+    }
+};
