@@ -1,0 +1,82 @@
+class Solution {
+    int compute(vector<int> &arr, int n) {
+        vector<int> leftMinIndex(n);
+        vector<int> rightMinIndex(n);
+        stack<int> Stack;
+        for(int i = 0; i < n; i++) {
+            while(!Stack.empty() && arr[i] <= arr[Stack.top()]) {
+                Stack.pop();
+            }
+            leftMinIndex[i] = Stack.empty()? -1: Stack.top();
+            Stack.push(i);
+        }
+        while(!Stack.empty()) Stack.pop();
+        for(int i = n - 1; i >= 0; i--) {
+            while(!Stack.empty() && arr[i] <= arr[Stack.top()]) {
+                Stack.pop();
+            }
+            rightMinIndex[i] = Stack.empty()? n: Stack.top();
+            Stack.push(i);
+        }
+        int ans = 0;
+        for(int i = 0; i < n; i++) {
+            ans = max(ans, arr[i] * (rightMinIndex[i] - leftMinIndex[i] - 1));
+        }
+        return ans;
+    }
+public:
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        int m = matrix.size();
+        int n = matrix[0].size();
+        vector<int> DP(n);
+        int maxArea = 0;
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(matrix[i][j] == '1')
+                    DP[j] += (matrix[i][j] - '0');
+                else
+                    DP[j] = 0;
+            }
+            maxArea = max(maxArea, compute(DP, n));
+        }
+        return maxArea;
+    }
+};
+
+
+OR
+
+
+class Solution {
+    int compute(vector<int> &arr, int n) {
+        int ans = 0;
+        stack<int> Stack;
+        for(int i = 0; i <= n; i++) {
+            while(!Stack.empty() && (i == n || arr[i] <= arr[Stack.top()])) {
+                int h = arr[Stack.top()];
+                Stack.pop();
+                int w = Stack.empty()? i: i - Stack.top() - 1;
+                ans = max(ans, h * w);
+            }
+            Stack.push(i);
+        }
+        return ans;
+    }
+public:
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        int m = matrix.size();
+        int n = matrix[0].size();
+        vector<int> DP(n);
+        int maxArea = 0;
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(matrix[i][j] == '1')
+                    DP[j] += (matrix[i][j] - '0');
+                else
+                    DP[j] = 0;
+            }
+            maxArea = max(maxArea, compute(DP, n));
+        }
+        return maxArea;
+    }
+};
