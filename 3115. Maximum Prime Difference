@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int maximumPrimeDifference(vector<int>& nums) {
+        unordered_set<int> prime{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
+        int first = INT_MAX, last = INT_MAX;
+        for(int i = 0; i < nums.size(); i++) {
+            if(prime.find(nums[i]) != prime.end()) {
+                first = min(first, i);
+                last = i;
+            }
+        }
+        return last - first;
+    }
+};
