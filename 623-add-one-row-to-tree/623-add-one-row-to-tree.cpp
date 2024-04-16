@@ -12,7 +12,7 @@
 class Solution {
 public:
     void solve(TreeNode* root, int val, int depth) {
-        if(!root) return;
+        if(!root || depth < 2) return;
         if(depth == 2) {
             TreeNode *l = new TreeNode(val);
             TreeNode *r = new TreeNode(val);
@@ -31,8 +31,7 @@ public:
             ptr -> left = root;
             return ptr;
         }
-        else
-            solve(root, val, depth);
+        solve(root, val, depth);
         return root;
     }
 };
