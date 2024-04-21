@@ -1,0 +1,51 @@
+class Solution {
+    int findParent(int u, vector<int> &parent) {
+        return parent[u] == u? u: findParent(parent[u], parent);
+    }
+    void unionSet(int u, int v, vector<int> &parent) {
+        int parU = findParent(u, parent);
+        int parV = findParent(v, parent);
+        if(parU == parV) return;
+        if(parU < parV) parent[parV] = parU;
+        else parent[parU] = parV;
+    }
+public:
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        vector<int> parent(n);
+        iota(parent.begin(), parent.end(), 0);
+        for(int i = 0; i < edges.size(); i++) {
+            unionSet(edges[i][0], edges[i][1], parent);
+            if(findParent(source, parent) == findParent(destination, parent)) return true;
+        }
+        return findParent(source, parent) == findParent(destination, parent);
+    }
+};
+
+OR
+
+class Solution {
+public:
+    void dfs(int curr, int destination, vector<bool> &visited, vector<int> adjList[], bool &ans) {
+        if(ans || visited[curr]) return;
+        visited[curr] = true;
+        if(curr == destination) {
+            ans = true;
+            return;
+        }
+        for(int next: adjList[curr]) {
+            dfs(next, destination, visited, adjList, ans);
+        }
+    }
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        vector<int> adjList[n];
+        vector<bool> visited(n);
+        for(vector<int> edge: edges) {
+            adjList[edge[0]].push_back(edge[1]);
+            adjList[edge[1]].push_back(edge[0]);
+        }
+        
+        bool ans = false;
+        dfs(source, destination, visited, adjList, ans);
+        return ans;
+    }
+};
