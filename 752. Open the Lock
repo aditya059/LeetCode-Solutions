@@ -1,34 +1,32 @@
 class Solution {
 public:
     int openLock(vector<string>& deadends, string target) {
-        unordered_map<string, bool> visited;
-        for(string s: deadends) {
-            if("0000" == s) return -1;
-            visited[s] = true;
-        }
+        unordered_set<string> visited(deadends.begin(), deadends.end());
+        if(visited.find("0000") != visited.end()) return -1;
+        visited.insert("0000");
+        int ans = 0;
         queue<string> Queue;
         Queue.push("0000");
-        visited["0000"] = true;
-        int ans = 0;
         while(!Queue.empty()) {
-            int n = Queue.size();
-            for(int i = 0; i < n; i++) {
+            int sz = Queue.size();
+            for(int i = 0; i < sz; i++) {
                 string curr = Queue.front();
                 Queue.pop();
                 if(curr == target) return ans;
                 for(int j = 0; j < 4; j++) {
-                    string next1 = curr;
-                    string next2 = curr;
-                    next1[j] = '0' + (next1[j] - '0' + 1) % 10;
-                    next2[j] = '0' + (10 + next2[j] - '0' - 1) % 10;
-                    if(!visited[next1]) {
-                        Queue.push(next1);
-                        visited[next1] = true;
+                    char ch = curr[j];
+                    curr[j] = '0' + (curr[j] + 1 - '0') % 10;
+                    if(visited.find(curr) == visited.end()) {
+                        visited.insert(curr);
+                        Queue.push(curr);
                     }
-                    if(!visited[next2]) {
-                        Queue.push(next2);
-                        visited[next2] = true;
-                    }   
+                    curr[j] = ch;
+                    curr[j] = '0' + (curr[j] - '0' + 9) % 10;
+                    if(visited.find(curr) == visited.end()) {
+                        visited.insert(curr);
+                        Queue.push(curr);
+                    }
+                    curr[j] = ch; 
                 }
             }
             ans++;
