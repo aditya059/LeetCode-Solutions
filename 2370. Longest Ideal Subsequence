@@ -15,3 +15,22 @@ public:
         return ans;
     }
 };
+
+OR
+
+class Solution {
+public:
+    int longestIdealString(string s, int k) {
+        int ans = 0, DP[26] = {0};
+        for(int i = 0; i < s.length(); i++) {
+            int ch = s[i] - 'a', maxLen = 0;
+            for(int j = 0; j < 26; j++) {
+                if(abs(ch - j) <= k)
+                    maxLen = max(maxLen, DP[j]);
+            }
+            DP[ch] = maxLen + 1;
+            ans = max(ans, DP[ch]);
+        }
+        return ans;
+    }
+};
