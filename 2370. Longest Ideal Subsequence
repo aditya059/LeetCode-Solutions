@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int longestIdealString(string s, int k) {
+        int ans = 0, DP[26] = {0};
+        for(int i = 0; i < s.length(); i++) {
+            int ch = s[i] - 'a', maxLen = 0;
+            for(int j = -k; j <= k; j++) {
+                if(ch + j >= 0 && ch + j < 26) {
+                    maxLen = max(maxLen, DP[ch + j]);
+                }
+            }
+            DP[ch] = maxLen + 1;
+            ans = max(ans, DP[ch]);
+        }
+        return ans;
+    }
+};
