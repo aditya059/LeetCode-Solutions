@@ -1,0 +1,13 @@
+class Solution {
+    int gcd(int m, int n, int &ans) {
+        if(n == 0) return m;
+        ans += m / n;
+        return gcd(n, m % n, ans);
+    }
+public:
+    int countOperations(int num1, int num2) {
+        int ans = 0;
+        gcd(num1, num2, ans);
+        return ans;
+    }
+};
