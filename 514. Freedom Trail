@@ -18,3 +18,24 @@ public:
         return solve(0, 0, ring, key, memo);
     }
 };
+
+OR
+
+class Solution {
+public:
+    int findRotateSteps(string ring, string key) {
+        vector<vector<int>> DP(ring.size(), vector<int>(key.size() + 1, INT_MAX / 100));
+        for(int ringInd = 0; ringInd < ring.size(); ringInd++) DP[ringInd][key.size()] = 0;
+        for(int keyInd = key.size() - 1; keyInd >= 0; keyInd--) {
+            for(int ringInd = 0; ringInd < ring.size(); ringInd++) {
+                for(int i = 0; i < ring.size(); i++) {
+                    if(ring[i] == key[keyInd]) {
+                        int dist = abs(i - ringInd);
+                        DP[ringInd][keyInd] = min(DP[ringInd][keyInd], 1 + min(dist, (int)ring.size() - dist) + DP[i][keyInd + 1]);
+                    }
+                }
+            }
+        }
+        return DP[0][0];
+    }
+};
