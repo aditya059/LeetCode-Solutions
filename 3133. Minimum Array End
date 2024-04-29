@@ -1,0 +1,13 @@
+class Solution {
+public:
+    long long minEnd(int n, int x) {
+        long long ans = x;
+        n--;
+        for(int i = 0; n > 0; i++) {
+            if((ans & (1L << i))) continue;
+            ans = ans | ((n & 1L) << i);
+            n >>= 1;
+        }
+        return ans; 
+    }
+};
