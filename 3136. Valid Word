@@ -1,0 +1,19 @@
+class Solution {
+    bool isVowel(char letter) {
+        letter = tolower(letter);
+        return letter == 'a' || letter == 'e' || letter == 'i' || letter == 'o' || letter == 'u';
+    }
+public:
+    bool isValid(string word) {
+        if(word.size() < 3) return false;
+        int vowel = 0, consonant = 0;
+        for(char letter: word) {
+            if(letter == '@' || letter == '#' || letter == '
+```) return false;
+            if(letter >= '0' && letter <= '9') continue;
+            if(isVowel(letter)) vowel++;
+            else consonant++;
+        }
+        return vowel && consonant;
+    }
+};
