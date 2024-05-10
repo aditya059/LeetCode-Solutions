@@ -1,0 +1,17 @@
+class Solution {
+public:
+    vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k) {
+        priority_queue<pair<double, pair<int, int>>> PQ;
+        int arrLen = arr.size();
+        for(int i = 0; i < arrLen; i++) {
+            PQ.push({-(double) arr[i] / arr[arrLen - 1], {i, arrLen - 1}});
+        }
+        while(k > 1) {
+            pair<int, int> curr = PQ.top().second;
+            PQ.pop();
+            PQ.push({-(double) arr[curr.first] / arr[curr.second - 1], {curr.first, curr.second - 1}});
+            k--;
+        }
+        return {arr[PQ.top().second.first], arr[PQ.top().second.second]};
+    }
+};
