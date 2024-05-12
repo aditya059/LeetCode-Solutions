@@ -1,0 +1,24 @@
+class Solution {
+    bool check(int mid, int k, int m, int n) {
+        int col = n;
+        for(int row = 1; row <= m; row++) {
+            while(col > 0 && row * col > mid) col--;
+            k -= col;
+        } 
+        return k <= 0;
+    }
+public:
+    int findKthNumber(int m, int n, int k) {
+        int low = 1, high = m * n, ans = m * n;
+        while(low <= high) {
+            int mid = low + (high - low) / 2;
+            if(check(mid, k, m, n)) {
+                ans = min(ans, mid);
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return ans;
+    }
+};
