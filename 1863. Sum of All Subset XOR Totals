@@ -14,3 +14,22 @@ public:
         return ans;
     }
 };
+
+OR
+
+class Solution {
+    void solve(int i, vector<int>& nums, int &ans, int xorVal) {
+        if(i == nums.size()) {
+            ans += xorVal;
+            return;
+        }
+        solve(i + 1, nums, ans, xorVal);
+        solve(i + 1, nums, ans, xorVal ^ nums[i]);
+    }
+public:
+    int subsetXORSum(vector<int>& nums) {
+        int ans = 0;
+        solve(0, nums, ans, 0);
+        return ans;
+    }
+};
