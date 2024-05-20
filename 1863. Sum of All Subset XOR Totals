@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int subsetXORSum(vector<int>& nums) {
+        int n = 1 << nums.size(), ans = 0;
+        for(int i = 0; i < n; i++) {
+            int xorVal = 0;
+            for(int j = 0; j < nums.size(); j++) {
+                if(i & (1 << j)) {
+                    xorVal = xorVal ^ nums[j];
+                }
+            }
+            ans += xorVal;
+        }
+        return ans;
+    }
+};
