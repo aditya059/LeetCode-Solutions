@@ -1,0 +1,17 @@
+class Solution {
+public:
+    long long sumDigitDifferences(vector<int>& nums) {
+        long long ans = 0;
+        for(int i = 1; i < 1e9; i *= 10) {
+            int freq[10] = {0}, count = 0;
+            for(int j = 0; j < nums.size(); j++) {
+                freq[(nums[j] / i) % 10]++;
+                count++;
+            }
+            for(int j = 0; j < 10; j++) {
+                ans += (count - freq[j]) * 1L * freq[j];
+            }
+        }
+        return ans >> 1;
+    }
+};
