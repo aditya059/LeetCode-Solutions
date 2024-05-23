@@ -1,0 +1,21 @@
+class Solution {
+    void dfs(int curr, vector<int>& nums, int k, unordered_map<int, int> &Map, int &ans) {
+        if(curr == nums.size()) {
+            ans++;
+            return;
+        }
+        if(!Map[nums[curr] + k] && !Map[nums[curr] - k]) {
+            Map[nums[curr]]++;
+            dfs(curr + 1, nums, k, Map, ans);
+            Map[nums[curr]]--;
+        }
+        dfs(curr + 1, nums, k, Map, ans);
+    }
+public:
+    int beautifulSubsets(vector<int>& nums, int k) {
+        unordered_map<int, int> Map;
+        int ans = 0;
+        dfs(0, nums, k, Map, ans);
+        return ans - 1;
+    }
+};
