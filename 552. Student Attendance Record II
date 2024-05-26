@@ -1,0 +1,14 @@
+class Solution {
+    int MOD = 1e9 + 7;
+    int solve(int n, int absent, int consecutiveLate, vector<vector<vector<int>>> &memo) {
+        if(absent > 1 || consecutiveLate >= 3) return 0;
+        if(n == 0) return 1;
+        if(memo[n][absent][consecutiveLate] != -1) return memo[n][absent][consecutiveLate];
+        return memo[n][absent][consecutiveLate] = ((solve(n - 1, absent, 0, memo) + solve(n - 1, absent, consecutiveLate + 1, memo)) % MOD + solve(n - 1, absent + 1, 0, memo)) % MOD;
+    }
+public:
+    int checkRecord(int n) {
+        vector<vector<vector<int>>> memo(n + 1, vector<vector<int>>(2, vector<int>(3, -1)));
+        return solve(n, 0, 0, memo);
+    }
+};
