@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int countTriplets(vector<int>& arr) {
+        unordered_map<int, vector<int>> xorValPos;
+        int ans = 0, xorVal = 0;
+        xorValPos[0].push_back(-1);
+        for(int i = 0; i < arr.size(); i++) {
+            xorVal = xorVal xor arr[i];
+            for(int pos: xorValPos[xorVal]) {
+                ans += i - pos - 1;
+            }
+            xorValPos[xorVal].push_back(i);
+        }
+        return ans;
+    }
+};
