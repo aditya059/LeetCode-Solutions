@@ -23,3 +23,25 @@ public:
         return true;
     }
 };
+
+OR
+
+class Solution {
+public:
+    bool isNStraightHand(vector<int>& hand, int groupSize) {
+        map<int, int> Map;
+        for(int i = 0; i < hand.size(); i++) {
+            Map[hand[i]]++;
+        }
+        for(auto &[num, freq]: Map) {
+            if(freq > 0) {
+                int val = freq;
+                for(int first = num; first < num + groupSize; first++) {
+                    Map[first] -= val;
+                    if(Map[first] < 0) return false;
+                }
+            }
+        }
+        return true;
+    }
+};
