@@ -1,0 +1,37 @@
+class Solution {
+public:
+    string clearDigits(string s) {
+        stack<char> Stack;
+        for(int i = 0; i < s.length(); i++) {
+            if(s[i] >= '0' && s[i] <= '9') {
+                Stack.pop();
+            } else {
+                Stack.push(s[i]);
+            }
+        }
+        string ans = "";
+        while(!Stack.empty()) {
+            ans += Stack.top();
+            Stack.pop();
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
+
+OR
+
+class Solution {
+public:
+    string clearDigits(string s) {
+        int top = -1;
+        for(int i = 0; i < s.length(); i++) {
+            if(s[i] >= '0' && s[i] <= '9') {
+                top--;
+            } else {
+                s[++top] = s[i];
+            }
+        }
+        return s.substr(0, top + 1);
+    }
+};
