@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int countCompleteDayPairs(vector<int>& hours) {
+        int Map[24] = {0};
+        int currModVal = 0, ans = 0;
+        for(int i = 0; i < hours.size(); i++) {
+            currModVal = hours[i] % 24;
+            ans += Map[(24 - currModVal) % 24];
+            Map[currModVal]++;
+        }
+        return ans;
+    }
+};
