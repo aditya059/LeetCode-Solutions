@@ -15,3 +15,25 @@ public:
         return DP[(--Map.end()) -> first];
     }
 };
+
+OR
+
+class Solution {
+public:
+    long long maximumTotalDamage(vector<int>& power) {
+        sort(power.begin(), power.end());
+        int n = power.size(), j = 0;
+        long long ans = 0, maxDP = 0;
+        vector<long long> DP(n + 1);
+        for(int i = 0; i < n; i++) {
+            if(power[i] == power[i > 0? i - 1: 0]) DP[i + 1] = DP[i] + power[i];
+            else {
+                while(power[j] < power[i] - 2)
+                    maxDP = max(maxDP, DP[++j]);
+                DP[i + 1] = maxDP + power[i];
+            } 
+            ans = max(ans, DP[i + 1]);
+        }
+        return ans;
+    }
+};
