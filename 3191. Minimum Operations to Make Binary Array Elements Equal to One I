@@ -1,0 +1,54 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        int ans = 0, n = nums.size(), flipsPending = 0;
+        vector<bool> flipped(n);
+        for(int i = 0; i < n; i++) {
+            if(i >= 3) flipsPending -= flipped[i - 3];
+            if(nums[i] == flipsPending % 2) {
+                if(i + 3 > n) return -1;
+                flipped[i] = true;
+                flipsPending++;
+                ans++;
+            } 
+        }
+        return ans;
+    }
+};
+
+OR
+
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        int ans = 0, n = nums.size(), flipsPending = 0;
+        for(int i = 0; i < n; i++) {
+            if(i >= 3) flipsPending -= (nums[i - 3] == 2);
+            if(nums[i] == flipsPending % 2) {
+                if(i + 3 > n) return -1;
+                nums[i] = 2;
+                flipsPending++;
+                ans++;
+            } 
+        }
+        return ans;
+    }
+};
+
+OR
+
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        int ans = 0, n = nums.size();
+        for(int i = 0; i < n; i++) {
+            if(!nums[i]) {
+                if(i + 3 > n) return -1;
+                nums[i + 1] = !nums[i + 1];
+                nums[i + 2] = !nums[i + 2];
+                ans++;
+            } 
+        }
+        return ans;
+    }
+};
