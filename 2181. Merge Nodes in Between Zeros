@@ -1,0 +1,89 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeNodes(ListNode* head) {
+        int sum = 0;
+        ListNode *q = head;
+        for(ListNode* ptr = head -> next; ptr != nullptr; ptr = ptr -> next) {
+            if(ptr -> val) {
+                sum += ptr -> val;
+            } else {
+                q -> next = ptr;
+                ptr -> val = sum;
+                q = q -> next;
+                sum = 0;
+            }
+        }
+        return head -> next;
+    }
+};
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeNodes(ListNode* head) {
+        ListNode* ansHead = new ListNode(0);
+        ListNode* ansEnd = ansHead;
+        int sum = 0;
+        head = head -> next;
+        while(head != nullptr) {
+            if(head -> val == 0) {
+                ansEnd -> next = new ListNode(sum);
+                ansEnd = ansEnd -> next; 
+                sum = 0;
+            } else {
+                sum += head -> val;
+            }
+            head = head -> next;
+        }
+        return ansHead -> next;
+    }
+};
+
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func mergeNodes(head *ListNode) *ListNode {
+    ansHead := &ListNode {
+        Val: 0,
+        Next: nil,
+    }
+    ansEnd := ansHead
+    var sum int = 0
+    for head != nil {
+        if head.Val == 0 {
+            ansEnd.Next = &ListNode {
+                Val: sum,
+                Next: ansEnd.Next,
+            }
+            ansEnd = ansEnd.Next
+            sum = 0
+        } else {
+            sum += head.Val
+        }
+        head = head.Next
+    }
+    return ansHead.Next.Next
+}
