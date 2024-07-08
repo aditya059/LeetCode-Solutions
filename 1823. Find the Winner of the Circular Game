@@ -1,0 +1,51 @@
+// C++
+class Solution {
+public:
+    int findTheWinner(int n, int k) {
+        queue<int> Queue;
+        for(int i = 1; i <= n; i++) {
+            Queue.push(i);
+        }
+        while(Queue.size() > 1) {
+            int t = k;
+            while(--t) {
+                Queue.push(Queue.front());
+                Queue.pop();
+            }
+            Queue.pop();
+        }
+        return Queue.front();
+    }
+};
+
+// Golang
+func findTheWinner(n int, k int) int {
+    Queue := []int{}
+    for i := 1; i <= n; i++ {
+        Queue = append(Queue, i)
+    }
+    for len(Queue) > 1 {
+        t := k - 1
+        for t > 0 {
+            first := Queue[0]
+            Queue = Queue[1:]
+            Queue = append(Queue, first)
+            t--
+        }
+        Queue = Queue[1:]
+    }
+    return Queue[0]
+}
+
+OR
+
+class Solution {
+    int solve(int n, int k) {
+        if(n == 1) return 0;
+        return (solve(n - 1, k) + k) % n;
+    }
+public:
+    int findTheWinner(int n, int k) {
+        return solve(n, k) + 1;
+    }
+};
