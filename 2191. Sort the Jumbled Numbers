@@ -31,3 +31,29 @@ public:
         return ans;
     }
 };
+
+OR
+
+class Solution {
+public:
+    vector<int> sortJumbled(vector<int>& mapping, vector<int>& nums) {
+        int n = nums.size();
+        vector<int> newNums(n);
+        for(int i = 0; i < n; i++) {
+            int newNum = mapping[nums[i] % 10];
+            for(int j = 10; j < nums[i]; j *= 10) {
+                newNum = mapping[(nums[i] / j) % 10] * j + newNum;
+            }
+            newNums[i] = newNum;
+        }
+        vector<int> index(n);
+        iota(index.begin(), index.end(), 0);
+        sort(index.begin(), index.end(), [&](int &i, int &j) {
+            return newNums[i] < newNums[j];
+        });
+        for(int i = 0; i < n; i++) {
+            newNums[i] = nums[index[i]];
+        }
+        return newNums;
+    }
+};
