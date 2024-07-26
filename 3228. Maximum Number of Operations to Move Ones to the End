@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int maxOperations(string s) {
+        int ans = 0, ones = s[0] == '1';
+        for(int i = 1; i < s.length(); i++) {
+            ones += s[i] == '1';
+            if(s[i - 1] == '1' && s[i] == '0') ans += ones;
+        }
+        return ans;
+    }
+};
