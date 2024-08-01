@@ -1,0 +1,27 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* modifiedList(vector<int>& nums, ListNode* head) {
+        unordered_set<int> Set(nums.begin(), nums.end());
+        ListNode *ptr, *preHead = new ListNode(0);
+        ptr = preHead;
+        while(head) {
+            while(head && Set.find(head -> val) != Set.end()) {
+                head = head -> next;
+            }
+            ptr -> next = head;
+            ptr = ptr -> next;
+            if(head) head = head -> next;
+        }
+        return preHead -> next;
+    }
+};
