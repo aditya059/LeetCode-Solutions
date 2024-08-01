@@ -1,0 +1,19 @@
+class Solution {
+    int solve(int A, int B, int C, int D, vector<vector<vector<vector<int>>>> &memo, vector<int>& horizontalCut, vector<int>& verticalCut) {
+        if(A + 1 == C && B + 1 == D) return 0;
+        if(memo[A][B][C][D] != -1) return memo[A][B][C][D];
+        int cost = INT_MAX;
+        for(int v = B + 1; v < D; v++) {
+            cost = min(cost, solve(A, B, C, v, memo, horizontalCut, verticalCut) + solve(A, v, C, D, memo, horizontalCut, verticalCut) + verticalCut[v - 1]);
+        }
+        for(int h = A + 1; h < C; h++) {
+            cost = min(cost, solve(A, B, h, D, memo, horizontalCut, verticalCut) + solve(h, B, C, D, memo, horizontalCut, verticalCut) + horizontalCut[h - 1]);
+        }
+        return memo[A][B][C][D] = cost;
+    }
+public:
+    int minimumCost(int m, int n, vector<int>& horizontalCut, vector<int>& verticalCut) {
+        vector<vector<vector<vector<int>>>> memo(m + 1, vector<vector<vector<int>>>(n + 1, vector<vector<int>>(m + 1, vector<int>(n + 1, -1))));
+        return solve(0, 0, m, n, memo, horizontalCut, verticalCut);
+    }
+};
