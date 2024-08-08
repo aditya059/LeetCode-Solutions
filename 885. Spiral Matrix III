@@ -1,0 +1,35 @@
+class Solution {
+    bool isValid(int row, int col, int rows, int cols) {
+        return row >= 0 && col >= 0 && row < rows && col < cols;
+    }
+public:
+    vector<vector<int>> spiralMatrixIII(int rows, int cols, int rStart, int cStart) {
+        int total = rows * cols, incr = 1, row = rStart, col = cStart;
+        vector<vector<int>> ans;
+        while(ans.size() < total) {
+            int colR = col + incr;
+            while(col < colR) {
+                if(isValid(row, col, rows, cols)) ans.push_back({row, col});
+                col++;
+            }
+            int rowD = row + incr;
+            while(row < rowD) {
+                if(isValid(row, col, rows, cols)) ans.push_back({row, col});
+                row++;
+            }
+            incr++;
+            int colL = col - incr;
+            while(col > colL) {
+                if(isValid(row, col, rows, cols)) ans.push_back({row, col});
+                col--;
+            }
+            int rowU = row - incr;
+            while(row > rowU) {
+                if(isValid(row, col, rows, cols)) ans.push_back({row, col});
+                row--;
+            }
+            incr++;
+        }
+        return ans;
+    }
+};
