@@ -1,0 +1,25 @@
+class Solution {
+public:
+    void compute(vector<int> &A, int B, vector<vector<int>> &ans, vector<int> &res, int start) {
+        if(B < 0)
+            return;
+        if(B == 0) {
+            ans.push_back(res);
+            return;
+        }
+        for(int i = start; i < A.size(); i++) {
+            if(i == start || A[i] != A[i - 1]) {
+                res.push_back(A[i]);
+                compute(A, B - A[i], ans, res, i + 1);
+                res.pop_back();
+            }
+        }
+    }
+    vector<vector<int>> combinationSum2(vector<int>& A, int B) {
+        vector<vector<int>> ans;
+        vector<int> res;
+        sort(A.begin(), A.end());
+        compute(A, B, ans, res, 0);
+        return ans;
+    }
+};
