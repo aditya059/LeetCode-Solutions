@@ -17,3 +17,19 @@ public:
         return ans;
     }
 };
+
+OR
+
+class Solution {
+public:
+    int maxDistance(vector<vector<int>>& arrays) {
+        int ans = 0, large = arrays[0].back(), small = arrays[0][0];
+        for(int i = 1; i < arrays.size(); i++) {
+            ans = max(ans, arrays[i].back() - small);
+            ans = max(ans, large - arrays[i][0]);
+            large = max(large, arrays[i].back());
+            small = min(small, arrays[i][0]);
+        }
+        return ans;
+    }
+};
