@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int maxDistance(vector<vector<int>>& arrays) {
+        int ans = 0, largeInd = 0, smallInd = 0;
+        for(int i = 1; i < arrays.size(); i++) {
+            if(arrays[i].back() > arrays[largeInd].back()) 
+                largeInd = i;
+            if(arrays[i].back() > arrays[smallInd].back()) 
+                smallInd = i;
+        }
+        for(int i = 0; i < arrays.size(); i++) {
+            if(i != largeInd)
+                ans = max(ans, arrays[largeInd].back() - arrays[i][0]);
+            if(i != smallInd)
+                ans = max(ans, arrays[i].back() - arrays[smallInd][0]);
+        }
+        return ans;
+    }
+};
