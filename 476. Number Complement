@@ -6,3 +6,21 @@ public:
         return b - num;
     }
 };
+
+OR
+
+class Solution {
+public:
+    int findComplement(int num) {
+        return ((1L << ((int)log2(num) + 1)) - 1) - num;
+    }
+};
+
+OR
+
+class Solution {
+public:
+    int findComplement(int num) {
+        return int(pow(2, int(log2(num) + 1)) - 1) - num;
+    }
+};
