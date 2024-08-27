@@ -30,3 +30,31 @@ public:
         return probability[end] == INT_MIN? 0: probability[end];
     }
 };
+
+OR
+
+class Solution {
+public:
+    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start_node, int end_node) {
+        vector<pair<int, double>> adjList[n];
+        for(int i = 0; i < edges.size(); i++) {
+            adjList[edges[i][0]].push_back({edges[i][1], succProb[i]});
+            adjList[edges[i][1]].push_back({edges[i][0], succProb[i]});
+        }
+        vector<double> dist(n, INT_MIN);
+        queue<int> Queue;
+        Queue.push(start_node);
+        dist[start_node] = 1;
+        while(!Queue.empty()) {
+            int u = Queue.front();
+            Queue.pop();
+            for(auto [v, w]: adjList[u]) {
+                if(dist[u] * w > dist[v]) {
+                    Queue.push(v);
+                    dist[v] = dist[u] * w;
+                }
+            }
+        }
+        return dist[end_node] == INT_MIN? 0: dist[end_node];
+    }
+};
