@@ -1,13 +1,13 @@
 class Solution {
 public:
     int chalkReplacer(vector<int>& chalk, int k) {
-        vector<long> prefix(chalk.size(), 0);
-        prefix[0] = chalk[0];
-        for(int i = 1; i < chalk.size(); i++) {
-            prefix[i] = prefix[i - 1] + chalk[i];
+        int n = chalk.size();
+        vector<long long> prefixSum(n);
+        prefixSum[0] = chalk[0];
+        for(int i = 1; i < n; i++) {
+            prefixSum[i] = prefixSum[i - 1] + chalk[i];
         }
-        k %= prefix[prefix.size() - 1];
-        k++;
-        return lower_bound(prefix.begin(), prefix.end(), k) - prefix.begin();
+        k %= prefixSum.back();
+        return upper_bound(prefixSum.begin(), prefixSum.end(), k) - prefixSum.begin();
     }
 };
