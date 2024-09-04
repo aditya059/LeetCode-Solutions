@@ -1,0 +1,30 @@
+class Solution {
+    void move(int &X, int &Y, int deltaX, int deltaY, int k, int &ans, set<pair<int, int>> &obstacles) {
+        for(int i = 0; i < k; i++) {
+            if(obstacles.find({X + deltaX, Y + deltaY}) != obstacles.end()) return;
+            X += deltaX;
+            Y += deltaY;
+            ans = max(ans, X * X + Y * Y);
+        }
+    }
+public:
+    int robotSim(vector<int>& commands, vector<vector<int>>& obstacles) {
+        set<pair<int, int>> obstaclesSet;
+        for(int i = 0; i < obstacles.size(); i++) {
+            obstaclesSet.insert({obstacles[i][0], obstacles[i][1]});
+        }
+        int X = 0, Y = 0, dir = 0, ans = 0;
+        vector<char> dirs = {'N', 'E', 'S', 'W'};
+        for(int i = 0; i < commands.size(); i++) {
+            if(commands[i] == -2) dir = (dir + 3) % 4;
+            else if(commands[i] == -1) dir = (dir + 1) % 4;
+            else {
+                if(dirs[dir] == 'N') move(X, Y, 0, 1, commands[i], ans, obstaclesSet);
+                else if(dirs[dir] == 'E') move(X, Y, 1, 0, commands[i], ans, obstaclesSet);
+                else if(dirs[dir] == 'S') move(X, Y, 0, -1, commands[i], ans, obstaclesSet);
+                else move(X, Y, -1, 0, commands[i], ans, obstaclesSet);
+            } 
+        }
+        return ans;
+    }
+};
