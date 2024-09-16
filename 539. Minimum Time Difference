@@ -1,0 +1,15 @@
+class Solution {
+    int toMinutes(string &time) {
+        return stoi(time.substr(0, 2)) * 60 + stoi(time.substr(3));
+    }
+public:
+    int findMinDifference(vector<string>& timePoints) {
+        sort(timePoints.begin(), timePoints.end());
+        int n = timePoints.size();
+        int ans = 1440 - toMinutes(timePoints[n - 1]) + toMinutes(timePoints[0]);
+        for(int i = 1; i < n; i++) {
+            ans = min(ans, toMinutes(timePoints[i]) - toMinutes(timePoints[i - 1]));
+        }
+        return ans;
+    }
+};
