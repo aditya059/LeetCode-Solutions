@@ -13,3 +13,29 @@ public:
         return ans;
     }
 };
+
+OR
+
+class Solution {
+    int toMinutes(string &time) {
+        return stoi(time.substr(0, 2)) * 60 + stoi(time.substr(3));
+    }
+public:
+    int findMinDifference(vector<string>& timePoints) {
+        int n = timePoints.size(), first = INT_MAX;
+        vector<int> time(1440);
+        for(int i = 0; i < n; i++) {
+            int timeMin = toMinutes(timePoints[i]);
+            time[timeMin]++;
+            if(time[timeMin] > 1) return 0;
+            first = min(first, timeMin);
+        }
+        int ans = INT_MAX, prev = first;
+        for(int i = first + 1; i < 1440; i++) {
+            if(!time[i]) continue;
+            ans = min(ans, i - prev);
+            prev = i;
+        }
+        return min(ans, 1440 - prev + first);
+    }
+};
