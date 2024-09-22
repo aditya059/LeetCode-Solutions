@@ -1,0 +1,22 @@
+class Solution {
+    int countSteps(long pref1, long pref2, int n) {
+        if(pref1 > n) return 0;
+        return pref2 - pref1 + countSteps(pref1 * 10, min(n + 1L, pref2 * 10), n);
+    }
+public:
+    int findKthNumber(int n, int k) {
+        int curr = 1;
+        k--;
+        while(k > 0) {
+            int steps = countSteps(curr, curr + 1, n);
+            if(k >= steps) {
+                curr++;
+                k -= steps;
+            } else {
+                curr *= 10;
+                k--;
+            }
+        }
+        return curr;
+    }
+};
