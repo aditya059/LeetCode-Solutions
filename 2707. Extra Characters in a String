@@ -18,6 +18,25 @@ public:
     }
 };
 
+OR
+
+class Solution {
+public:
+    int minExtraChar(string s, vector<string>& dictionary) {
+        int n = s.length();
+        vector<int> DP(n + 1);
+        for(int i = n - 1; i >= 0; i--) {
+            DP[i] = DP[i + 1] + 1;
+            for(int j = 0; j < dictionary.size(); j++) {
+                int len = dictionary[j].size();
+                if(i + len <= n && dictionary[j] == s.substr(i, len))
+                    DP[i] = min(DP[i], DP[i + len]);
+            }
+        }
+        return DP[0];
+    }
+};
+
 
 // Golang
 func minExtraChar(s string, dictionary []string) int {
