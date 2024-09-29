@@ -1,0 +1,53 @@
+class AllOne {
+    map<string, pair<int, list<string>::iterator>> wordToCountIter;
+    map<int, list<string>> freqToWordLists;
+public:
+    AllOne() {
+        
+    }
+    
+    void inc(string key) {
+        int freq = wordToCountIter[key].first;
+        auto iter = wordToCountIter[key].second;
+        if(freq > 0) {
+            freqToWordLists[freq].erase(iter);
+            if(freqToWordLists[freq].empty()) freqToWordLists.erase(freq);
+        }
+        freqToWordLists[freq + 1].push_back(key);
+        wordToCountIter[key] = {freq + 1, --freqToWordLists[freq + 1].end()};
+    }
+    
+    void dec(string key) {
+        int freq = wordToCountIter[key].first;
+        auto iter = wordToCountIter[key].second;
+        freqToWordLists[freq].erase(iter);
+        if(freqToWordLists[freq].empty()) freqToWordLists.erase(freq);
+        if(freq > 1) {
+            freqToWordLists[freq - 1].push_back(key);
+            wordToCountIter[key] = {freq - 1, --freqToWordLists[freq - 1].end()};
+        } else {
+            wordToCountIter.erase(key);
+        }
+    }
+    
+    string getMaxKey() {
+        if(freqToWordLists.empty()) return "";
+        auto lastElement = --freqToWordLists.end();
+        return lastElement -> second.front();
+    }
+    
+    string getMinKey() {
+        if(freqToWordLists.empty()) return "";
+        auto firstElement = freqToWordLists.begin();
+        return firstElement -> second.back();
+    }
+};
+
+/**
+ * Your AllOne object will be instantiated and called as such:
+ * AllOne* obj = new AllOne();
+ * obj->inc(key);
+ * obj->dec(key);
+ * string param_3 = obj->getMaxKey();
+ * string param_4 = obj->getMinKey();
+ */
