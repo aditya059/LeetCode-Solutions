@@ -1,0 +1,15 @@
+class Solution {
+public:
+    bool canArrange(vector<int>& arr, int k) {
+        vector<int> modVal(k);
+        for(int i = 0; i < arr.size(); i++) {
+            modVal[(arr[i] % k + k) % k]++;
+        }
+        int n = (k + 1) / 2;
+        for(int i = 1; i < k; i++) {
+            if(modVal[i] != modVal[k - i]) return false;
+        }
+        if(modVal[0] % 2 || (k % 2 == 0 && modVal[k / 2] % 2)) return false;
+        return true;
+    }
+};
