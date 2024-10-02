@@ -1,17 +1,17 @@
 class Solution {
 public:
     vector<int> arrayRankTransform(vector<int>& arr) {
-        set<int> Set;
-        for(int num: arr) {
-            Set.insert(num);
-        }
-        vector<int> temp;
-        for(int i: Set) {
-            temp.push_back(i);
-        }
-        vector<int> ans;
-        for(int num: arr) {
-            ans.push_back((lower_bound(temp.begin(), temp.end(), num) - temp.begin()) + 1);
+        int n = arr.size();
+        if(!n) return {};
+        vector<int> index(n);
+        iota(index.begin(), index.end(), 0);
+        sort(index.begin(), index.end(), [&](int &A, int &B) {
+            return arr[A] < arr[B];
+        });
+        vector<int> ans(n);
+        ans[index[0]] = 1;
+        for(int i = 1; i < n; i++) {
+            ans[index[i]] = ans[index[i - 1]] + (arr[index[i]] != arr[index[i - 1]]);
         }
         return ans;
     }
