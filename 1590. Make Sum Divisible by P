@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int minSubarray(vector<int>& nums, int p) {
+        int total = accumulate(nums.begin(), nums.end(), 0L) % p;
+        if(!total) return 0;
+        int ans = INT_MAX, currSum = 0;
+        unordered_map<int, int> Map;
+        Map[0] = -1;
+        for(int i = 0; i < nums.size(); i++) {
+            currSum = (currSum + nums[i]) % p;
+            int val = (currSum - total + p) % p;
+            if(Map.find(val) != Map.end())
+                ans = min(ans, i - Map[val]);
+            Map[currSum] = i;
+        }
+        return ans == INT_MAX || ans == nums.size()? -1: ans;
+    }
+};
