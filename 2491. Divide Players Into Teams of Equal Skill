@@ -15,6 +15,27 @@ public:
     }
 };
 
+OR
+
+class Solution {
+public:
+    long long dividePlayers(vector<int>& skill) {
+        vector<int> count(1001);
+        int minSkill = INT_MAX, maxSkill = INT_MIN;
+        for(int i = 0; i < skill.size(); i++) {
+            count[skill[i]]++;
+            minSkill = min(minSkill, skill[i]);
+            maxSkill = max(maxSkill, skill[i]);
+        }
+        int reqdTeamScore = minSkill + maxSkill;
+        long long ans = 0;
+        for(int i = minSkill; i <= maxSkill; i++) {
+            if(count[i] != count[reqdTeamScore - i]) return -1;
+            ans += i * 1L * (reqdTeamScore - i) * count[i];
+        }
+        return ans >> 1;
+    }
+};
 
 // Golang
 func dividePlayers(skill []int) int64 {
