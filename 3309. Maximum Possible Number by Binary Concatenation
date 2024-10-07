@@ -1,0 +1,25 @@
+class Solution {
+    int numOfDigits(int &num) {
+        int count = 0;
+        for(int i = num; i > 0; i /= 2) {
+            count++;
+        }
+        return count;
+    }
+    int calc(int &num1, int &num2, int &num3) {
+        int res = num1 * (1 << numOfDigits(num2)) + num2;
+        res = res * (1 << numOfDigits(num3)) + num3;
+        return res;
+    }
+public:
+    int maxGoodNumber(vector<int>& nums) {
+        vector<int> res(6);
+        res[0] = calc(nums[0], nums[1], nums[2]);
+        res[1] = calc(nums[0], nums[2], nums[1]);
+        res[2] = calc(nums[1], nums[0], nums[2]);
+        res[3] = calc(nums[1], nums[2], nums[0]);
+        res[4] = calc(nums[2], nums[0], nums[1]);
+        res[5] = calc(nums[2], nums[1], nums[0]);
+        return *max_element(res.begin(), res.end());
+    }
+};
