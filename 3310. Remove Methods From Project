@@ -1,0 +1,33 @@
+class Solution {
+    void dfs(int curr, vector<int> adjList[], vector<char> &colors, char status, bool &flag) {
+        if(flag || colors[curr] == status) return;
+        colors[curr] = status;
+        for(int next: adjList[curr]) {
+            if(colors[next] == 'P') {
+                dfs(next, adjList, colors, status, flag);
+            } else if(colors[next] != status) {
+                flag = true;
+            }
+        }
+    }
+public:
+    vector<int> remainingMethods(int n, int k, vector<vector<int>>& invocations) {
+        vector<int> adjList[n], ans;
+        for(int i = 0; i < invocations.size(); i++) {
+            adjList[invocations[i][0]].push_back(invocations[i][1]);
+        }
+        vector<char> colors(n, 'P');    // P: Pending, S: Suspicious, N: Non-suspicious 
+        bool flag = false;
+        dfs(k, adjList, colors, 'S', flag); 
+        for(int i = 0; i < n; i++) {
+            if(colors[i] == 'P') {
+                dfs(i, adjList, colors, 'N', flag);
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            if(flag || colors[i] != 'S')
+                ans.push_back(i);
+        }
+        return ans;
+    }
+};
