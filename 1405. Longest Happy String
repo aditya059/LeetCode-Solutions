@@ -1,0 +1,28 @@
+class Solution {
+public:
+    string longestDiverseString(int a, int b, int c) {
+        string ans = "";
+        priority_queue<pair<int, char>> PQ;
+        if(a) PQ.push({a, 'a'});
+        if(b) PQ.push({b, 'b'});
+        if(c) PQ.push({c, 'c'});
+        while(!PQ.empty()) {
+            auto [count1, letter1] = PQ.top();
+            PQ.pop();
+            int len = ans.length();
+            if(len < 2 || letter1 != ans[len - 1] || letter1 != ans[len - 2]) {
+                ans += letter1;
+                count1--;
+            } else {
+                if(PQ.empty()) return ans;
+                auto [count2, letter2] = PQ.top();
+                PQ.pop();
+                ans += letter2;
+                count2--;
+                if(count2) PQ.push({count2, letter2});
+            }
+            if(count1) PQ.push({count1, letter1});
+        }
+        return ans;
+    }
+};
