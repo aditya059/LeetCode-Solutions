@@ -1,0 +1,38 @@
+class Solution {
+    void solve(stack<char> &Stack, char &oper) {
+        int ans = Stack.top();
+        Stack.pop();
+        if(oper == '!') {
+            Stack.pop(); // Remove '('
+            Stack.push(!ans);
+            return;
+        }
+        while(Stack.top() != '(') {
+            if(oper == '&')
+                ans &= Stack.top();
+            else
+                ans |= Stack.top();
+            Stack.pop();
+        }
+        Stack.pop();    // Remove '('
+        Stack.push(ans);
+    }
+public:
+    bool parseBoolExpr(string expression) {
+        stack<char> operators;
+        stack<char> Stack;
+        for(int i = 0; i < expression.length(); i++) {
+            char ch = expression[i];
+            if(ch == '(') Stack.push('(');
+            else if(ch == ')') {
+                char oper = operators.top();
+                operators.pop();
+                solve(Stack, oper);
+            } else if(ch == '&' || ch == '|' || ch == '!')
+                operators.push(ch);
+            else if(ch == 'f') Stack.push(0);
+            else if(ch == 't') Stack.push(1);
+        }
+        return Stack.top();
+    }
+};
