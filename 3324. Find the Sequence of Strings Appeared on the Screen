@@ -1,0 +1,16 @@
+class Solution {
+public:
+    vector<string> stringSequence(string target) {
+        int len = target.length();
+        vector<string> ans;
+        string s = "";
+        for(int i = 0; i < len; i++) {
+            s += " ";
+            for(char j = 'a'; j <= target[i]; j++) {
+                s[i] = j;
+                ans.push_back(s);
+            }
+        }
+        return ans;
+    }
+};
