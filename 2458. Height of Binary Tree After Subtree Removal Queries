@@ -1,0 +1,40 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+    void preorderLtoR(TreeNode* root, vector<int> &heights, int level, int &currMaxHeight) {
+        if(!root) return;
+        heights[root -> val] = currMaxHeight;
+        currMaxHeight = max(currMaxHeight, level);
+        preorderLtoR(root -> left, heights, level + 1, currMaxHeight);
+        preorderLtoR(root -> right, heights, level + 1, currMaxHeight);
+    }
+    void preorderRtoL(TreeNode* root, vector<int> &heights, int level, int &currMaxHeight) {
+        if(!root) return;
+        heights[root -> val] = max(heights[root -> val], currMaxHeight);
+        currMaxHeight = max(currMaxHeight, level);
+        preorderRtoL(root -> right, heights, level + 1, currMaxHeight);
+        preorderRtoL(root -> left, heights, level + 1, currMaxHeight);
+    }
+public:
+    vector<int> treeQueries(TreeNode* root, vector<int>& queries) {
+        vector<int> heights(100001);
+        int currMaxHeight = 0;
+        preorderLtoR(root, heights, 0, currMaxHeight);
+        currMaxHeight = 0;
+        preorderRtoL(root, heights, 0, currMaxHeight);
+        vector<int> ans(queries.size());
+        for(int i = 0; i < queries.size(); i++) {
+            ans[i] = heights[queries[i]];
+        }
+        return ans;
+    }
+};
