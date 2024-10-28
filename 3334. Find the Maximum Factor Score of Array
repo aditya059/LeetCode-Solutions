@@ -1,0 +1,29 @@
+class Solution {
+public:
+    long long maxScore(vector<int>& nums) {
+        int n = nums.size();
+        if(n == 1) return nums[0] * nums[0];
+        vector<long long> gcdRight(n), lcmRight(n);
+        gcdRight[n - 1] = lcmRight[n - 1] = nums[n - 1];
+        long long ans = 0;
+        for(int i = n - 2; i >= 0; i--) {
+            gcdRight[i] = gcd(gcdRight[i + 1], nums[i]);
+            lcmRight[i] = lcm(lcmRight[i + 1], nums[i]);
+        }
+        long long gcdLeft = nums[0], lcmLeft = nums[0];
+        for(int i = 1; i < n - 1; i++) {
+            long long g = gcd(gcdLeft, gcdRight[i + 1]);
+            long long l = lcm(lcmLeft, lcmRight[i + 1]);
+            gcdLeft = gcd(gcdLeft, nums[i]);
+            lcmLeft = (lcmLeft *  nums[i]) / gcd(lcmLeft, nums[i]);
+            ans = max(ans, l * g);
+        }
+        // Remove leftmost
+        ans = max(ans, gcdRight[1] * lcmRight[1]);
+        // Remove none
+        ans = max(ans, gcdRight[0] * lcmRight[0]);
+        // Remove rightmost
+        ans = max(ans, gcdLeft * lcmLeft);
+        return ans;
+    }
+};
