@@ -2,21 +2,19 @@ class Solution {
 public:
     int maxMoves(vector<vector<int>>& grid) {
         int m = grid.size(), n = grid[0].size();
-        vector<vector<int>> DP(m, vector<int>(n));
+        vector<int> DP(m);
         for(int col = n - 2; col >= 0; col--) {
+            vector<int> temp(m);
             for(int row = m - 1; row >= 0; row--) {
                 if(row > 0 && grid[row - 1][col + 1] > grid[row][col])
-                    DP[row][col] = max(DP[row][col], 1 + DP[row - 1][col + 1]);
+                    temp[row] = max(temp[row], 1 + DP[row - 1]);
                 if(grid[row][col + 1] > grid[row][col])
-                    DP[row][col] = max(DP[row][col], 1 + DP[row][col + 1]);
+                    temp[row] = max(temp[row], 1 + DP[row]);
                 if(row < m - 1 && grid[row + 1][col + 1] > grid[row][col])
-                    DP[row][col] = max(DP[row][col], 1 + DP[row + 1][col + 1]);
+                    temp[row] = max(temp[row], 1 + DP[row + 1]);
             }
+            DP = temp;
         }
-        int ans = 0;
-        for(int i = 0; i < m; i++) {
-            ans = max(ans, DP[i][0]);
-        }
-        return ans;
+        return *max_element(DP.begin(), DP.end());
     }
 };
