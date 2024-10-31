@@ -1,0 +1,20 @@
+class Solution {
+    const long long MAX = 1e13;
+    long long solve(int rInd, int fInd, int repaired, vector<int>& robot, vector<vector<int>>& factory, vector<vector<vector<long long>>> &memo) {
+        if(rInd == robot.size()) return 0;
+        if(fInd == factory.size()) return MAX;
+        if(memo[rInd][fInd][repaired] != -1) return memo[rInd][fInd][repaired];
+        long long skip = solve(rInd, fInd + 1, 0, robot, factory, memo);
+        long long assign = MAX;
+        if(repaired < factory[fInd][1]) assign = abs(robot[rInd] - factory[fInd][0]) + solve(rInd + 1, fInd, repaired + 1, robot, factory, memo);
+        return memo[rInd][fInd][repaired] = min(skip, assign);
+    }
+public:
+    long long minimumTotalDistance(vector<int>& robot, vector<vector<int>>& factory) {
+        sort(robot.begin(), robot.end());
+        sort(factory.begin(), factory.end());
+        int m = robot.size(), n = factory.size();
+        vector<vector<vector<long long>>> memo(m + 1, vector<vector<long long>>(n + 1, vector<long long>(m + 1, -1)));
+        return solve(0, 0, 0, robot, factory, memo);
+    }
+};
