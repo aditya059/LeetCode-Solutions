@@ -1,0 +1,31 @@
+class Solution {
+    struct comp {
+        bool operator()(auto &A, auto &B) {
+            return A.first > B.first;
+        }
+    };
+public:
+    int minTimeToReach(vector<vector<int>>& moveTime) {
+        priority_queue<pair<int, vector<int>>, vector<pair<int, vector<int>>>, comp> PQ;
+        PQ.push({0, {0, 0, 0}});
+        int n = moveTime.size(), m = moveTime[0].size();
+        vector<vector<int>> dist(n, vector<int>(m, INT_MAX));
+        pair<int, int> dirs[4] = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
+        while(!PQ.empty()) {
+            auto curr = PQ.top();
+            PQ.pop();
+            int currX = curr.second[0], currY = curr.second[1];
+            if(currX == n - 1 && currY == m - 1) return curr.first;
+            for(auto dir: dirs) {
+                int nextX = currX + dir.first, nextY = currY + dir.second;
+                if(nextX < 0 || nextY < 0 || nextX >= n || nextY >= m) continue;
+                int cost = max(curr.first, moveTime[nextX][nextY]) + 1 + curr.second[2]; 
+                if(cost < dist[nextX][nextY]) {
+                    dist[nextX][nextY] = cost;
+                    PQ.push({cost, {nextX, nextY, (curr.second[2] + 1) % 2}});
+                }
+            }
+        }
+        return dist[n - 1][m - 1];
+    }
+};
