@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int minTimeToReach(vector<vector<int>>& moveTime) {
+        set<pair<int, pair<int, int>>> PQ;
+        PQ.insert({0, {0, 0}});
+        int n = moveTime.size(), m = moveTime[0].size();
+        vector<vector<int>> dist(n, vector<int>(m, INT_MAX));
+        pair<int, int> dirs[4] = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
+        while(!PQ.empty()) {
+            auto curr = *PQ.begin();
+            PQ.erase(PQ.begin());
+            int currX = curr.second.first, currY = curr.second.second;
+            if(currX == n - 1 && currY == m - 1) return curr.first;
+            for(auto dir: dirs) {
+                int nextX = currX + dir.first, nextY = currY + dir.second;
+                if(nextX < 0 || nextY < 0 || nextX >= n || nextY >= m) continue;
+                int cost = max(curr.first, moveTime[nextX][nextY]) + 1; 
+                if(cost < dist[nextX][nextY]) {
+                    auto iter = PQ.find({dist[nextX][nextY], {nextX, nextY}});
+                    if(iter != PQ.end()) PQ.erase(iter);
+                    dist[nextX][nextY] = cost;
+                    PQ.insert({cost, {nextX, nextY}});
+                }
+            }
+        }
+        return dist[n - 1][m - 1];
+    }
+};
