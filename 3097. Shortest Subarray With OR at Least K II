@@ -1,0 +1,29 @@
+class Solution {
+    void update(int num, vector<int> &bitCount, int val) {
+        for(int i = 0; i < 32; i++) {
+            if(num & (1 << i))
+                bitCount[i] += val;
+        }
+    }
+    int convert(vector<int> &bitCount) {
+        int val = 0; 
+        for(int i = 0; i < 32; i++) {
+            if(bitCount[i]) 
+                val |= (1 << i);
+        }
+        return val;
+    }
+public:
+    int minimumSubarrayLength(vector<int>& nums, int k) {
+        int ans = INT_MAX;
+        vector<int> bitCount(32);
+        for(int start = 0, end = 0; end < nums.size(); end++) {
+            update(nums[end], bitCount, 1);
+            while(end >= start && convert(bitCount) >= k) {
+                ans = min(ans, end - start + 1);
+                update(nums[start++], bitCount, -1);
+            }
+        }
+        return ans == INT_MAX? -1: ans;
+    }
+};
