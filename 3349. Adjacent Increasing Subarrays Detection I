@@ -11,3 +11,22 @@ public:
         return false;
     }
 };
+
+OR
+
+class Solution {
+public:
+    bool hasIncreasingSubarrays(vector<int>& nums, int k) {
+        int len = 1, prevLen = -1;
+        for(int i = 1; i < nums.size(); i++) {
+            if(nums[i] > nums[i - 1]) {
+                len++;
+            } else {
+                prevLen = len;
+                len = 1;
+            }
+            if(len >= 2 * k || (len >= k && prevLen >= k)) return true;
+        }
+        return len >= 2 * k;
+    }
+};
