@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int shortestSubarray(vector<int>& nums, int k) {
+        long currSum = 0;
+        int ans = INT_MAX;
+        priority_queue<pair<long, int>, vector<pair<long, int>>, greater<>> PQ;
+        for(int i = 0; i < nums.size(); i++) {
+            currSum += nums[i];
+            if(currSum >= k) ans = min(ans, i + 1);
+            while(!PQ.empty() && currSum - PQ.top().first >= k) {
+                ans = min(ans, i - PQ.top().second);
+                PQ.pop();
+            }
+            PQ.push({currSum, i});
+        }
+        return ans == INT_MAX? -1: ans;
+    }
+};
