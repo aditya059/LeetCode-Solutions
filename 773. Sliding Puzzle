@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int slidingPuzzle(vector<vector<int>>& board) {
+        string start = "", target = "123450";
+        for(int i = 0; i < board.size(); i++) {
+            for(int j = 0; j < board[0].size(); j++) {
+                start += to_string(board[i][j]);
+            }
+        }
+        vector<vector<int>> moves = {{1, 3}, {0, 2, 4}, {1, 5}, {0, 4}, {1, 3, 5}, {2, 4}};
+        unordered_set<string> visited;
+        queue<pair<int, string>> Queue;
+        Queue.push({start.find("0"), start});
+        visited.insert(start);
+        int ans = 0;
+        while(!Queue.empty()) {
+            int sz = Queue.size();
+            for(int i = 0; i < sz; i++) {
+                auto [currZeroPos, currBoard] = Queue.front();
+                Queue.pop();
+                if(currBoard == target) return ans;
+                for(int nextZeroPos: moves[currZeroPos]) {
+                    string nextBoard = currBoard;
+                    swap(nextBoard[currZeroPos], nextBoard[nextZeroPos]);
+                    if(visited.find(nextBoard) == visited.end()) {
+                        Queue.push({nextZeroPos, nextBoard}); 
+                        visited.insert(nextBoard);
+                    }
+                }
+            }
+            ans++;
+        }
+        return -1;
+    }
+};
