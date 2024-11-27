@@ -1,0 +1,32 @@
+class Solution {
+    void bfs(int source, vector<int> adjList[], vector<int> &dist) {
+        queue<int> Queue;
+        Queue.push(source);
+        while(!Queue.empty()) {
+            int curr = Queue.front();
+            Queue.pop();
+            for(int next: adjList[curr]) {
+                if(dist[curr] + 1 < dist[next]) {
+                    dist[next] = dist[curr] + 1;
+                    Queue.push(next);
+                }
+            }
+        }
+    }
+public:
+    vector<int> shortestDistanceAfterQueries(int n, vector<vector<int>>& queries) {
+        vector<int> adjList[n];
+        vector<int> dist(n);
+        for(int i = 1; i < n; i++) {
+            dist[i] = i;
+            adjList[i - 1].push_back(i);
+        }
+        vector<int> ans;
+        for(int i = 0; i < queries.size(); i++) {
+            adjList[queries[i][0]].push_back(queries[i][1]);
+            bfs(queries[i][0], adjList, dist);
+            ans.push_back(dist[n - 1]);;
+        }
+        return ans;
+    }
+};
