@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int minimumTime(vector<vector<int>>& grid) {
+        if(grid[0][1] > 1 && grid[1][0] > 1) return -1;
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<bool>> visited(m, vector<bool>(n));
+        priority_queue<vector<int>, vector<vector<int>>, greater<>> PQ;
+        pair<int, int> dirs[4] = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+        PQ.push({0, 0, 0});
+        while(!PQ.empty()) {
+            vector<int> curr = PQ.top();
+            PQ.pop();
+            int currX = curr[1], currY = curr[2], time = curr[0];
+            if(currX == m - 1 && currY == n - 1) return time;
+            if(visited[currX][currY]) continue;
+            visited[currX][currY] = true;
+            for(pair<int, int> dir: dirs) {
+                int nextX = currX + dir.first, nextY = currY + dir.second;
+                if(nextX < 0 || nextY < 0 || nextX >= m || nextY >= n || visited[nextX][nextY]) continue;
+                int nextTime = max(time + 1, grid[nextX][nextY] + 1 - (grid[nextX][nextY] - time) % 2);
+                PQ.push({nextTime, nextX, nextY});
+            }
+        }
+        return -1;
+    }
+};
