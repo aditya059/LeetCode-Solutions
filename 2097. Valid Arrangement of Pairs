@@ -1,0 +1,37 @@
+class Solution {
+    void dfs(int curr, unordered_map<int, vector<int>> &adjList, vector<int> &ans) {
+        while(!adjList[curr].empty()) {
+            int next = adjList[curr].back();
+            adjList[curr].pop_back();
+            dfs(next, adjList, ans);
+        }
+        ans.push_back(curr);
+    }
+public:
+    vector<vector<int>> validArrangement(vector<vector<int>>& pairs) {
+        unordered_map<int, int> indegree, outdegree;
+        unordered_map<int, vector<int>> adjList;
+        for(int i = 0; i < pairs.size(); i++) {
+            adjList[pairs[i][0]].push_back(pairs[i][1]);
+            indegree[pairs[i][1]]++;
+            outdegree[pairs[i][0]]++;
+        }
+
+        int start = pairs[0][0];
+        for(auto &[key, _]: outdegree) {
+            if(outdegree[key] == indegree[key] + 1) {
+                start = key;
+                break;
+            }
+        }
+        vector<int> order;
+        dfs(start, adjList, order);
+
+        vector<vector<int>> ans;
+        for(int i = order.size() - 1; i >= 1; i--) {
+            ans.push_back({order[i], order[i - 1]});
+        }
+        
+        return ans;
+    }
+};
