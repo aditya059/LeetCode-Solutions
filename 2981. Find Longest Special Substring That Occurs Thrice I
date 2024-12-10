@@ -1,0 +1,29 @@
+class Solution {
+    bool check(string &s, int mid) {
+        unordered_map<char, int> freq;
+        vector<int> count(26);
+        for(int i = 0; i < s.length(); i++) {
+            freq[s[i]]++;
+            if(i >= mid) {
+                freq[s[i - mid]]--;
+                if(!freq[s[i - mid]]) freq.erase(s[i - mid]);
+            }
+            if(freq[s[i]] == mid) count[s[i] - 'a']++;
+        }
+        return *max_element(count.begin(), count.end()) >= 3;
+    }
+public:
+    int maximumLength(string s) {
+        int low = 1, high = s.length() - 2, ans = -1;
+        while(low <= high) {
+            int mid = low + (high - low) / 2;
+            if(check(s, mid)) {
+                ans = max(ans, mid);
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return ans;
+    }
+};
