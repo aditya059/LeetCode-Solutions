@@ -1,0 +1,15 @@
+class Solution {
+public:
+    long long pickGifts(vector<int>& gifts, int k) {
+        priority_queue<int> PQ(gifts.begin(), gifts.end());
+        long long ans = accumulate(gifts.begin(), gifts.end(), 0L);
+        for(int i = 0; i < k; i++) {
+            int val = PQ.top();
+            PQ.pop();
+            int sqroot = sqrt(val);
+            PQ.push(sqroot);
+            ans -= val - sqroot;
+        }
+        return ans;
+    }
+};
