@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> getFinalState(vector<int>& nums, int k, int multiplier) {
+        auto comp = [&](auto &A, auto &B) {
+            return A.first > B.first || (A.first == B.first && A.second > B.second);
+        };
+        priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(comp)> PQ(comp);
+        for(int i = 0; i < nums.size(); i++) {
+            PQ.push({nums[i], i});
+        }
+        while(k--) {
+            auto [num, index] = PQ.top();
+            PQ.pop();
+            nums[index] *= multiplier;
+            PQ.push({nums[index], index});
+        }
+        return nums;
+    }
+};
