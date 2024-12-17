@@ -1,0 +1,20 @@
+class Solution {
+public:
+    long long shiftDistance(string s, string t, vector<int>& nextCost, vector<int>& previousCost) {
+        vector<long long> forward(27), backward(27);
+        for(int i = 0; i < 26; i++) forward[i + 1] = forward[i] + nextCost[i];
+        for(int i = 1; i < 26; i++) backward[i] = backward[i - 1] + previousCost[i];
+        backward[26] = backward[25] + previousCost[0]; 
+        long long ans = 0;
+        for(int i = 0; i < s.length(); i++) {
+            long long A = abs(forward[t[i] - 'a'] - forward[s[i] - 'a']);
+            long long B = abs(backward[t[i] - 'a'] - backward[s[i] - 'a']);
+            if(s[i] < t[i]) {
+                ans += min(A, backward[26] - B);
+            } else {
+                ans += min(forward[26] - A, B);
+            }
+        }
+        return ans;
+    }
+};
