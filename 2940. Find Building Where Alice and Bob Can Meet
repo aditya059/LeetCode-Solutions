@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<int> leftmostBuildingQueries(vector<int>& heights, vector<vector<int>>& queries) {
+        vector<int> index(queries.size());
+        iota(index.begin(), index.end(), 0);
+        sort(index.begin(), index.end(), [&](int &i, int &j) {
+            return max(queries[i][0], queries[i][1]) > max(queries[j][0], queries[j][1]);
+        });
+        int j = heights.size() - 1;
+        vector<int> ans(queries.size()), Stack;
+        for(int i: index) {
+            int A = min(queries[i][0], queries[i][1]);
+            int B = max(queries[i][0], queries[i][1]);
+            if(A == B || heights[A] < heights[B]) {
+                ans[i] = B;
+                continue;
+            }
+            while(j > B) {
+                while(!Stack.empty() && heights[j] >= heights[Stack.back()]) {
+                    Stack.pop_back();
+                }
+                Stack.push_back(j--);
+            }
+            auto iter = upper_bound(Stack.rbegin(), Stack.rend(), A, [&](int i, int j) {
+                return heights[i] < heights[j];
+            });
+            ans[i] = iter == Stack.rend()? -1: *iter;
+        }
+        return ans;
+    }
+};
