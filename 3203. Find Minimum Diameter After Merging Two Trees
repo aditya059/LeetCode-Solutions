@@ -1,0 +1,43 @@
+class Solution {
+    pair<int, int> bfs(int source, vector<int> adjList[], int n) {
+        queue<int> Queue;
+        Queue.push(source);
+        int dist = -1, lastNode = source;
+        vector<bool> visited(n);
+        visited[source] = true;
+        while(!Queue.empty()) {
+            int sz = Queue.size();
+            dist++;
+            for(int i = 0; i < sz; i++) {
+                int curr = Queue.front();
+                Queue.pop();
+                lastNode = curr;
+                for(int next: adjList[curr]) {
+                    if(!visited[next]) {
+                        Queue.push(next);
+                        visited[next] = true;
+                    }
+                }
+            }
+        }
+        return {lastNode, dist};
+    }
+public:
+    int minimumDiameterAfterMerge(vector<vector<int>>& edges1, vector<vector<int>>& edges2) {
+        int n = edges1.size() + 1, m = edges2.size() + 1;
+        vector<int> adjList1[n], adjList2[m];
+        for(int i = 0; i < edges1.size(); i++) {
+            adjList1[edges1[i][0]].push_back(edges1[i][1]);
+            adjList1[edges1[i][1]].push_back(edges1[i][0]);
+        }
+        for(int i = 0; i < edges2.size(); i++) {
+            adjList2[edges2[i][0]].push_back(edges2[i][1]);
+            adjList2[edges2[i][1]].push_back(edges2[i][0]);
+        }
+        auto [source1, _] = bfs(0, adjList1, n);
+        auto [_, dist1] = bfs(source1, adjList1, n);
+        auto [source2, _] = bfs(0, adjList2, m);
+        auto [_, dist2] = bfs(source2, adjList2, m);
+        return max(dist1, max(dist2, 1 + (dist1 + 1) / 2 + (1 + dist2) / 2));
+    }
+};
