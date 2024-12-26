@@ -1,0 +1,35 @@
+// Bruteforce
+class Solution {
+    void dfs(int curr, int total, vector<int>& nums, int target, int &ans) {
+        if(curr == nums.size()) {
+            if(total == target) ans++;
+            return;
+        }
+        dfs(curr + 1, total + nums[curr], nums, target, ans);
+        dfs(curr + 1, total - nums[curr], nums, target, ans);
+    }
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int ans = 0;
+        dfs(0, 0, nums, target, ans);
+        return ans;
+    }
+};
+
+OR
+
+// DP
+class Solution {
+    int dfs(int curr, vector<int>& nums, int target, unordered_map<int, unordered_map<int, int>> &memo) {
+        if(curr == nums.size()) {
+            return !target;
+        }
+        if(memo[curr].find(target) != memo[curr].end()) return memo[curr][target];
+        return memo[curr][target] = dfs(curr + 1, nums, target - nums[curr], memo) + dfs(curr + 1, nums, target + nums[curr], memo);
+    }
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        unordered_map<int, unordered_map<int, int>> memo;
+        return dfs(0, nums, target, memo);
+    }
+};
