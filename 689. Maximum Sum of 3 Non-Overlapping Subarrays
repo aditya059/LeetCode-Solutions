@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<int> maxSumOfThreeSubarrays(vector<int>& nums, int k) {
+        int n = nums.size(), currSum = 0;
+        vector<vector<int>> DP(3, vector<int>(n)), index(3, vector<int>(n, -1));
+        for(int i = 0; i < n; i++) {
+            currSum += nums[i];
+            if(i >= k) currSum -= nums[i - k];
+            if(i >= k - 1) DP[0][i - k + 1] = currSum;
+        }
+        int maxValIndex;
+        for(int i = 1; i <= 2; i++) {
+            maxValIndex = i * k - k;
+            for(int j = i * k; j <= n - k; j++) {
+                if(DP[i - 1][j - k] > DP[i - 1][maxValIndex]) {
+                    maxValIndex = j - k;
+                }
+                DP[i][j] = DP[0][j] + DP[i - 1][maxValIndex];
+                index[i][j] = maxValIndex;
+            }
+        }
+        maxValIndex = 2 * k;
+        for(int i = 2 * k + 1; i <= n - k; i++) {
+            if(DP[2][i] > DP[2][maxValIndex])
+                maxValIndex = i;
+        }
+        vector<int> ans(3);
+        int i = 2;
+        while(maxValIndex != -1) {
+            ans[i] = maxValIndex;
+            maxValIndex = index[i--][maxValIndex];
+        }
+        return ans;
+    }
+};
