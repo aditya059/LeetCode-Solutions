@@ -23,6 +23,64 @@ public:
     }
 };
 
+OR
+
+class Solution {
+    const int MOD = 1e9 + 7;
+public:
+    int numWays(vector<string>& words, string target) {
+        int m = words.size(), n = words[0].size();
+        vector<vector<int>> freq(26, vector<int>(n));
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                short ch = words[i][j] - 'a';
+                freq[ch][j]++;
+            }
+        }
+        vector<int> DP(target.size() + 1);
+        DP[0] = 1;
+        for(int i = 0; i < n; i++) {
+            vector<int> temp(target.size() + 1);
+            temp[0] = 1;
+            for(int j = 0; j < target.size(); j++) {
+                temp[j + 1] = (DP[j + 1] + freq[target[j] - 'a'][i] * 1L *  DP[j]) % MOD;  
+            }
+            DP = temp;
+        }
+        return DP[target.size()];
+    }
+};
+
+OR
+
+class Solution {
+    const int MOD = 1e9 + 7;
+    int dfs(int i, int j, vector<vector<int>> &freq, string &target, vector<vector<int>> &memo) {
+        if(j == target.size()) return 1;
+        if(i == freq[0].size()) return 0;
+        if(memo[i][j] != -1) return memo[i][j];
+        int take = 0;
+        if(freq[target[j] - 'a'][i]) {
+            take = (freq[target[j] - 'a'][i] * 1L * dfs(i + 1, j + 1, freq, target, memo)) % MOD;
+        }
+        int skip = dfs(i + 1, j, freq, target, memo);
+        return memo[i][j] = (take + skip) % MOD;
+    }
+public:
+    int numWays(vector<string>& words, string target) {
+        int m = words.size(), n = words[0].size();
+        vector<vector<int>> freq(26, vector<int>(n));
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                short ch = words[i][j] - 'a';
+                freq[ch][j]++;
+            }
+        }
+        vector<vector<int>> memo(n + 1, vector<int>(target.size() + 1, -1));
+        return dfs(0, 0, freq, target, memo);
+    }
+};
+
 
 // Golang
 const mod int = 1e9 + 7
