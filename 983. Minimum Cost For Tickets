@@ -1,3 +1,4 @@
+// DP + Binary Search
 class Solution {
 public:
     int mincostTickets(vector<int>& days, vector<int>& costs) {
@@ -16,7 +17,9 @@ public:
 
 OR
 
+// DP + Binary Search
 class Solution {
+    const int MAX = 1e6;
 public:
     int mincostTickets(vector<int>& days, vector<int>& costs) {
         vector<int> DP(367, 0);
@@ -35,6 +38,7 @@ public:
 
 OR
 
+// DP
 class Solution {
 public:
     int mincostTickets(vector<int>& days, vector<int>& costs) {
@@ -50,5 +54,24 @@ public:
             }
         }
         return DP[1];
+    }
+};
+
+OR
+
+// Three Pointers + DP
+class Solution {
+public:
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        int n = days.size(), i7 = 0, i30 = 0;
+        vector<int> DP(n + 1);
+        for(int i = 0; i < n; i++) {
+            DP[i + 1] = DP[i] + costs[0];
+            while(days[i7] <= days[i] - 7) i7++;
+            DP[i + 1] = min(DP[i + 1], DP[i7] + costs[1]);
+            while(days[i30] <= days[i] - 30) i30++;
+            DP[i + 1] = min(DP[i + 1], DP[i30] + costs[2]);
+        }
+        return DP[n];
     }
 };
