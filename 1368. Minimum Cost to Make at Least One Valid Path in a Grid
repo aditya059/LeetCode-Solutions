@@ -1,0 +1,66 @@
+class Solution {
+    class comp {
+    public:
+        bool operator()(vector<int> &A, vector<int> &B) {
+            return A[0] > B[0];
+        }
+    };
+public:
+    int minCost(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        priority_queue<vector<int>, vector<vector<int>>, comp> PQ;
+        PQ.push({0, 0, 0});
+        vector<vector<int>> dist(m, vector<int>(n, INT_MAX));
+        dist[0][0] = 0;
+        vector<int> dirs[4] = {{1, 0, 1}, {2, 0, -1}, {3, 1, 0}, {4, -1, 0}};
+        while(!PQ.empty()) {
+            vector<int> curr = PQ.top();
+            PQ.pop();
+            int cost = curr[0], currX = curr[1], currY = curr[2];
+            if(currX == m - 1 && currY == n - 1) return cost;
+            for(int i = 0; i < 4; i++) {
+                int nextX = currX + dirs[i][1], nextY = currY + dirs[i][2];
+                if(nextX < 0 || nextY < 0 || nextX >= m || nextY >= n) continue;
+                int nextCost = cost + (dirs[i][0] != grid[currX][currY]);
+                if(nextCost < dist[nextX][nextY]) {
+                    dist[nextX][nextY] = nextCost;
+                    PQ.push({nextCost, nextX, nextY});
+                }  
+            }
+        }
+        return -1;
+    }
+};
+
+OR
+
+class Solution {
+public:
+    int minCost(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        deque<vector<int>> DQ;
+        DQ.push_back({0, 0, 0});
+        vector<vector<int>> dist(m, vector<int>(n, INT_MAX));
+        dist[0][0] = 0;
+        vector<int> dirs[4] = {{1, 0, 1}, {2, 0, -1}, {3, 1, 0}, {4, -1, 0}};
+        while(!DQ.empty()) {
+            vector<int> curr = DQ.front();
+            DQ.pop_front();
+            int cost = curr[0], currX = curr[1], currY = curr[2];
+            if(currX == m - 1 && currY == n - 1) return cost;
+            for(int i = 0; i < 4; i++) {
+                int nextX = currX + dirs[i][1], nextY = currY + dirs[i][2];
+                if(nextX < 0 || nextY < 0 || nextX >= m || nextY >= n) continue;
+                int nextCost = cost + (dirs[i][0] != grid[currX][currY]);
+                if(nextCost < dist[nextX][nextY]) {
+                    dist[nextX][nextY] = nextCost;
+                    if(cost == nextCost)
+                        DQ.push_front({nextCost, nextX, nextY});
+                    else
+                        DQ.push_back({nextCost, nextX, nextY});
+                }  
+            }
+        }
+        return -1;
+    }
+};
