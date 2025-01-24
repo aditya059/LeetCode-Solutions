@@ -28,6 +28,41 @@ public:
     }
 };
 
+OR
+
+class Solution {
+public:
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        int n = graph.size();
+        queue<int> Queue;
+        vector<int> indegree(n);
+        vector<vector<int>> adjList(n);
+        for(int i = 0; i < n; i++) {
+            if(graph[i].size() == 0) Queue.push(i);
+            for(int j: graph[i]) {
+                adjList[j].push_back(i);
+                indegree[i]++;
+            }
+        }
+        vector<bool> safe(n);
+        while(!Queue.empty()) {
+            int curr = Queue.front();
+            Queue.pop();
+            safe[curr] = true;
+            for(int next: adjList[curr]) {
+                indegree[next]--;
+                if(indegree[next] == 0) Queue.push(next);
+            }
+        }
+        vector<int> ans;
+        for(int i = 0; i < n; i++) {
+            if(safe[i]) ans.push_back(i);
+        }
+        return ans;
+    }
+};
+
+//----------------------------------------------------------------------
 
 // Golang
 func dfs(curr int, color []byte, graph [][]int, notSafe []bool) {
