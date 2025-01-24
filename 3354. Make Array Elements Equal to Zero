@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int countValidSelections(vector<int>& nums) {
+        int total = accumulate(nums.begin(), nums.end(), 0);
+        int leftSum = 0, ans = 0, rightSum = 0;
+        for(int i = 0; i < nums.size(); i++) {
+            leftSum += nums[i];
+            if(nums[i] == 0) {
+                rightSum = total - leftSum;
+                ans += 2 * (leftSum == rightSum) + (leftSum == rightSum + 1) + (leftSum + 1 == rightSum);
+            }
+        }
+        return ans;
+    }
+};
