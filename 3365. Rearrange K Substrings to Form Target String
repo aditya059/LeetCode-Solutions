@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool isPossibleToRearrange(string s, string t, int k) {
+        unordered_map<string, int> Map;
+        int blockSize = s.length() / k;
+        for(int i = 0; i < s.length(); i += blockSize) {
+            Map[s.substr(i, blockSize)]++;
+        }
+        for(int i = 0; i < s.length(); i += blockSize) {
+            string val = t.substr(i, blockSize);
+            Map[val]--;
+            if(Map[val] < 0) return false;
+        }
+        return true;
+    }
+};
