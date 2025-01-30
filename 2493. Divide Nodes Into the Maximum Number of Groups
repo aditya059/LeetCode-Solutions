@@ -1,0 +1,67 @@
+class Solution {
+    bool isBipartite(int curr, vector<vector<int>> &adjList, vector<int> &colors) {
+        for(int next: adjList[curr]) {
+            if(colors[next] == colors[curr]) return false;
+            if(colors[next] == -1) {
+                colors[next] = 1 - colors[curr];
+                if(!isBipartite(next, adjList, colors)) return false;
+            }
+        }
+        return true;
+    }
+    void dfs(int curr, vector<vector<int>> &adjList, vector<bool> &visited, int &maxGroupInComp, int n) {
+        if(visited[curr]) return;
+        visited[curr] = true;
+        maxGroupInComp = max(maxGroupInComp, bfs(curr, adjList, n));
+        for(int next: adjList[curr]) {
+            dfs(next, adjList, visited, maxGroupInComp, n);
+        }
+    }
+    int bfs(int source, vector<vector<int>> &adjList, int n) {
+        vector<bool> visited(n + 1);
+        queue<int> Queue;
+        Queue.push(source);
+        int dist = 0; 
+        visited[source] = true;
+        while(!Queue.empty()) {
+            int sz = Queue.size();
+            dist++;
+            for(int i = 0; i < sz; i++) {
+                int curr = Queue.front();
+                Queue.pop();
+                for(int next: adjList[curr]) {
+                    if(!visited[next]) {
+                        Queue.push(next);
+                        visited[next] = true;
+                    }
+                }
+            }
+        }
+        return dist;
+    }
+public:
+    int magnificentSets(int n, vector<vector<int>>& edges) {
+        vector<vector<int>> adjList(n + 1);
+        vector<int> colors(n + 1, -1);
+        vector<bool> visited(n + 1);
+        for(int i = 0; i < edges.size(); i++) {
+            adjList[edges[i][0]].push_back(edges[i][1]);
+            adjList[edges[i][1]].push_back(edges[i][0]);
+        }
+        for(int i = 1; i <= n; i++) {
+            if(colors[i] == -1) {
+                colors[i] = 0;
+                if(!isBipartite(i, adjList, colors)) return -1;
+            }
+        }
+        int ans = 0;
+        for(int i = 1; i <= n; i++) {
+            if(!visited[i]) {
+                int maxGroupInComp = 0;
+                dfs(i, adjList, visited, maxGroupInComp, n);
+                ans += maxGroupInComp;
+            }
+        }
+        return ans;
+    }
+};
