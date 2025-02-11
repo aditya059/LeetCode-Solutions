@@ -1,0 +1,15 @@
+class Solution {
+public:
+    string removeOccurrences(string s, string part) {
+        int top = -1;
+        for(int i = 0; i < s.length(); i++) {
+            if(s[i] != part.back()) s[++top] = s[i];
+            else {
+                s[++top] = s[i];
+                int partLen = part.length();
+                if(top >= partLen - 1 && part == s.substr(top - partLen + 1, part.length())) top = top - partLen;
+            }
+        }
+        return s.substr(0, top + 1);
+    }
+};
