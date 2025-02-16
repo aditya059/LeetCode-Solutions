@@ -1,0 +1,96 @@
+class Solution {
+    bool canPlace(int index, int val, vector<int> &seq) {
+        if(val == 1) return true;
+        int nextIndex = index + val;
+        return nextIndex < seq.size() && !seq[nextIndex];
+    }
+    void place(int index, int val, vector<int> &seq, vector<bool> &used) {
+        used[val] = true;
+        seq[index] = val;
+        if(val == 1) return;
+        seq[index + val] = val;
+    }
+    void remove(int index, int val, vector<int> &seq, vector<bool> &used) {
+        used[val] = false;
+        seq[index] = 0;
+        if(val == 1) return;
+        seq[index + val] = 0;
+    }
+    void dfs(int index, int n, vector<int> &seq, vector<bool> &used, vector<int> &ans, bool &ansFormed) {
+        if(ansFormed) return;
+        if(index == ans.size()) {
+            ans = seq;
+            ansFormed = true;
+            return;
+        }
+        if(seq[index]) {
+            dfs(index + 1, n, seq, used, ans, ansFormed);
+        } else {
+            int unused = n; 
+            for(int i = n; i >= 1; i--) {
+                if(used[i]) continue;
+                if(canPlace(index, i, seq)) {
+                    place(index, i, seq, used);
+                    dfs(index + 1, n, seq, used, ans, ansFormed);
+                    remove(index, i, seq, used);
+                }
+            }
+        }
+    }
+public:
+    vector<int> constructDistancedSequence(int n) {
+        vector<int> ans(2 * n - 1), temp(2 * n - 1);
+        vector<bool> used(n + 1);
+        bool ansFormed = false;
+        dfs(0, n, temp, used, ans, ansFormed);
+        return ans;
+    }
+};
+
+OR
+
+class Solution {
+    bool canPlace(int index, int val, vector<int> &seq) {
+        if(val == 1) return true;
+        int nextIndex = index + val;
+        return nextIndex < seq.size() && !seq[nextIndex];
+    }
+    void place(int index, int val, vector<int> &seq, vector<bool> &used) {
+        used[val] = true;
+        seq[index] = val;
+        if(val == 1) return;
+        seq[index + val] = val;
+    }
+    void remove(int index, int val, vector<int> &seq, vector<bool> &used) {
+        used[val] = false;
+        seq[index] = 0;
+        if(val == 1) return;
+        seq[index + val] = 0;
+    }
+    bool dfs(int index, int n, vector<int> &seq, vector<bool> &used) {
+        if(index == seq.size()) {
+            return true;
+        }
+        if(seq[index]) {
+            if(dfs(index + 1, n, seq, used)) return true;
+        } else {
+            int unused = n; 
+            for(int i = n; i >= 1; i--) {
+                if(used[i]) continue;
+                if(canPlace(index, i, seq)) {
+                    place(index, i, seq, used);
+                    if(dfs(index + 1, n, seq, used)) return true;
+                    remove(index, i, seq, used);
+                }
+            }
+        }
+        return false;
+    }
+public:
+    vector<int> constructDistancedSequence(int n) {
+        vector<int> seq(2 * n - 1);
+        vector<bool> used(n + 1);
+        dfs(0, n, seq, used);
+        return seq;
+    }
+};
