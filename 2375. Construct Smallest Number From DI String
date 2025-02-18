@@ -19,3 +19,47 @@ public:
         return ans;
     }
 };
+
+OR
+
+class Solution {
+public:
+    string smallestNumber(string pattern) {
+        pattern += "I";
+        string ans = "";
+        stack<char> Stack;
+        for(int i = 0; i < pattern.size(); i++) {
+            if(pattern[i] == 'I') {
+                ans += '1' + i;
+                while(!Stack.empty()) {
+                    ans += Stack.top();
+                    Stack.pop();
+                }
+            } else {
+                Stack.push(i + '1');
+            }
+        }
+        return ans;
+    }
+};
+
+OR
+
+class Solution {
+public:
+    string smallestNumber(string pattern) {
+        pattern += "I";
+        int minDpos = INT_MAX;
+        for(int i = 0; i < pattern.size(); i++) {
+            if(pattern[i] == 'D') {
+                pattern[i] = i + '1';
+                minDpos = min(i, minDpos);
+            } else {
+                pattern[i] = i + '1';
+                reverse(pattern.begin() + minDpos, pattern.begin() + i + 1);
+                minDpos = INT_MAX;
+            }
+        }
+        return pattern;
+    }
+};
