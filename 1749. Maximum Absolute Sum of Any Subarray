@@ -42,3 +42,19 @@ public:
         return max(max_sum_so_far1, max_sum_so_far2);
     }
 };
+
+OR
+
+class Solution {
+public:
+    int maxAbsoluteSum(vector<int>& nums) {
+        int sum = 0, minimum = 0, maximum = 0, ans = 0;
+        for(int i = 0; i < nums.size(); i++) {
+            sum += nums[i];
+            ans = max(ans, max(abs(sum - minimum), abs(sum - maximum)));
+            minimum = min(minimum, sum);
+            maximum = max(maximum, sum);
+        }
+        return ans;
+    }
+};
