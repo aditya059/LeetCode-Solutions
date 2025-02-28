@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int lenLongestFibSubseq(vector<int>& arr) {
+        unordered_set<int> Set(arr.begin(), arr.end());
+        int ans = 0;
+        for(int i = 0; i < arr.size(); i++) {
+            for(int j = i + 1; j < arr.size(); j++) {
+                int len = 2;
+                for(int first = arr[i], second = arr[j], sum = 0; ; ) {
+                    sum = first + second;
+                    first = second, second = sum;
+                    if(Set.find(sum) == Set.end()) break;
+                    len++;
+                }
+                ans = max(ans, len);
+            }
+        }
+        return ans >= 3? ans: 0;
+    }
+};
+
+OR
+
+class Solution {
+public:
+    int lenLongestFibSubseq(vector<int>& arr) {
+        int n = arr.size(), ans = 0;
+        vector<vector<int>> DP(n, vector<int>(n));
+        for(int k = n - 1; k >= 2; k--) {
+            int i = 0, j = k - 1;
+            while(i < j) {
+                int sum = arr[i] + arr[j];
+                if(sum < arr[k]) i++;
+                else if(sum > arr[k]) j--;
+                else {
+                    DP[i][j] = max(DP[i][j], DP[j][k] + 1);
+                    ans = max(ans, DP[i][j]);
+                    i++, j--;
+                }
+            }
+        }
+        return ans? ans + 2: ans;
+    }
+};
