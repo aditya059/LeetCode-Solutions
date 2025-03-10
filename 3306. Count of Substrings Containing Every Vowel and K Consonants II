@@ -1,0 +1,32 @@
+class Solution {
+    bool isVowel(char ch) {
+        return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+    }
+    long long atleastK(string word, int k) {
+        long long ans = 0;
+        unordered_map<char, int> vowelsCount;
+        int consonantCount = 0;
+        for(int start = 0, end = 0; end < word.length(); end++) {
+            char endChar = word[end];
+            if(isVowel(endChar)) vowelsCount[endChar]++;
+            else consonantCount++;
+
+            while(vowelsCount.size() == 5 && consonantCount >= k) {
+                ans += word.length() - end;
+                char startChar = word[start];
+                if(isVowel(startChar)) {
+                    vowelsCount[startChar]--;
+                    if(vowelsCount[startChar] == 0) vowelsCount.erase(startChar);
+                } else {
+                    consonantCount--;
+                }
+                start++;
+            }
+        }
+        return ans;
+    }
+public:
+    long long countOfSubstrings(string word, int k) {
+        return atleastK(word, k) - atleastK(word, k + 1);
+    }
+};
