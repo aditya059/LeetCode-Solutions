@@ -1,0 +1,21 @@
+class Solution {
+    int countMaxCuts(int pos1, int pos2, vector<vector<int>>& rectangles) {
+        sort(rectangles.begin(), rectangles.end(), [&](auto &A, auto &B) {
+            return A[pos1] < B[pos1];
+        });
+        int currEnd = 0, cuts = 0;
+        for(int i = 0; i < rectangles.size(); i++) {
+            int start = rectangles[i][pos1], end = rectangles[i][pos2];
+            if(start >= currEnd) cuts++;
+            currEnd = max(currEnd, end); 
+        }
+        return cuts;
+    }
+public:
+    bool checkValidCuts(int n, vector<vector<int>>& rectangles) {
+        int maxHorizontalCuts = countMaxCuts(1, 3, rectangles);
+        if(maxHorizontalCuts >= 3) return true;
+        int maxVerticalCuts = countMaxCuts(0, 2, rectangles);
+        return maxVerticalCuts >= 3;
+    }
+};
