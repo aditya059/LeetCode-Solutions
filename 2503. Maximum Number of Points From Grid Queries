@@ -1,0 +1,37 @@
+class Solution {
+public:
+    vector<int> maxPoints(vector<vector<int>>& grid, vector<int>& queries) {
+        int n = queries.size();
+        vector<int> index(n);
+        iota(index.begin(), index.end(), 0);
+        sort(index.begin(), index.end(), [&](int i, int j) {
+            return queries[i] < queries[j];
+        });
+        int valuePoped = 0;
+        pair<int, int> dirs[4] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        vector<int> ans(n);
+        vector<vector<bool>> visited(grid.size(), vector<bool>(grid[0].size()));
+        priority_queue<vector<int>> PQ;
+        PQ.push({-grid[0][0], 0, 0});
+        visited[0][0] = true;
+        for(int i = 0; i < n; i++) {
+            int queryVal = queries[index[i]];
+            while(!PQ.empty()) {
+                vector<int> curr = PQ.top();
+                int val = -curr[0];
+                if(val >= queryVal) break;
+                PQ.pop();
+                int currX = curr[1], currY = curr[2];
+                valuePoped++;
+                for(pair<int, int> dir: dirs) {
+                    int nextX = currX + dir.first, nextY = currY + dir.second;
+                    if(nextX < 0 || nextY < 0 || nextX >= grid.size() || nextY >= grid[0].size() || visited[nextX][nextY]) continue;
+                    PQ.push({-grid[nextX][nextY], nextX, nextY});
+                    visited[nextX][nextY] = true;
+                }
+            }
+            ans[index[i]] = valuePoped;
+        }
+        return ans;
+    }
+};
