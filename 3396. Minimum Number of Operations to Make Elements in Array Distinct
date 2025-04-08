@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int minimumOperations(vector<int>& nums) {
+        int n = nums.size();
+        int numOfBlocks = ceil(n / 3.0);
+        unordered_map<int, int> Map;
+        for(int i = numOfBlocks - 1; i >= 0; i--) {
+            for(int j = 0; j <= 2; j++) {
+                if(i * 3 + j >= n) continue;
+                int num = nums[i * 3 + j];
+                if(Map.find(num) != Map.end()) {
+                    return i + 1;
+                }
+                Map[num]++;
+            }
+        }
+        return 0;
+    }
+};
