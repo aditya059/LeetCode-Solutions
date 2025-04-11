@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int countSymmetricIntegers(int low, int high) {
+        int ans = 0;
+        for(int i = low; i <= high; i++) {
+            string num = to_string(i);
+            if(num.length() % 2) continue;
+            int sum = 0;
+            for(int j = 0, k = num.length() - 1; j < k; j++, k--) {
+                sum += (num[j] - '0') - (num[k] - '0');
+            }
+            ans += sum == 0;
+        }
+        return ans;
+    }
+};
