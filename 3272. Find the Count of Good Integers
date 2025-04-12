@@ -1,0 +1,34 @@
+class Solution {
+public:
+    long long countGoodIntegers(int n, int k) {
+        int firstNumLeftHalf = pow(10, (n - 1) >> 1);
+        int lastNumLeftHalf = 10 * firstNumLeftHalf;
+        int skip = n & 1;
+        unordered_set<string> kPalindromes;
+        for(int i = firstNumLeftHalf; i < lastNumLeftHalf; i++) {
+            string leftHalf = to_string(i);
+            string palindrome = leftHalf + string(leftHalf.rbegin() + skip, leftHalf.rend());
+            if(stoll(palindrome) % k == 0) {
+                sort(palindrome.begin(), palindrome.end());
+                kPalindromes.insert(palindrome);
+            }
+        }
+        vector<long long> factorial(n + 1, 1);
+        for(int i = 1; i <= n; i++) {
+            factorial[i] = i * factorial[i - 1];
+        }
+        long long ans = 0;
+        for(string kPalindrome: kPalindromes) {
+            int freq[10] = {0};
+            for(int i = 0; i < kPalindrome.length(); i++) {
+                freq[kPalindrome[i] - '0']++;
+            }
+            long long total = (n - freq[0]) * factorial[n - 1];
+            for(int i = 0; i < 10; i++) {
+                total /= factorial[freq[i]];
+            }
+            ans += total;
+        }
+        return ans;
+    }
+};
