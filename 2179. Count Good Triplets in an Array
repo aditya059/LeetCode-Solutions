@@ -1,0 +1,35 @@
+class Solution {
+    int query(vector<int> &BIT, int i) {
+        int sum = 0;
+        i++;
+        while(i > 0) {
+            sum += BIT[i];
+            i -= (i & -i);
+        }
+        return sum;
+    }
+    void add(vector<int> &BIT, int i, int val) {
+        i++;
+        while(i < BIT.size()) {
+            BIT[i] += val;
+            i += (i & -i);
+        }
+    }
+public:
+    long long goodTriplets(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size();
+        vector<int> BIT(n + 1), index(n);
+        for(int i = 0; i < n; i++) {
+            index[nums2[i]] = i;
+        }
+        long long ans = 0;
+        for(int i = 0; i < n; i++) {
+            int mid = index[nums1[i]];
+            int left = query(BIT, mid);
+            int right = n + left - 1 - i - mid;
+            ans += left * 1LL * right;
+            add(BIT, mid, 1);
+        }
+        return ans;
+    }
+};
