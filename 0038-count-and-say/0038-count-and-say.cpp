@@ -20,3 +20,31 @@ public:
         return r;
     }
 };
+
+OR
+
+class Solution {
+    string solve(string &prevRLE) {
+        int len = 1;
+        char ch = prevRLE[0];
+        string newRLE = "";
+        for(int i = 1; i < prevRLE.length(); i++) {
+            if(prevRLE[i] == ch) {
+                len++;
+            } else {
+                newRLE += to_string(len) + ch;
+                len = 1;
+                ch = prevRLE[i];
+            }
+        }
+        return newRLE + to_string(len) + ch;
+    }
+public:
+    string countAndSay(int n) {
+        string ans = "1";
+        for(int i = 1; i < n; i++) {
+            ans = solve(ans);
+        }
+        return ans;
+    }
+};
