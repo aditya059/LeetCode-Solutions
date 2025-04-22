@@ -1,0 +1,32 @@
+class Solution {
+    const int MOD = 1e9 + 7;
+    int count[10005][15] = {0};
+    int nCr[10005][15] = {0};
+public:
+    int idealArrays(int n, int maxValue) {
+
+        for(int i = 1; i <= maxValue; i++) {
+            count[i][1] = 1;
+            for(int j = i + i; j <= maxValue; j += i) {
+                for(int k = 1; k < 14; k++) {
+                    count[j][k + 1] += count[i][k];
+                }
+            }
+        }
+
+        for(int m = 0; m <= n; m++) {
+            nCr[m][0] = 1;
+            for(int r = 1; r < 14; r++) {
+                nCr[m][r] = (nCr[m - 1][r - 1] + nCr[m - 1][r]) % MOD;
+            }
+        }
+        
+        int ans = 0, total = 0;
+        for(int i = 1; i <= maxValue; i++) {
+            for(int j = 1; j <= min(n, 14); j++) {
+                ans = (ans + (1LL * nCr[n - 1][j - 1] * count[i][j]) % MOD) % MOD;
+            }
+        }
+        return ans;
+    }
+};
