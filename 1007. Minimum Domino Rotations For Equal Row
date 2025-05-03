@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int minDominoRotations(vector<int>& tops, vector<int>& bottoms) {
+        int topCount[7] = {0}, bottomCount[7] = {0}, sameCount[7] = {0};
+        for(int i = 0; i < tops.size(); i++) {
+            topCount[tops[i]]++;
+            bottomCount[bottoms[i]]++;
+            if(tops[i] == bottoms[i]) sameCount[tops[i]]++;
+        }
+        int ans = INT_MAX;
+        for(int i = 1; i <= 6; i++) {
+            if(topCount[i] + bottomCount[i] - sameCount[i] == tops.size()) {
+                ans = min(ans, min(topCount[i], bottomCount[i]) - sameCount[i]);
+            }
+        }
+        return ans == INT_MAX? -1: ans;
+    }
+};
