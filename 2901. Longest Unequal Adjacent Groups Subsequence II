@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<string> getWordsInLongestSubsequence(vector<string>& words, vector<int>& groups) {
+        int n = words.size(), maxIndex = 0;
+        vector<int> dp(n, 1), parent(n, -1);
+        for(int i = 1; i < n; i++) {
+            for(int j = i - 1; j >= 0; j--) {
+                if(groups[i] != groups[j] && words[i].length() == words[j].length()) {
+                    int hammingDist = 0;
+                    for(int k = 0; k < words[i].length(); k++) {
+                        hammingDist += words[i][k] != words[j][k];
+                    }
+                    if(hammingDist == 1 && dp[j] + 1 > dp[i]) {
+                        dp[i] = max(dp[i], dp[j] + 1);
+                        parent[i] = j;
+                        if(dp[i] > dp[maxIndex]) maxIndex = i;
+                    }
+                }
+            }
+        }
+        vector<string> ans(dp[maxIndex]);
+        for(int i = dp[maxIndex] - 1; i >= 0; i--) {
+            ans[i] = words[maxIndex];
+            maxIndex = parent[maxIndex];
+        }
+        return ans;
+    }
+};
