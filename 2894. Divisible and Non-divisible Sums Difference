@@ -1,0 +1,8 @@
+class Solution {
+public:
+    int differenceOfSums(int n, int m) {
+        int total = n * (n + 1) / 2;
+        int num2 = (n / m) * ((n / m) + 1) / 2 * m;
+        return total - 2 * num2;
+    }
+};
