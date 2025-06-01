@@ -1,0 +1,11 @@
+class Solution {
+public:
+    long long distributeCandies(int n, int limit) {
+        int m = min(n, limit);
+        long long ans = 0;
+        for(int i = 0; i <= m; i++) {
+            ans += max(0, 1 + min(n - i, limit) - max(0, n - i - limit));
+        }
+        return ans;
+    }
+};
