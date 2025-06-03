@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int maxCandies(vector<int>& status, vector<int>& candies, vector<vector<int>>& keys, vector<vector<int>>& containedBoxes, vector<int>& initialBoxes) {
+        queue<int> boxesWithKeys;
+        set<int> boxesWithoutKeys;
+        for(int i = 0; i < initialBoxes.size(); i++) {
+            if(status[initialBoxes[i]])
+                boxesWithKeys.push(initialBoxes[i]);
+            else
+                boxesWithoutKeys.insert(initialBoxes[i]);
+        }
+        int ans = 0;
+        
+        while(!boxesWithKeys.empty()) {
+            int curr = boxesWithKeys.front();
+            boxesWithKeys.pop();
+            ans += candies[curr];
+            for(int next: keys[curr]) {
+                status[next] = 1;
+                if(boxesWithoutKeys.find(next) != boxesWithoutKeys.end()) {
+                    boxesWithKeys.push(next);
+                    boxesWithoutKeys.erase(next);
+                } 
+            }
+            for(int next: containedBoxes[curr]) {
+                if(status[next]) {
+                    boxesWithKeys.push(next);
+                } else {
+                    boxesWithoutKeys.insert(next);
+                }
+            }
+        }
+        return ans;
+    }
+};
