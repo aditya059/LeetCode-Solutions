@@ -1,0 +1,24 @@
+class Solution {
+public:
+    string robotWithString(string s) {
+        unordered_map<char, int> freq;
+        for(int i = 0; i < s.length(); i++) {
+            freq[s[i]]++;
+        }
+        string ans = "";
+        stack<char> Stack;
+        char minChar = 'a';
+        for(int i = 0; i < s.length(); i++) {
+            Stack.push(s[i]);
+            freq[s[i]]--;
+            while(minChar < 'z' && freq[minChar] == 0) {
+                minChar++;
+            }
+            while(!Stack.empty() && Stack.top() <= minChar) {
+                ans += Stack.top();
+                Stack.pop();
+            }
+        }
+        return ans;
+    }
+};
