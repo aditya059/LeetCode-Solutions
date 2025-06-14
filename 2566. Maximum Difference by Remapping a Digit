@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int minMaxDifference(int num) {
+        string n1 = to_string(num);
+        string n2 = to_string(num);
+        int i = 0, j = 0;
+        char ch1 = '0', ch2 = '0';
+        while(i < n1.size() && n1[i] == '9') i++;
+        while(j < n2.size() && n2[j] == '0') j++;
+        ch1 = n1[i], ch2 = n2[j];
+        for(int k = 0; k < n1.size(); k++) {
+            if(n1[k] == ch1) n1[k] = '9';
+            if(n2[k] == ch2) n2[k] = '0';
+        }
+        return stoi(n1) - stoi(n2);
+    }
+};
