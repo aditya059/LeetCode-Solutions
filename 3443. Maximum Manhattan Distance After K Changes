@@ -1,0 +1,18 @@
+class Solution {
+    int calc(int count1, int count2, int &k) {
+        int use = min(min(count1, count2), k);
+        k -= use;
+        return abs(count1 - count2) + 2 * use;
+    }
+public:
+    int maxDistance(string s, int k) {
+        unordered_map<char, int> freq;
+        int ans = 0;
+        for(int i = 0; i < s.length(); i++) {
+            freq[s[i]]++;
+            int t = k;
+            ans = max(ans, calc(freq['N'], freq['S'], t) + calc(freq['E'], freq['W'], t));
+        }
+        return ans;
+    }
+};
