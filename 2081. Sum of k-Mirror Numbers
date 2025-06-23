@@ -1,0 +1,38 @@
+class Solution {
+    int digits[50];
+    bool isPalindrome(long long num, int k) {
+        int size = 0;
+        for(long long i = num; i > 0; i /= k) {
+            digits[size++] = i % k;
+        }
+        for(int i = 0, j = size - 1; i < j; i++, j--) {
+            if(digits[i] != digits[j]) return false;
+        }
+        return true;
+    }
+public:
+    long long kMirror(int k, int n) {
+        int count = 0, left = 1;
+        long long sum = 0;
+        while(count < n) {
+            int right = left * 10;
+            for(int op = 0; op < 2; op++) {
+                for(int leftHalf = left; leftHalf < right; leftHalf++) {
+                    if(count >= n) return sum;
+                    long long combined = leftHalf;
+                    int temp = (op == 0? leftHalf / 10: leftHalf);
+                    while(temp) {
+                        combined = combined * 10 + (temp % 10);
+                        temp /= 10;
+                    }
+                    if(isPalindrome(combined, k)) {
+                        sum += combined;
+                        count++;
+                    }
+                }
+            }
+            left = right;
+        }
+        return sum;
+    }
+};
