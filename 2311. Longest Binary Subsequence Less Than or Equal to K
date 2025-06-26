@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int longestSubsequence(string s, int k) {
+        int val = 0, len = 0, i = 0;
+        for(i = s.length() - 1; i >= 0; i--) {
+            int digit = s[i] - '0';
+            if((1 << len) > k) break;
+            if(digit * (1 << len) + val <= k) {
+                val = digit * (1 << len) + val;
+                len++;
+            }
+        }
+        while(i >= 0) {
+            len += (s[i--] == '0');
+        }
+        return len;
+    }
+};
