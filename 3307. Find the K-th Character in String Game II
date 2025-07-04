@@ -1,0 +1,10 @@
+class Solution {
+public:
+    char kthCharacter(long long k, vector<int>& operations) {
+        int incr = 0, j = 0;
+        for(long long i = k - 1; i > 0; i /= 2, j++) {
+            incr += (i % k) & operations[j];
+        }
+        return 'a' + incr % 26;
+    }
+};
