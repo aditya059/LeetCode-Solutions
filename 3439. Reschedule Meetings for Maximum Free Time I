@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int maxFreeTime(int eventTime, int k, vector<int>& startTime, vector<int>& endTime) {
+        int n = startTime.size(), ans = 0;
+        vector<int> freeTime(n + 1);
+        freeTime[0] = startTime[0];
+        int currSum = 0, 
+        for(int i = 1; i < n; i++) {
+            freeTime[i] = startTime[i] - endTime[i - 1];
+            currSum += freeTime[i];
+            if(i > k) currSum -= freeTime[i - k - 1];
+            ans = max(ans, currSum);
+        }
+        freeTime[n] = eventTime - endTime[n - 1];
+        
+        return ans;
+    }
+};
