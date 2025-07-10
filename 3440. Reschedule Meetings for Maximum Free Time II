@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int maxFreeTime(int eventTime, vector<int>& startTime, vector<int>& endTime) {
+        int n = endTime.size();
+        vector<int> gap(n + 1);
+        gap[0] = startTime[0];
+        for(int i = 1; i < n; i++) {
+            gap[i] = startTime[i] - endTime[i - 1];
+        }
+        gap[n] = eventTime - endTime[n - 1];
+        vector<int> maxRightGap(n + 1);
+        for(int i = n - 1; i >= 0; i--) {
+            maxRightGap[i] = max(maxRightGap[i + 1], gap[i + 1]);
+        }
+        int maxLeftGap = 0, ans = 0;
+        for(int i = 0; i < n; i++) {
+            int currMeetSize = endTime[i] - startTime[i];
+            ans = max(ans, gap[i] + gap[i + 1]);
+            if(currMeetSize <= max(maxLeftGap, maxRightGap[i + 1])) {
+                ans = max(ans, gap[i] + gap[i + 1] + currMeetSize);
+            } 
+            maxLeftGap = max(maxLeftGap, gap[i]);
+        }
+        return ans;
+    }
+};
