@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int maximumLength(vector<int>& nums) {
+        int countModulo2[2] = {0};
+        int endingWith[2] = {0};
+        for(int i = 0; i < nums.size(); i++) {
+            int numModulo2 = nums[i] % 2;
+            countModulo2[numModulo2]++;
+            endingWith[numModulo2] = endingWith[1 - numModulo2] + 1;
+        }
+        return max(max(countModulo2[0], countModulo2[1]), max(endingWith[0], endingWith[1]));
+    }
+};
