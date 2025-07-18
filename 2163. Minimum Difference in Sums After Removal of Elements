@@ -1,0 +1,33 @@
+class Solution {
+public:
+    long long minimumDifference(vector<int>& nums) {
+        int n = nums.size() / 3;
+        long long currSum = 0;
+        vector<long long> DP(nums.size());
+        priority_queue<int, vector<int>, greater<int>> minHeap;
+        for(int i = nums.size() - 1; i >= 0; i--) {
+            minHeap.push(nums[i]);
+            currSum += nums[i];
+            if(minHeap.size() > n) {
+                currSum -= minHeap.top();
+                minHeap.pop();
+            }
+            DP[i] = currSum;
+        }
+        currSum = 0;
+        priority_queue<int> maxHeap;
+        long long ans = 1e18;
+        for(int i = 0; i < nums.size(); i++) {
+            maxHeap.push(nums[i]);
+            currSum += nums[i];
+            if(maxHeap.size() > n) {
+                currSum -= maxHeap.top();
+                maxHeap.pop();
+            }
+            if(i >= n - 1 && i < 2 * n) {
+                ans = min(ans, currSum - DP[i + 1]);
+            }
+        }
+        return ans;
+    }
+};
