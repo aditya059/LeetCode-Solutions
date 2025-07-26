@@ -1,0 +1,26 @@
+class Solution {
+public:
+    long long maxSubarrays(int n, vector<vector<int>>& conflictingPairs) {
+        vector<vector<int>> lefts(n + 1);
+        for(vector<int> pair: conflictingPairs) {
+            if(pair[0] > pair[1]) swap(pair[0], pair[1]);
+            lefts[pair[1]].push_back(pair[0]);
+        }
+        vector<long long> gainOnRemoval(n + 1);
+        int maxLeft = 0, secMaxLeft = 0;
+        long long ans = 0;
+        for(int right = 1; right <= n; right++) {
+            for(int left: lefts[right]) {
+                if(left > maxLeft) {
+                    secMaxLeft = maxLeft;
+                    maxLeft = left;
+                } else if(left > secMaxLeft) {
+                    secMaxLeft = left;
+                }
+            }
+            ans += right - maxLeft;
+            gainOnRemoval[maxLeft] += maxLeft - secMaxLeft;
+        }
+        return ans + *max_element(gainOnRemoval.begin(), gainOnRemoval.end());
+    }
+};
