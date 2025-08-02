@@ -1,0 +1,27 @@
+class Solution {
+public:
+    long long minCost(vector<int>& basket1, vector<int>& basket2) {
+        map<int, int> freq;
+        for(int i = 0; i < basket1.size(); i++) {
+            freq[basket1[i]]++;
+        }
+        for(int i = 0; i < basket2.size(); i++) {
+            freq[basket2[i]]--;
+        }
+        int total = 0;
+        for(auto [key, val]: freq) {
+            if(val % 2) return -1;
+            total += abs(val);
+        }
+        int swap = total / 4;
+        long long ans = 0;
+        int minimum = freq.begin() -> first;
+        for(auto [key, val]: freq) {
+            if(swap == 0) break;
+            long long take = min(abs(val) / 2, swap);
+            ans += take * min(key, 2 * minimum);
+            swap -= take;
+        }
+        return ans;
+    }
+};
