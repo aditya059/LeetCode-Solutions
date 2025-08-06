@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int numOfUnplacedFruits(vector<int>& fruits, vector<int>& baskets) {
+        int n = fruits.size(), placed = 0;
+        int blockSize = sqrt(n);
+        int numOfBlocks = ceil(n * 1.0 / blockSize);
+        vector<int> maxValInBlock(numOfBlocks);
+        for(int i = 0; i < numOfBlocks; i++) {
+            maxValInBlock[i] = *max_element(baskets.begin() + i * blockSize, baskets.begin() + min(n, (i + 1) * blockSize));
+        }
+        for(int fruit: fruits) {
+            for(int block = 0; block < numOfBlocks; block++) {
+                if(maxValInBlock[block] < fruit) {
+                    continue;
+                }
+                maxValInBlock[block] = 0;
+                bool selected = false;
+                for(int i = 0; i < blockSize; i++) {
+                    int actualPos = block * blockSize + i;
+                    if(actualPos >= n) break;
+                    if(baskets[actualPos] >= fruit && !selected) {
+                        baskets[actualPos] = 0;
+                        placed++;
+                        selected = true;
+                    }
+                    maxValInBlock[block] = max(maxValInBlock[block], baskets[actualPos]);
+                }
+                break;
+            }
+        }
+        return n - placed;
+    }
+};
