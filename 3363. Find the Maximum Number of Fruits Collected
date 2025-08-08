@@ -1,0 +1,32 @@
+class Solution {
+    int compute(vector<vector<int>>& fruits) {
+        int n = fruits.size();
+        vector<int> DP(n);
+        DP[n - 1] = fruits[0][n - 1];
+        for(int i = 1; i < n - 1; i++) {
+            vector<int> nextDP(n);
+            for(int j = max(i + 1, n - i - 1); j < n; j++) {
+                for(int k = j - 1; k <= min(j + 1, n - 1); k++) {
+                    nextDP[j] = max(nextDP[j], DP[k] + fruits[i][j]);
+                }
+            }
+            DP = nextDP;
+        }
+        return DP[n - 1];
+    }
+public:
+    int maxCollectedFruits(vector<vector<int>>& fruits) {
+        int ans = 0, n = fruits.size();
+        for(int i = 0; i < n; i++) {
+            ans += fruits[i][i];
+        }
+        ans += compute(fruits);
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < i; j++) {
+                swap(fruits[i][j], fruits[j][i]);
+            }
+        }
+        ans += compute(fruits);
+        return ans;
+    }
+};
