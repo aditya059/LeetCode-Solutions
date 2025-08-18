@@ -1,0 +1,29 @@
+class Solution {
+    const double epsilon = 0.01;
+    bool solve(vector<double> &curr) {
+        if(curr.size() == 1) {
+            return abs(curr[0] - 24) <= epsilon;
+        }
+        for(int i = 0; i < curr.size(); i++) {
+            for(int j = 0; j < i; j++) {
+                double a = curr[i], b = curr[j];
+                vector<double> next(curr.begin(), curr.end());
+                next.erase(next.begin() + i);
+                next.erase(next.begin() + j);
+                for(double val: {a + b, a - b, b - a, a * b, a / b, b / a}) {
+                    next.push_back(val);
+                    if(solve(next)) {
+                        return true;
+                    }
+                    next.pop_back();
+                }
+            }
+        }
+        return false;
+    }
+public:
+    bool judgePoint24(vector<int>& cards) {
+        vector<double> nums(cards.begin(), cards.end());
+        return solve(nums);
+    }
+};
