@@ -1,3 +1,4 @@
+O(mn^2)
 class Solution {
 public:
     int numSubmat(vector<vector<int>>& mat) {
@@ -12,6 +13,38 @@ public:
                     ans += minHeight;
                 }
             }
+        }
+        return ans;
+    }
+};
+
+OR
+
+// O(mn)
+class Solution {
+public:
+    int numSubmat(vector<vector<int>>& mat) {
+        int m = mat.size(), n = mat[0].size(), ans = 0;
+        vector<int> height(n);
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                height[j] = mat[i][j] == 0? 0: height[j] + 1;
+            }
+            stack<int> Stack;
+            vector<int> DP(n);
+            for(int j = 0; j < n; j++) {
+                while(!Stack.empty() && height[Stack.top()] >= height[j]) {
+                    Stack.pop();
+                }
+                if(Stack.empty()) {
+                    DP[j] = height[j] * (j + 1); 
+                } else {
+                    int preIndex = Stack.top();
+                    DP[j] = DP[preIndex] + (j - preIndex) * height[j];
+                }
+                Stack.push(j);
+            }
+            ans += accumulate(DP.begin(), DP.end(), 0);
         }
         return ans;
     }
