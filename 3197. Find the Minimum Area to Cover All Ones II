@@ -1,0 +1,46 @@
+class Solution {
+    int minArea(vector<vector<int>>& grid, int row1, int row2, int col1, int col2) {
+        int minRow = row2, maxRow = row1, minCol = col2, maxCol = col1;
+        for(int i = row1; i <= row2; i++) {
+            for(int j = col1; j <= col2; j++) {
+                if(grid[i][j]) {
+                    minRow = min(minRow, i);
+                    maxRow = max(maxRow, i);
+                    minCol = min(minCol, j);
+                    maxCol = max(maxCol, j);
+                }
+            }
+        }
+        return minRow > maxRow || minCol > maxCol? INT_MAX / 3: (maxRow - minRow + 1) * (maxCol - minCol + 1);
+    }
+    vector<vector<int>> rotateGrid(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<int>> rotGrid(n, vector<int>(m));
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                rotGrid[i][j] = grid[j][i];
+            }
+        }
+        return rotGrid;
+    }
+    int solve(vector<vector<int>>& grid) {
+        int ans = INT_MAX, m = grid.size(), n = grid[0].size();
+        for(int i = 0; i < m - 2; i++) {
+            for(int j = i + 1; j < m - 1; j++) {
+                ans = min(ans, minArea(grid, 0, i, 0, n - 1) + minArea(grid, i + 1, j, 0, n - 1) + minArea(grid, j + 1, m - 1, 0, n - 1));
+            }
+        }
+        for(int i = 0; i < m - 1; i++) {
+            for(int j = 0; j < n - 1; j++) {
+                ans = min(ans, minArea(grid, 0, i, 0, n - 1) + minArea(grid, i + 1, m - 1, 0, j) + minArea(grid, i + 1, m - 1, j + 1, n - 1));
+                ans = min(ans, minArea(grid, 0, i, 0, j) + minArea(grid, 0, i, j + 1, n - 1) + minArea(grid, i + 1, m - 1, 0, n - 1));
+            }
+        }
+        return ans;
+    }
+public:
+    int minimumSum(vector<vector<int>>& grid) {
+        vector<vector<int>> rotGrid = rotateGrid(grid);
+        return min(solve(grid), solve(rotGrid));
+    }
+};
