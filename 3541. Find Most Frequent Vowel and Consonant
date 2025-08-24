@@ -1,0 +1,20 @@
+class Solution {
+    bool isVowel(char ch) {
+        return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+    }
+public:
+    int maxFreqSum(string s) {
+        int freq[26] = {0};
+        int vowel = 0, consonant = 0;
+        for(int i = 0; i < s.length(); i++) {
+            int index = s[i] - 'a';
+            freq[index]++;
+            if(isVowel(s[i])) {
+                vowel = max(vowel, freq[index]);
+            } else {
+                consonant = max(consonant, freq[index]);
+            }
+        }
+        return vowel + consonant;
+    }
+};
