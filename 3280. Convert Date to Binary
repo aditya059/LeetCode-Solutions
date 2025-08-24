@@ -1,0 +1,23 @@
+class Solution {
+    string binary(string wd) {
+        int n = stoi(wd);
+        string ans = "";
+        for(int i = n; i > 0; i /= 2) {
+            ans = to_string(i % 2) + ans;
+        }
+        return ans;
+    }
+public:
+    string convertDateToBinary(string date) {
+        string ans = "", wd = "";
+        for(int i = 0; i < date.length(); i++) {
+            if(date[i] == '-') {
+                ans += binary(wd) + "-";
+                wd = "";
+            } else {
+                wd += date[i];
+            }
+        }
+        return ans + binary(wd);
+    }
+};
