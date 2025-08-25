@@ -1,0 +1,10 @@
+class Solution {
+public:
+    string truncateSentence(string s, int k) {
+        int index = -1;
+        for(int i = 0; i < k; i++) {
+            index = s.find(" ", index + 1);
+        }
+        return s.substr(0, index);
+    }
+};
