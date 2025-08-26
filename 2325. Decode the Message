@@ -1,0 +1,16 @@
+class Solution {
+public:
+    string decodeMessage(string key, string message) {
+        char val = 'a';
+        unordered_map<char, char> Map;
+        for(char ch: key) {
+            if(ch == ' ' || Map.find(ch) != Map.end()) continue;
+            Map[ch] = val++;   
+        }
+        Map[' '] = ' ';
+        for(int i = 0; i < message.size(); i++) {
+            message[i] = Map[message[i]];
+        }
+        return message;
+    }
+};
