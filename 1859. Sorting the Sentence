@@ -1,0 +1,18 @@
+class Solution {
+public:
+    string sortSentence(string s) {
+        int wordCount = 0;
+        stringstream ss(s);
+        string words[9];
+        string word = "";
+        while(ss >> word) {
+            words[word.back() - 1 - '0'] = word.substr(0, word.length() - 1);
+            wordCount++;
+        }
+        s = words[0];
+        for(int i = 01; i < wordCount; i++) {
+            s +=  " " + words[i];
+        }
+        return s;
+    }
+};
