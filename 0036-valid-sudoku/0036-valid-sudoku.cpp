@@ -37,3 +37,25 @@ public:
         return solve(board);
     }
 };
+
+OR
+
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        int countInRow[9][10] = {0}, countInCol[9][10] = {0}, countInBox[9][10] = {0};
+        for(int i = 0; i < 9; i++) {
+            for(int j = 0; j < 9; j++) {
+                if(board[i][j] == '.') continue;
+                int digit = board[i][j] - '0', k = (i / 3) * 3 + (j / 3);
+                if(countInRow[i][digit] || countInCol[j][digit] || countInBox[k][digit]) {
+                    return false;
+                }
+                countInRow[i][digit]++;
+                countInCol[j][digit]++;
+                countInBox[k][digit]++;
+            }
+        }
+        return true;
+    }
+};
