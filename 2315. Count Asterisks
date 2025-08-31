@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int countAsterisks(string s) {
+        int bal = 0, ans = 0;
+        for(int i = 0; i < s.length(); i++) {
+            if(bal % 2 == 0) {
+                ans += s[i] == '*';
+            }
+            bal += s[i] == '|';
+        }
+        return ans;
+    }
+};
