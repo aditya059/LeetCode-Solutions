@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int sumOddLengthSubarrays(vector<int>& arr) {
+        int ans = 0;
+        for(int i = 0; i < arr.size(); i++) {
+            int leftCount = i;
+            int rightCount = arr.size() - i - 1;
+            ans += arr[i] * (leftCount / 2 + 1) * (rightCount / 2 + 1);
+            ans += arr[i] * ((leftCount + 1) / 2) * ((rightCount + 1)/ 2);
+        }
+        return ans;
+    }
+};
