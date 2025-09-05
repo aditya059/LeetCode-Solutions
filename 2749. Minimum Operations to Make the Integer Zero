@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int makeTheIntegerZero(int num1, int num2) {
+        for(int numOfOperations = 1; ; numOfOperations++) {
+            long long num = num1 - numOfOperations * 1LL * num2;
+            if(numOfOperations > num) return -1;  // Min 1 (2 ^ 0) can be subtracted from num. So max no. of operations to make num = 0 is num
+            if(__builtin_popcountll(num) <= numOfOperations) return numOfOperations;
+        }
+        return -1;
+    }
+};
