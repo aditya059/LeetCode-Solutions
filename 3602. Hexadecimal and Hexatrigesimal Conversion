@@ -1,0 +1,30 @@
+class Solution {
+    string hexadecimal(int n) {
+        string ans = "";
+        for(int i = n; i > 0; i /= 16) {
+            int d = i % 16;
+            if(d < 10) {
+                ans = to_string(d) + ans;
+            } else {
+                ans = string(1, 'A' + d - 10) + ans;
+            }
+        }
+        return ans;
+    }
+    string hexatrigesimal(int n) {
+        string ans = "";
+        for(int i = n; i > 0; i /= 36) {
+            int d = i % 36;
+            if(d < 10) {
+                ans = to_string(d) + ans;
+            } else {
+                ans = string(1, 'A' + d - 10) + ans;
+            }
+        }
+        return ans;
+    }
+public:
+    string concatHex36(int n) {
+        return hexadecimal(n * n) + hexatrigesimal(n * n * n);
+    }
+};
