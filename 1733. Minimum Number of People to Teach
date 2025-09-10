@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int minimumTeachings(int n, vector<vector<int>>& languages, vector<vector<int>>& friendships) {
+        unordered_set<int> Set;
+        for(int i = 0; i < friendships.size(); i++) {
+            vector<bool> mask(n + 1);
+            int f1 = friendships[i][0] - 1, f2 = friendships[i][1] - 1;
+            for(int j = 0; j < languages[f1].size(); j++) {
+                mask[languages[f1][j]] = true;
+            }
+            bool common = false;
+            for(int j = 0; j < languages[f2].size(); j++) {
+                if(mask[languages[f2][j]]) {
+                    common = true;
+                    break;
+                }
+            }
+            if(!common) {
+                Set.insert(f1);
+                Set.insert(f2);
+            }
+        }
+        int maxCount = 0;
+        vector<int> count(n + 1);
+        for(auto frnd: Set) {
+            for(int i = 0; i < languages[frnd].size(); i++) {
+                count[languages[frnd][i]]++;
+                maxCount = max(maxCount, count[languages[frnd][i]]);
+            }
+        }
+        return Set.size() - maxCount;
+    }
+};
