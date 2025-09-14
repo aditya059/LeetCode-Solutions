@@ -1,0 +1,53 @@
+class Solution {
+    unordered_set<string> caseSensitiveSet;
+    unordered_map<string, string> capitalizationMap;
+    unordered_map<string, string> vowelErrMap;
+    bool isVowel(char ch) {
+        return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+    }
+    string toLowerString(string s) {
+        for(int i = 0; i < s.length(); i++) {
+            s[i] = tolower(s[i]);
+        }
+        return s;
+    }
+    string toVowelErr(string s) {
+        for(int i = 0; i < s.length(); i++) {
+            s[i] = (isVowel(s[i])? '$': s[i]);
+        }
+        return s;
+    }
+    string solve(string &s) {
+        if(caseSensitiveSet.contains(s)) {
+            return s;
+        } 
+        string wordLow = toLowerString(s);
+        if(capitalizationMap.contains(wordLow)) {
+            return capitalizationMap[wordLow];
+        } 
+        string vowelErr = toVowelErr(wordLow);
+        if(vowelErrMap.contains(vowelErr)) {
+            return vowelErrMap[vowelErr];
+        } 
+        return "";
+    }
+public:
+    vector<string> spellchecker(vector<string>& wordlist, vector<string>& queries) {
+        for(int i = 0; i < wordlist.size(); i++) {
+            caseSensitiveSet.insert(wordlist[i]);
+            string wordLow = toLowerString(wordlist[i]);
+            if(!capitalizationMap.contains(wordLow)) {
+                capitalizationMap[wordLow] = wordlist[i];
+            }
+            string vowelErr = toVowelErr(wordLow); 
+            if(!vowelErrMap.contains(vowelErr)) {
+                vowelErrMap[vowelErr] = wordlist[i];
+            }
+        }
+        vector<string> ans;
+        for(int i = 0; i < queries.size(); i++) {
+            ans.push_back(solve(queries[i]));
+        }
+        return ans;
+    }
+};
