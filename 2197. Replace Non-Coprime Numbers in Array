@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<int> replaceNonCoprimes(vector<int>& nums) {
+        stack<int> Stack;
+        int hcf = 1;
+        for(int i = 0; i < nums.size(); i++) {
+            long long val = nums[i];
+            while(!Stack.empty() && (hcf = gcd(Stack.top(), val)) > 1) {
+                val = (val * Stack.top()) / hcf;
+                Stack.pop();
+            }
+            Stack.push(val);
+        }
+        vector<int> ans(Stack.size());
+        for(int i = Stack.size() - 1; i >= 0; i--) {
+            ans[i] = Stack.top();
+            Stack.pop();
+        }
+        return ans;
+    }
+};
