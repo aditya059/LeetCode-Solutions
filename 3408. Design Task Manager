@@ -1,0 +1,45 @@
+class TaskManager {
+    set<vector<int>> Set;
+    unordered_map<int, vector<int>> Map;
+public:
+    TaskManager(vector<vector<int>>& tasks) {
+        for(vector<int> task: tasks) {
+            Set.insert({task[2], task[1]});
+            Map[task[1]] = {task[2], task[0]};
+        }
+    }
+    
+    void add(int userId, int taskId, int priority) {
+        Set.insert({priority, taskId});
+        Map[taskId] = {priority, userId};
+    }
+    
+    void edit(int taskId, int newPriority) {
+        Set.erase(Set.find({Map[taskId][0], taskId}));
+        Map[taskId][0] = newPriority;
+        Set.insert({newPriority, taskId});
+    }
+    
+    void rmv(int taskId) {
+        Set.erase(Set.find({Map[taskId][0], taskId}));
+        Map.erase(taskId);
+    }
+    
+    int execTop() {
+        if(Set.empty()) return -1;
+        vector<int> curr = *Set.rbegin();
+        Set.erase(--Set.end());
+        int ans = Map[curr[1]][1];
+        Map.erase(curr[1]);
+        return ans;
+    }
+};
+
+/**
+ * Your TaskManager object will be instantiated and called as such:
+ * TaskManager* obj = new TaskManager(tasks);
+ * obj->add(userId,taskId,priority);
+ * obj->edit(taskId,newPriority);
+ * obj->rmv(taskId);
+ * int param_4 = obj->execTop();
+ */
