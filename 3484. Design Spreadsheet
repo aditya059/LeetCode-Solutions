@@ -1,0 +1,33 @@
+class Spreadsheet {
+    unordered_map<string, int> Map;
+    bool isAlpha(char ch) {
+        return ch >= 'A' && ch <= 'Z';
+    }
+public:
+    Spreadsheet(int rows) {
+        
+    }
+    
+    void setCell(string cell, int value) {
+        Map[cell] = value;
+    }
+    
+    void resetCell(string cell) {
+        Map[cell] = 0;
+    }
+    
+    int getValue(string formula) {
+        int index = formula.find('+');
+        string s1 = formula.substr(1, index - 1);
+        string s2 = formula.substr(index + 1);
+        return (isAlpha(s1[0])? Map[s1]: stoi(s1)) + (isAlpha(s2[0])? Map[s2]: stoi(s2));
+    }
+};
+
+/**
+ * Your Spreadsheet object will be instantiated and called as such:
+ * Spreadsheet* obj = new Spreadsheet(rows);
+ * obj->setCell(cell,value);
+ * obj->resetCell(cell);
+ * int param_3 = obj->getValue(formula);
+ */
