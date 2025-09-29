@@ -1,0 +1,18 @@
+class Solution {
+    int solve(int i, int j, vector<int>& values, vector<vector<int>> &memo) {
+        if(i + 1 == j) return 0;
+        if(i + 2 == j) return values[i] * values[j] * values[i + 1];
+        if(memo[i][j] != -1) return memo[i][j];
+        int minScore = INT_MAX;
+        for(int k = i + 1; k < j; k++) {
+            minScore = min(minScore, values[i] * values[j] * values[k] + solve(i, k, values, memo) + solve(k, j, values, memo));
+        }
+        return memo[i][j] = minScore;
+    }
+public:
+    int minScoreTriangulation(vector<int>& values) {
+        int n = values.size();
+        vector<vector<int>> memo(n, vector<int>(n, -1));
+        return solve(0, n - 1, values, memo);
+    }
+};
