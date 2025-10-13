@@ -1,0 +1,30 @@
+class Solution {
+    bool isAnagram(string &word1, string &word2) {
+        if(word1.size() != word2.size()) return false;
+        int freqDiff[26] = {0};
+        for(int i = 0; i < word1.size(); i++) {
+            freqDiff[word1[i] - 'a']++;
+            freqDiff[word2[i] - 'a']--;
+        }
+        for(int i = 0; i < 26; i++) {
+            if(freqDiff[i]) return false;
+        }
+        return true;
+    }
+public:
+    vector<string> removeAnagrams(vector<string>& words) {
+        stack<string> Stack;
+        for(int i = words.size() - 1; i >= 0; i--) {
+            while(!Stack.empty() && isAnagram(Stack.top(), words[i])) {
+                Stack.pop();
+            }
+            Stack.push(words[i]);
+        }
+        vector<string> ans;
+        while(!Stack.empty()) {
+            ans.push_back(Stack.top());
+            Stack.pop();
+        }
+        return ans;
+    }
+};
