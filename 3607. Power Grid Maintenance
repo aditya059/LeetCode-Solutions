@@ -1,0 +1,47 @@
+class Solution {
+    void dfs(int curr, vector<bool> &visited, vector<vector<int>> &adjList, int gridNo, vector<set<int>> &grid, vector<int> &comp) {
+        visited[curr] = true;
+        grid[gridNo].insert(curr);
+        comp[curr] = gridNo;
+        for(int next: adjList[curr]) {
+            if(!visited[next]) {
+                dfs(next, visited, adjList, gridNo, grid, comp);
+            }
+        }
+    }
+public:
+    vector<int> processQueries(int c, vector<vector<int>>& connections, vector<vector<int>>& queries) {
+        vector<vector<int>> adjList(c + 1);
+        for(vector<int> edge: connections) {
+            adjList[edge[0]].push_back(edge[1]);
+            adjList[edge[1]].push_back(edge[0]);
+        }
+        vector<bool> visited(c + 1);
+        vector<set<int>> grid; 
+        int gridNo = 0;
+        vector<int> comp(c + 1);
+        for(int i = 1; i <= c; i++) {
+            if(!visited[i]) {
+                grid.push_back({});
+                dfs(i, visited, adjList, gridNo, grid, comp);
+                gridNo++;
+            }
+        }
+        vector<int> ans;
+        for(vector<int> query: queries) {
+            int c = comp[query[1]];
+            if(query[0] == 1) {
+                if(grid[c].contains(query[1])) {
+                    ans.push_back(query[1]);
+                } else if(grid[c].empty()) {
+                    ans.push_back(-1);
+                } else {
+                    ans.push_back(*grid[c].begin());
+                }
+            } else {
+                grid[c].erase(query[1]);
+            }
+        }
+        return ans;
+    }
+};
