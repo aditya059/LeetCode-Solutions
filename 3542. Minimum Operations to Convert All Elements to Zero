@@ -1,0 +1,22 @@
+class Solution {
+    int solve(int curr, int m, int n, vector<vector<int>> &freq, int memo[601][101][101]) {
+        if(m < 0 || n < 0) return INT_MIN;
+        if(curr == freq.size()) {
+            return 0;
+        }
+        if(memo[curr][m][n] != -1) return memo[curr][m][n];
+        return memo[curr][m][n] = max(solve(curr + 1, m - freq[curr][0], n - freq[curr][1], freq, memo) + 1, solve(curr + 1, m, n, freq, memo));
+    }
+public:
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        vector<vector<int>> freq(strs.size(), vector<int>(2));
+        for(int i = 0; i < strs.size(); i++) {
+            for(int j = 0; j < strs[i].length(); j++) {
+                freq[i][strs[i][j] - '0']++;
+            }
+        }
+        int memo[601][101][101];
+        memset(memo, -1, sizeof(memo));
+        return solve(0, m, n, freq, memo);
+    }
+};
