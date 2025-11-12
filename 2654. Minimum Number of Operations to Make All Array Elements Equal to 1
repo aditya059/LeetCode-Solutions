@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        int ans = INT_MAX, n = nums.size(), nonOne = 0;
+        for(int i = 0; i < n; i++) {
+            int hcf = nums[i];
+            for(int j = i + 1; j < n; j++) {
+                hcf = gcd(hcf, nums[j]);
+                if(hcf == 1) {
+                    ans = min(ans, j - i + n - 1);
+                }
+            }
+            nonOne += nums[i] != 1;
+        }
+        if(ans == INT_MAX) return -1;
+        return nonOne == n? ans: nonOne;
+    }
+};
