@@ -1,0 +1,32 @@
+class Solution {
+    const int MOD = 1e9 + 7;
+public:
+    int numberOfPaths(vector<vector<int>>& grid, int k) {
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<vector<int>>> DP(m, vector<vector<int>>(n, vector<int>(k)));
+        int sum = 0;
+        for(int i = 0; i < m; i++) {
+            sum = (sum + grid[i][0]) % k; 
+            DP[i][0][sum] = 1;
+        }
+        sum = grid[0][0] % k;
+        for(int i = 1; i < n; i++) {
+            sum = (sum + grid[0][i]) % k; 
+            DP[0][i][sum] = 1;
+        }
+        for(int i = 1; i < m; i++) {
+            for(int j = 1; j < n; j++) {
+                for(int l = 0; l < k; l++) {
+                    int val = (l + grid[i][j]) % k;
+                    if(DP[i - 1][j][l]) {
+                        DP[i][j][val] = (DP[i][j][val] + DP[i - 1][j][l]) % MOD;
+                    }
+                    if(DP[i][j - 1][l]) {
+                        DP[i][j][val] = (DP[i][j][val] + DP[i][j - 1][l]) % MOD;
+                    }
+                }
+            }
+        }
+        return DP[m - 1][n - 1][0];
+    }
+};
