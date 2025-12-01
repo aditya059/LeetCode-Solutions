@@ -1,0 +1,27 @@
+class Solution {
+    bool solve(long long target, int n, vector<int>& batteries) {
+        long long extra = 0LL;
+        for(int i = 0; i < batteries.size(); i++) {
+            extra += min(target, (long long)batteries[i]);
+            if(extra >= n * target) {
+                return true;
+            }
+        }
+        return false;
+    }
+public:
+    long long maxRunTime(int n, vector<int>& batteries) {
+        long long sum = accumulate(batteries.begin(), batteries.end(), 0LL);
+        long long left = 1, right = sum / n, ans = 1;
+        while(left <= right) {
+            long long mid = left + (right - left) / 2;
+            if(solve(mid, n, batteries)) {
+                ans = max(ans, mid);
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return ans;
+    }
+};
