@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int countCoveredBuildings(int n, vector<vector<int>>& buildings) {
+        int ans = 0;
+        unordered_map<int, vector<int>> xMap, yMap;
+        unordered_map<int, int> count;
+        for(int i = 0; i < buildings.size(); i++) {
+            xMap[buildings[i][0]].push_back(i);
+            yMap[buildings[i][1]].push_back(i);
+        }
+        for(auto iter: xMap) {
+            sort(iter.second.begin(), iter.second.end(), [&](auto &A, auto &B) {
+                return buildings[A][1] < buildings[B][1]; 
+            });
+            for(int i = 1; i < iter.second.size() - 1; i++) {
+                count[iter.second[i]] += 2;
+            }
+        }
+        for(auto iter: yMap) {
+            sort(iter.second.begin(), iter.second.end(), [&](auto &A, auto &B) {
+                return buildings[A][0] < buildings[B][0]; 
+            });
+            for(int i = 1; i < iter.second.size() - 1; i++) {
+                count[iter.second[i]] += 2;
+                if(count[iter.second[i]] == 4) {
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+};
