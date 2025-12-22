@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int minDeletionSize(vector<string>& strs) {
+        int m = strs.size(), n = strs[0].size();
+        vector<int> DP(n, 1);
+        for(int i = 1; i < n; i++) {
+            for(int j = i - 1; j >= 0; j--) {
+                bool valid = true;
+                for(int k = 0; k < m; k++) {
+                    if(strs[k][i] < strs[k][j]) {
+                        valid = false;
+                        break;
+                    }
+                }
+                if(valid) {
+                    DP[i] = max(DP[i], DP[j] + 1);
+                }
+            }
+        }
+        return n - *max_element(DP.begin(), DP.end());
+    }
+};
