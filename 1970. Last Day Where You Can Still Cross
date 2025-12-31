@@ -1,0 +1,47 @@
+class Solution {
+    bool walkable(int row, int col, vector<vector<int>>& cells, int mid) {
+        vector<vector<int>> matrix(row, vector<int>(col, 1));
+        for(int i = 0; i <= mid; i++) {
+            matrix[cells[i][0] - 1][cells[i][1] - 1] = 0;
+        }
+        queue<pair<int, int>> Queue;
+        for(int i = 0; i < col; i++) {
+            if(matrix[0][i] == 1) {
+                Queue.push({0, i});
+                matrix[0][i] = 0; // Visited
+            }
+        }
+        pair<int, int> dirs[4] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        while(!Queue.empty()) {
+            auto [currX, currY] = Queue.front();
+            Queue.pop();
+            if(currX == row - 1) {
+                return true;
+            }
+            for(pair<int, int> dir: dirs) {
+                int nextX = currX + dir.first;
+                int nextY = currY + dir.second;
+                if(nextX < 0 || nextY < 0 || nextX >= row || nextY >= col || matrix[nextX][nextY] == 0) {
+                    continue;
+                }
+                Queue.push({nextX, nextY});
+                matrix[nextX][nextY] = 0;
+            }
+        }
+        return false;
+    }
+public:
+    int latestDayToCross(int row, int col, vector<vector<int>>& cells) {
+        int low = 0, high = cells.size() - 1, ans = -1;
+        while(low <= high) {
+            int mid = low + (high - low) / 2;
+            if(walkable(row, col, cells, mid)) {
+                ans = max(ans, mid);
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return ans + 1;
+    }
+};
