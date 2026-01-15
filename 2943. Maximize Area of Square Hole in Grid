@@ -1,0 +1,21 @@
+class Solution {
+    int maxBarsRemoved(vector<int>& bars) {
+        sort(bars.begin(), bars.end());
+        int barsRem = 1, maxBarsRem = 1;
+        for(int i = 1; i < bars.size(); i++) {
+            if(bars[i] - bars[i - 1] == 1) {
+                barsRem++;
+            } else {
+                maxBarsRem = max(maxBarsRem, barsRem);
+                barsRem = 1;
+            }
+        }
+        maxBarsRem = max(maxBarsRem, barsRem);
+        return maxBarsRem;
+    }
+public:
+    int maximizeSquareHoleArea(int n, int m, vector<int>& hBars, vector<int>& vBars) {
+        int maxSquareLength = min(maxBarsRemoved(hBars), maxBarsRemoved(vBars));
+        return (maxSquareLength + 1) * (maxSquareLength + 1);
+    }
+};
