@@ -1,0 +1,27 @@
+class Solution {
+    const int MOD = 1e9 + 7;
+public:
+    int maximizeSquareArea(int m, int n, vector<int>& hFences, vector<int>& vFences) {
+        hFences.push_back(m);
+        vFences.push_back(n);
+        unordered_set<int> hSet;
+        for(int i = 0; i < hFences.size(); i++) {
+            hSet.insert(abs(hFences[i] - 1));
+            for(int j = i + 1; j < hFences.size(); j++) {
+                hSet.insert(abs(hFences[i] - hFences[j]));
+            }
+        }
+        int ans = -1;
+        for(int i = 0; i < vFences.size(); i++) {
+            if(hSet.contains(abs(vFences[i] - 1))) {
+                ans = max(ans, abs(vFences[i] - 1));
+            }
+            for(int j = i + 1; j < vFences.size(); j++) {
+                if(hSet.contains(abs(vFences[i] - vFences[j]))) {
+                    ans = max(ans, abs(vFences[i] - vFences[j]));
+                }
+            }
+        }
+        return ans == -1? ans: (ans * 1LL * ans) % MOD; 
+    }
+};
