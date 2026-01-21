@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> minBitwiseArray(vector<int>& nums) {
+        vector<int> ans(nums.size());
+        for(int i = 0; i < nums.size(); i++) {
+            if(nums[i] % 2 == 0) {
+                ans[i] = -1;
+                continue;
+            }
+            for(int j = 0; j < 31; j++) {
+                if(((nums[i] >> j) & 1) == 0) {
+                    ans[i] = nums[i] xor (1 << (j - 1));
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+};
