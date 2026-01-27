@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int minCost(int n, vector<vector<int>>& edges) {
+        vector<vector<pair<int, int>>> adjList(n);
+        for(int i = 0; i < edges.size(); i++) {
+            adjList[edges[i][0]].push_back({edges[i][1], edges[i][2]});
+            adjList[edges[i][1]].push_back({edges[i][0], 2 * edges[i][2]});
+        }
+        vector<int> cost(n, INT_MAX);
+        cost[0] = 0;
+        set<pair<int, int>> PQ;
+        PQ.insert({0, 0});
+        while(!PQ.empty()) {
+            auto [currCost, currU] = *PQ.begin();
+            PQ.erase(PQ.begin());
+            if(currU == n - 1) {
+                return cost[currU];
+            }
+            for(auto [currV, w]: adjList[currU]) {
+                if(cost[currU] + w < cost[currV]) {
+                    PQ.erase({cost[currV], currV});
+                    cost[currV] = cost[currU] + w;
+                    PQ.insert({cost[currV], currV});
+                }
+            }
+        }
+        return -1;
+    }
+};
