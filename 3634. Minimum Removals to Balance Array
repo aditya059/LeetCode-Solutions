@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int minRemoval(vector<int>& nums, int k) {
+        int n = nums.size(), maxLen = 0;
+        sort(nums.begin(), nums.end());
+        for(int start = 0, end = 0; end < n; end++) {
+            while(nums[end] > nums[start] * 1LL * k) {
+                start++;
+            }
+            maxLen = max(maxLen, end - start + 1);
+        }
+        return n - maxLen;
+    }
+};
