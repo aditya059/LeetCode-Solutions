@@ -1,0 +1,67 @@
+class Solution {
+public:
+    int longestBalanced(string s) {
+        int n = s.length(), prev = s[0], len = 1, ans = 1;
+        // Single char
+        for(int i = 1; i < n; i++) {
+            if(s[i] == prev) {
+                len++;
+            } else {
+                ans = max(ans, len);
+                len = 1;
+                prev = s[i];
+            }
+        }
+        ans = max(ans, len);
+
+        auto solve = [&](char x, char y, char z) -> int {
+            int i = 0, maxCount = 0;
+            while(i < n) {
+                while(i< n && s[i] == z) i++;
+                unordered_map<int, int> Map;
+                Map[0] = i - 1;
+                int count = 0;
+                while(i < n && s[i] != z) {
+                    if(s[i] == x) {
+                        count++;
+                    } else {
+                        count--;
+                    }
+                    if(Map.contains(count)) {
+                        maxCount = max(maxCount, i - Map[count]);
+                    } else {
+                        Map[count] = i;
+                    }
+                    i++;
+                }
+            }
+            return maxCount;
+        };
+
+        // 2 Distinct char
+        ans = max(ans, solve('a', 'b', 'c'));
+        ans = max(ans, solve('b', 'c', 'a'));
+        ans = max(ans, solve('c', 'a', 'b'));
+
+        // All 3 char
+        map<pair<int, int>, int> Map;
+        Map[{0, 0}] = -1;
+        int countA = 0, countB = 0, countC = 0;
+        for(int i = 0; i < n; i++) {
+            if(s[i] == 'a') {
+                countA++;
+            } else if(s[i] == 'b') {
+                countB++;
+            } else {
+                countC++;
+            }
+            pair<int, int> key = {countA - countB, countB - countC};
+            if(Map.contains(key)) {
+                ans = max(ans, i - Map[key]);
+            } else {
+                Map[key] = i;
+            }
+        }
+        return ans;
+    }
+};
