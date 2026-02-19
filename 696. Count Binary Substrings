@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int countBinarySubstrings(string s) {
+        int currLen = 1, prevLen = 0, currChar = s[0], ans = 0;
+        for(int i = 1; i < s.length(); i++) {
+            if(s[i] == currChar) {
+                currLen++;
+            } else {
+                ans += min(prevLen, currLen);
+                prevLen = currLen;
+                currChar = s[i];
+                currLen = 1;
+            }
+        }
+        ans += min(prevLen, currLen);
+        return ans;
+    }
+};
