@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int minFlips(string s) {
+        int n = s.length(), ans = INT_MAX, count1 = 0, count2 = 0;
+        for(int i = 0; i < 2 * n; i++) {
+            int val = s[i % n] - '0';
+            count1 += (val != (i % 2));
+            count2 += (val != ((i + 1) % 2));
+            if(i >= n) {
+                int prevVal = s[i - n] - '0';
+                count1 -= prevVal != ((i + n) % 2);
+                count2 -= prevVal != ((i + 1 + n) % 2);
+            }  
+            if(i >= n - 1) {
+                ans = min(ans, min(count1, count2));
+            }
+        }
+        return ans;
+    }
+};
