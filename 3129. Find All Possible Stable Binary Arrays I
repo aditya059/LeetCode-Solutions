@@ -1,0 +1,30 @@
+class Solution {
+    const int MOD = 1e9 + 7;
+public:
+    int numberOfStableArrays(int zero, int one, int limit) {
+        vector<vector<vector<long>>> DP(zero + 1, vector<vector<long>>(one + 1, vector<long>(2)));
+        for(int i = 0; i <= min(zero, limit); i++) {
+            DP[i][0][0] = 1;
+        }
+        for(int i = 0; i <= min(one, limit); i++) {
+            DP[0][i][1] = 1;
+        }
+        for(int i = 1; i <= zero; i++) {
+            for(int j = 1; j <= one; j++) {
+                if(i > limit) {
+                    DP[i][j][0] = DP[i - 1][j][1] + DP[i - 1][j][0] - DP[i - limit - 1][j][1]; 
+                } else {
+                    DP[i][j][0] = DP[i - 1][j][1] + DP[i - 1][j][0]; 
+                }
+                DP[i][j][0] = (DP[i][j][0] % MOD + MOD) % MOD;
+                if(j > limit) {
+                    DP[i][j][1] = DP[i][j - 1][0] + DP[i][j - 1][1] - DP[i][j - limit - 1][0]; 
+                } else {
+                    DP[i][j][1] = DP[i][j - 1][0] + DP[i][j - 1][1]; 
+                }
+                DP[i][j][1] = (DP[i][j][1] % MOD + MOD) % MOD;
+            }
+        }
+        return (DP[zero][one][0] + DP[zero][one][1]) % MOD;
+    }
+};
