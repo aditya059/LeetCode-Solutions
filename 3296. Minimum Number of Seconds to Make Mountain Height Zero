@@ -1,0 +1,24 @@
+class Solution {
+    bool solve(int mountainHeight, vector<int>& workerTimes, long long mid) {
+        for(int w: workerTimes) {
+            mountainHeight -= (long long)((sqrt(1 + mid / w * 8LL) - 1) / 2);
+        }
+        return mountainHeight <= 0;
+    }
+public:
+    long long minNumberOfSeconds(int mountainHeight, vector<int>& workerTimes) {
+        int max_elem = *max_element(workerTimes.begin(), workerTimes.end());
+        long long low = 1, high = max_elem * 1LL * mountainHeight * (mountainHeight + 1) /2;
+        long long ans = high;
+        while(low <= high) {
+            long long mid = low + (high - low) / 2;
+            if(solve(mountainHeight, workerTimes, mid)) {
+                ans = min(ans, mid);
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return ans;
+    }
+};
