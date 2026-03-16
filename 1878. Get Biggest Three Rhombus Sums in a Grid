@@ -1,0 +1,44 @@
+class Solution {
+    int calc(pair<int, int> &A, pair<int, int> &B, pair<int, int> &C, pair<int, int> &D, int k, vector<vector<int>>& grid) {
+        int sum = 0;
+        for(int i = 0; i <= k; i++) {
+            sum += grid[A.first + i][A.second + i];
+        }
+        for(int i = 0; i <= k; i++) {
+            sum += grid[B.first + i][B.second - i];
+        }
+        for(int i = 0; i <= k; i++) {
+            sum += grid[C.first - i][C.second - i];
+        }
+        for(int i = 0; i <= k; i++) {
+            sum += grid[D.first - i][D.second + i];
+        }
+        return sum - grid[A.first][A.second] - grid[B.first][B.second] - grid[C.first][C.second] - grid[D.first][D.second];
+    }
+public:
+    vector<int> getBiggestThree(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        set<int> Set;
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                Set.insert(grid[i][j]);
+                for(int k = 1; k < m; k++) {
+                    pair<int, int> A = {i, j};
+                    pair<int, int> B = {i + k, j + k};
+                    pair<int, int> C = {i + 2 * k, j};
+                    pair<int, int> D = {i + k, j - k};
+                    if(B.first >= m || B.second >= n) break;
+                    if(C.first >= m) break;
+                    if(D.first >= m || D.second < 0) break;
+                    Set.insert(calc(A, B, C, D, k, grid));
+                }
+            }
+        }
+        vector<int> ans;
+        for(int i = 0; i < 3 && Set.size() > 0; i++) {
+            ans.push_back(*Set.rbegin());
+            Set.erase(--Set.end());
+        }
+        return ans;
+    }
+};
