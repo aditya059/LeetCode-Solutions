@@ -1,0 +1,25 @@
+class Solution {
+public:
+    bool canPartitionGrid(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        vector<long> rowSum(m), colSum(n);
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                rowSum[i] += grid[i][j];
+                colSum[j] += grid[i][j];
+            }
+        }
+        long total = accumulate(rowSum.begin(), rowSum.end(), 0L);
+        long currSum = rowSum[0];
+        for(int i = 1; i < m; i++) {
+            if(currSum == total - currSum) return true;
+            currSum += rowSum[i];
+        }
+        currSum = colSum[0];
+        for(int i = 1; i < n; i++) {
+            if(currSum == total - currSum) return true;
+            currSum += colSum[i];
+        }
+        return false;
+    }
+};
