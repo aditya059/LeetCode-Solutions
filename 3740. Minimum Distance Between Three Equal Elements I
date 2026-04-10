@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int minimumDistance(vector<int>& nums) {
+        int ans = INT_MAX;
+        unordered_map<int, vector<int>> Map;
+        for(int i = 0; i < nums.size(); i++) {
+            Map[nums[i]].push_back(i);
+            vector<int> &map = Map[nums[i]];
+            int len = map.size();
+            if(len > 2) {
+                int a = map[len - 1], b = map[len - 2], c = map[len - 3];
+                ans = min(ans, abs(a - b) + abs(b - c) + abs(c - a));
+            }
+        }
+        return ans == INT_MAX? -1: ans;
+    }
+};
