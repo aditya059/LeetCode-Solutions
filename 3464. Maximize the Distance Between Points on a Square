@@ -1,0 +1,45 @@
+class Solution {
+    bool check(vector<long> oneDPoints, int mid, int k, int side) {
+        int n = oneDPoints.size();
+        for(int i = 0; i < n; i++) {
+            long curr = oneDPoints[i];
+            long end = curr + 4LL * side - mid; 
+            for(int j = 1; j < k; j++) {
+                auto iter = lower_bound(oneDPoints.begin(), oneDPoints.end(), curr + mid);
+                if(iter == oneDPoints.end() || *iter > end) {
+                    curr = -1;
+                    break;
+                }
+                curr = *iter;
+            }
+            if(curr >= 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+public:
+    int maxDistance(int side, vector<vector<int>>& points, int k) {
+        int n = points.size();
+        vector<long> oneDPoints(n);
+        for(int i = 0; i < n; i++) {
+            int x = points[i][0], y = points[i][1];
+            if(x == 0) oneDPoints[i] = y;
+            else if(y == side) oneDPoints[i] = side + x;
+            else if(x == side) oneDPoints[i] = 3LL * side - y;
+            else if(y == 0) oneDPoints[i] = 4LL * side - x;
+        }
+        sort(oneDPoints.begin(), oneDPoints.end());
+        int low = 1, high = side, ans = 0;
+        while(low <= high) {
+            int mid = low + (high - low) / 2;
+            if(check(oneDPoints, mid, k, side)) {
+                ans = max(ans, mid);
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return ans;
+    }
+};
