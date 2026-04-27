@@ -1,0 +1,33 @@
+class Solution {
+    void dfs(int i, int j, int m, int n, bool &ans, vector<vector<int>>& grid, vector<vector<bool>>& visited, unordered_map<int, vector<pair<int, int>>> &Map) {
+        visited[i][j] = true;
+        if(i == m - 1 && j == n - 1) {
+            ans = true;
+            return;
+        }
+        for(pair<int, int> dir: Map[grid[i][j]]) {
+            int x = i + dir.first, y = j + dir.second;
+            if(x < 0 || y < 0 || x >= m || y >= n || visited[x][y]) continue; 
+            bool rev = false;
+            for(pair<int, int> dir: Map[grid[x][y]]) {
+                if(x + dir.first == i && y + dir.second == j) rev = true;
+            }
+            if(rev) dfs(x, y, m, n, ans, grid, visited, Map);
+        }
+    }
+public:
+    bool hasValidPath(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        unordered_map<int, vector<pair<int, int>>> Map;
+        Map[1] = {{0, -1}, {0, 1}};
+        Map[2] = {{-1, 0}, {1, 0}};
+        Map[3] = {{0, -1}, {1, 0}};
+        Map[4] = {{1, 0}, {0, 1}};
+        Map[5] = {{0, -1}, {-1, 0}};
+        Map[6] = {{-1, 0}, {0, 1}};
+        bool ans = false;
+        vector<vector<bool>> visited(grid.size(), vector<bool>(grid[0].size()));
+        dfs(0, 0, m, n, ans, grid, visited, Map);
+        return ans;
+    }
+};
