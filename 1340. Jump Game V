@@ -1,0 +1,35 @@
+class Solution {
+    int dfs(int curr, vector<int> &arr, int d, vector<int> &memo) {
+        if(memo[curr] != -1) return memo[curr];
+        memo[curr] = 1;
+        int next = 0;
+        for(int x = 1; x <= d; x++) {
+            int next = curr + x;
+            if(next < arr.size() && arr[curr] > arr[next]) {
+                dfs(next, arr, d, memo);
+                memo[curr] = max(memo[curr], memo[next] + 1);
+            } else {
+                break;
+            }
+        }
+        for(int x = 1; x <= d; x++) {
+            int next = curr - x;
+            if(next >= 0 && arr[curr] > arr[next]) {
+                dfs(next, arr, d, memo);
+                memo[curr] = max(memo[curr], memo[next] + 1);
+            } else {
+                break;
+            }
+        }
+        return memo[curr];
+    }
+public:
+    int maxJumps(vector<int>& arr, int d) {
+        int n = arr.size();
+        vector<int> memo(n, -1);
+        for(int i = 0; i < n; i++) {
+            dfs(i, arr, d, memo);
+        }
+        return *max_element(memo.begin(), memo.end());
+    }
+};
