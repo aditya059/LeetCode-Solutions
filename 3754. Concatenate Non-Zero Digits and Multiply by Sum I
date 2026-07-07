@@ -1,0 +1,15 @@
+class Solution {
+public:
+    long long sumAndMultiply(int n) {
+        long long sum = 0, num = 0;
+        for(int i = n, c = 1; i > 0; i /= 10) {
+            int d = i % 10;
+            if(d) {
+                sum += d;
+                num = d * c + num;
+                c *= 10;
+            }
+        }
+        return sum * num;
+    }
+};
