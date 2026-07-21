@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int maxActiveSectionsAfterTrade(string s) {
+        int n = s.length(), ans = count(s.begin(), s.end(), '1'), prevLen = INT_MIN, bestLen = 0;
+        for(int start = 0, end = 0; end < n; ) {
+            while(end < n && s[end] == s[start]) {
+                end++;
+            }
+            if(s[start] == '0') {
+                int currLen = end - start;
+                bestLen = max(bestLen, currLen + prevLen);
+                prevLen = currLen;
+            }
+            start = end;
+        }
+        return ans + bestLen;
+    }
+};
