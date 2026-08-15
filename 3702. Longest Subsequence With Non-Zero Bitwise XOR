@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int longestSubsequence(vector<int>& nums) {
+        int xorVal = 0, zeroCount = 0, n = nums.size();
+        for(int &num: nums) {
+            xorVal = xorVal xor num; 
+            zeroCount += (num == 0);
+        }
+        return xorVal? n: zeroCount == n? 0: n - 1;
+    }
+};
